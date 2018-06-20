@@ -4,10 +4,10 @@
 
 module.exports = {
   // Service name used in header. Eg: 'Renew your passport'
-  serviceName: 'Service name goes here',
+  serviceName: 'Appeal a late filing penalty',
 
   // Default port that prototype runs on
-  port: '3000',
+  port: '3355',
 
   // Enable or disable password protection on production
   useAuth: 'true',
@@ -16,7 +16,7 @@ module.exports = {
   useAutoStoreData: 'true',
 
   // Enable or disable built-in docs and examples.
-  useDocumentation: 'true',
+  useDocumentation: 'false',
 
   // Force HTTP to redirect to HTTPS on production
   useHttps: 'true',
