@@ -1,3 +1,43 @@
+# Unreleased
+
+# 7.0.0-beta.9
+
+New features:
+
+- [#65 Update GOV.UK frontend to version 1.0.0](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/65)
+
+- [#68 Reintroduce task list pattern](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/68)
+
+Bug fixes:
+
+- [#67 Use correct casing for 'Prototype Kit' throughout](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/67)
+
+- [#63 Fix markdown-docs-layout-template](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/63)
+
+- [#62 Add cookie-banner styles and javascript](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/62)
+
+- [#66 Update links to point at vanity design system URL](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/66)
+
+- [#69 Use app namespace for patterns not in GOV.UK Frontend](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/69)
+
+# 7.0.0-beta.8
+
+Breaking changes:
+
+- [#56 GOV.UK Frontend to 0.0.32](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/56)
+
+New features:
+
+- [#55 Add GOV.UK Frontend JavaScript to documentation pages](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/55)
+
+Bug fixes:
+
+- [#60 Update margin for cookie message](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/60)
+
+Internal:
+
+- [#60 Uncomment automatic Github release utility](https://github.com/alphagov/govuk-prototype-kit-private-beta/pull/60)
+
 # 7.0.0-beta.7
 
 Breaking changes:

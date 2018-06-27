@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Company authentication
+{% endblock %}
+
+{% block main %}
+<div class="govuk-width-container">
+
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: "penalty-reference"
+  }) }}
+
+  <main role="main" class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {{ govukErrorSummary({
+          titleText: "There was a problem with your authentication",
+          errorList: [
+            {
+              text: "You must enter an authentication code",
+              href: "#auth"
+            }
+          ]
+        }) }}
+        <h1 class="govuk-heading-xl">Company authentication</h1>
+        <p class="govuk-body">To file company information you will need and authentication code.</p>
+        <p class="govuk-body govuk-!-font-size-24">Authenticating for <span class="govuk-!-font-weight-bold">MY TEST COMPANY LIMITED</span></p>
+        <form action="review-penalty" method="post">
+          {{ govukInput({
+            label: {
+              text: "Authentication code"
+            },
+            errorMessage: {
+              text: "You must enter an authentication code"
+            },
+            id: "auth",
+            name: "auth"
+          }) }}
+
+          {{ govukButton({
+            text: "Authenticate"
+          }) }}
+          <p class="govuk-body">
+            <a href="" class="govuk-link">Request an authentication code</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

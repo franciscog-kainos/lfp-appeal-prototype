@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Blank page
+{% endblock %}
+
+{% block main %}
+
+<div class="govuk-width-container">
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBackLink({
+    text: "Back",
+    href: "review-penalty"
+  }) }}
+  <main role="main" class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <form action="" method="post">
+
+          {% set otherInput %}
+            {{ govukInput({
+              id: "other-reason",
+              name: "otherReason",
+              classes: "",
+              label: {
+                text: "Reason"
+              }
+            }) }}
+          {% endset -%}
+
+          {{ govukRadios({
+          idPrefix: "appeal-reason",
+            name: "appealReason",
+            fieldset: {
+              legend: {
+                text: 'Tell us why you\'re appealing this penalty',
+                isPageHeading: true,
+                classes: 'govuk-fieldset__legend--xl'
+              }
+            },
+            items: [
+              {
+                value: "health",
+                text: "Ill health"
+              },
+              {
+                value: "disaster",
+                text: "Theft, fire, flood or other natural disaster"
+              },
+              {
+                value: "payment",
+                text: "The company can't pay the penalty"
+              },
+              {
+                value: "filing",
+                text: "Not aware of the filing requirements"
+              },
+              {
+                value: "dormant",
+                text: "The company is dormant"
+              },
+              {
+                value: "post",
+                text: "The accounts were lost in the post"
+              },
+              {
+                value: "other",
+                text: "I'm appealing for another reason",
+                conditional: {
+                  html: otherInput
+                }
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Sign in
+{% endblock %}
+
+{% block main %}
+<div class="govuk-width-container">
+
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: "#"
+  }) }}
+
+  <main role="main" class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-half">
+        {{ govukErrorSummary({
+          titleText: "There was a problem signing you in",
+          errorList: [
+            {
+              text: "You must enter an email address",
+              href: "#email-error"
+            },
+            {
+              text: "You must enter a password",
+              href: "#password-error"
+            }
+          ]
+        }) }}
+        <h1 class="govuk-heading-xl">Sign in to Companies House</h1>
+        <form action="penalty-reference" method="post">
+          {{ govukInput({
+            label: {
+              text: "Email address"
+            },
+            errorMessage: {
+              text: "You must enter an email address"
+            },
+            id: "email",
+            name: "email"
+          }) }}
+
+          {{ govukInput({
+            label: {
+              text: "Password"
+            },
+            errorMessage: {
+              text: "You must enter a password"
+            },
+            id: "password",
+            name: "password"
+          }) }}
+
+          {{ govukButton({
+            text: "Sign in"
+          }) }}
+          <p class="govuk-body">
+            <a href="" class="govuk-link">Register</a>
+          </p>
+          <p class="govuk-body">
+            <a href="" class="govuk-link">Forgotten your password?</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

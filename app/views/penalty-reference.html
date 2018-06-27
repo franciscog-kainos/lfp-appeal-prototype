@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if penaltyErr or companyErr %}Error: {% endif %}
+  Tell us your penalty details
+{% endblock %}
+
+{% block main %}
+
+<div class="govuk-width-container">
+
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: "sign-in"
+  }) }}
+  <main role="main" class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {% if penaltyErr or companyErr %}
+          {{ govukErrorSummary({
+            titleText: "We couldn't find your penalty",
+            errorList: [
+              {
+                text: "You must enter a company number",
+                href: "#company-error"
+              },
+              {
+                text: "You must enter a penalty reference",
+                href: "#ref-error"
+              }
+            ]
+          }) }}
+        {% endif %}
+        <h1 class="govuk-heading-xl">
+          Tell us your penalty details
+        </h1>
+        <form method="POST" action="authenticate">
+          {{ govukInput({
+            label: {
+              text: "Company number"
+            },
+            hint: {
+              text: "This is the 8 character reference that uniquely identifies your company."
+            },
+            errorMessage: {
+              text: "You must enter a company number"
+            },
+            classes: "govuk-input--width-10",
+            id: "company-number",
+            name: "companyNumber"
+          }) }}
+          {{ govukInput({
+            label: {
+              text: "Penalty reference"
+            },
+            hint: {
+              text: "This is the 14 character reference shown on your penalty notification."
+            },
+            errorMessage: {
+              text: "You must enter a penalty reference"
+            },
+            classes: "govuk-input--width-10",
+            id: "penalty-reference",
+            name: "penaltyReference"
+          }) }}
+          <div class="govuk-form-group">
+            {% set detailsHTML %}
+              <p>We need to know your nationality so we can work out which elections you’re entitled to vote in. If you can’t provide your nationality, you’ll have to send copies of identity documents through the post.</p><img src='/public/images/PenWebImage280px.png' class='call-out-image' alt=''/>
+            {% endset -%}
+            {{ govukDetails({
+              summaryText: "Where can I find these details?",
+              html: detailsHTML
+            }) }}
+          </div>
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}
