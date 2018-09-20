@@ -1,80 +1,89 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Provide evidence to support your appeal against a late filing penalty
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Add evidence to support your appeal
 {% endblock %}
 
 {% block main %}
 
-<div class="govuk-width-container">
-  {{ govukPhaseBanner({
-    tag: {
-      text: "alpha"
-    },
-    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-  }) }}
-  {{ govukBackLink({
-    text: "Back",
-    href: backLink
-  }) }}
-  <main role="main" class="govuk-main-wrapper">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <form action="" method="post">
-          <h1 class="govuk-heading-xl">
-            Add evidence to support your appeal
-          </h1>
-          <p class="govuk-body">
+  <div class="govuk-width-container">
+    {{ govukPhaseBanner({
+      tag: {
+        text: "alpha"
+      },
+      html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+    }) }}
 
-          </p>
-          {% set removeLink %}
-            <a href="" class="govuk-link">Remove</a>
-          {% endset -%}
-          {{ govukTable({
-            caption: "Attached evidence",
-            firstCellIsHeader: false,
-            rows: [
-              [
+    {% set backLinkHref %}
+    {{ backLink }}
+    {% endset -%}
+
+    {{ govukBackLink({
+      text: "Back",
+      href: backLinkHref
+    }) }}
+    <main role="main" class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          {% if errorList.length > 0 %}
+            {{ govukErrorSummary({
+              titleText: "There was a problem with your appeal information",
+              errorList: errorList
+            }) }}
+          {% endif %}
+
+          <form action="" method="post">
+
+            {% if errorList.length > 0 %}
+              {% set supportingEvidenceError = {
+                text: supportingEvidenceErr.text
+              } %}
+            {% else %}
+              {% set supportingEvidenceError = false %}
+            {% endif %}
+
+            {% set hintHTML %}
+            Anything you give us to support your appeal will be kept condfidential.
+            {% endset -%}
+
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "supporting-evidence",
+              name: "supportingEvidence",
+              errorMessage: supportingEvidenceError,
+              fieldset: {
+                legend: {
+                  text: 'Do you want to add evidence to support your appeal?',
+                  isPageHeading: true,
+                  classes: 'govuk-fieldset__legend--xl'
+                }
+              },
+              hint: {
+                html: hintHTML
+              },
+              items: [
                 {
-                  html: "<a href='' class='govuk-link'>gp-letter.jpg</a>"
+                  value: "yes",
+                  text: "Yes"
                 },
                 {
-                  html: removeLink
-                }
-              ],
-              [
-                {
-                  html: "<a href='' class='govuk-link'>gp-letter.jpg</a>"
-                },
-                {
-                  html: removeLink
-                }
-              ],
-              [
-                {
-                  html: "<a href='' class='govuk-link'>gp-letter.jpg</a>"
-                },
-                {
-                  html: removeLink
-                }
-              ],
-              [
-                {
-                  html: "<a href='' class='govuk-link'>Add another document</a>",
-                  colspan: 2
+                  value: "no",
+                  text: "No"
                 }
               ]
-            ]
-          }) }}
+            }) }}
 
-          {{ govukButton({
-            text: "Continue",
-            href: "add-appeal-reason"
-          }) }}
-        </form>
+            {{ govukButton({
+              text: "Continue"
+            }) }}
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
 {% endblock %}

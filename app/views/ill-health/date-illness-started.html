@@ -1,61 +1,83 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
   Appeal due to ill health: Tell us when the illness started
 {% endblock %}
 
 {% block main %}
 
-<div class="govuk-width-container">
-  {{ govukPhaseBanner({
-    tag: {
-      text: "alpha"
-    },
-    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-  }) }}
-  {{ govukBackLink({
-    text: "Back",
-    href: "who-was-ill"
-  }) }}
-  <main role="main" class="govuk-main-wrapper">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <form action="" method="post">
+  <div class="govuk-width-container">
+    {{ govukPhaseBanner({
+      tag: {
+        text: "alpha"
+      },
+      html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+    }) }}
+    {{ govukBackLink({
+      text: "Back",
+      href: "who-was-ill"
+    }) }}
+    <main role="main" class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
-          {{ govukDateInput({
-            id: 'illness-start',
-            name: 'illnessStart',
-            fieldset: {
-              legend: {
-                text: 'When did the illness start?',
-                isPageHeading: true,
-                classes: 'govuk-fieldset__legend--xl'
-              }
-            },
-            hint: {
-              text: 'For example, 15 August 2018'
-            },
-            items: [
-              {
-                name: 'day'
-              },
-              {
-                name: 'month'
-              },
-              {
-                name: 'year'
-              }
-            ]
-            })
-          }}
+          {% if errorList.length > 0 %}
+            {{ govukErrorSummary({
+              titleText: "There was a problem with the date you gave us",
+              errorList: errorList
+            }) }}
+          {% endif %}
 
-          {{ govukButton({
-            text: "Continue"
-          }) }}
-        </form>
+          <form action="" method="post">
+
+            {% if errorList.length > 0 %}
+              {% set startDateError = {
+                text: startDateErr.text
+              } %}
+            {% else %}
+              {% set startDateError = false %}
+            {% endif %}
+
+            {{ govukDateInput({
+              id: 'illness-start',
+              name: 'illnessStart',
+              errorMessage: startDateError,
+              fieldset: {
+                legend: {
+                  text: 'When did the illness start?',
+                  isPageHeading: true,
+                  classes: 'govuk-fieldset__legend--xl'
+                }
+              },
+              hint: {
+                text: 'For example, 15 August 2018'
+              },
+              items: [
+                {
+                  name: 'day',
+                  value: startDate.day
+                },
+                {
+                  name: 'month',
+                  value: startDate.month
+                },
+                {
+                  name: 'year',
+                  value: startDate.year
+                }
+              ]
+              })
+            }}
+            {{ govukButton({
+              text: "Continue"
+            }) }}
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
 {% endblock %}

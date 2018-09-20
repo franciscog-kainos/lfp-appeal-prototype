@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Appeal due to ill health: Tell us about the illness
+  Appeal due to ill health: Tell us more about the illness
 {% endblock %}
 
 {% block main %}
@@ -16,9 +16,14 @@
       },
       html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
     }) }}
+
+    {% set backLinkHref %}
+    {{ backLink }}
+    {% endset -%}
+
     {{ govukBackLink({
       text: "Back",
-      href: 'about-the-illness'
+      href: backLinkHref
     }) }}
     <main role="main" class="govuk-main-wrapper">
       <div class="govuk-grid-row">
@@ -34,32 +39,42 @@
           <form action="" method="post">
 
             {% if errorList.length > 0 %}
-              {% set natureOfIllnessError = {
-                text: natureOfIllnessErr.text
+              {% set provideDetailError = {
+                text: provideDetailErr.text
               } %}
             {% else %}
-              {% set natureOfIllnessError = false %}
+              {% set provideDetailError = false %}
             {% endif %}
 
             {% set hintHTML %}
             Anything you tell us to support your appeal will be kept condfidential.
             {% endset -%}
 
-            <h1 class="govuk-heading-xl">Tell us about the illness</h1>
-            {{ govukTextarea({
-              name: "natureOfIllness",
-              id: "nature-of-illness",
-              errorMessage: natureOfIllnessError,
-              value: natureOfIllness,
-              rows: '12',
-              label: {
-                text: "Anything you tell us to support your appeal will be kept condfiential.",
-                isPageHeading: true,
-                classes: 'govuk-heading-large'
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: "about-the-illness",
+              name: "provideDetail",
+              errorMessage: provideDetailError,
+              fieldset: {
+                legend: {
+                  text: 'Do you want to tell us about the illness?',
+                  isPageHeading: true,
+                  classes: 'govuk-fieldset__legend--xl'
+                }
               },
               hint: {
-                text: "Useful information could include symptoms, whether the illness was diagnosed by a GP and any medications taken."
-              }
+                html: hintHTML
+              },
+              items: [
+                {
+                  value: "yes",
+                  text: "Yes"
+                },
+                {
+                  value: "no",
+                  text: "No"
+                }
+              ]
             }) }}
 
             {{ govukButton({
