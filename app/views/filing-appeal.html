@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Appeal due to a lack of knowledge of filing requirements
+{% endblock %}
+
+{% block main %}
+
+<div class="govuk-width-container">
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBackLink({
+    text: "Back",
+    href: "choose-appeal-reason"
+  }) }}
+  <main role="main" class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">We can't accept appeals for this reason</h1>
+        <p class="govuk-body">
+          It is the responsibility of all company officers to ensure that company accounts are prepared and provided to Companies House each year by their due date. Late filing penalties are levied against the company and not its officers or agents/representatives. We advise all company officers to be fully aware of their legal obligations with regard to running a company.
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

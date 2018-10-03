@@ -64,8 +64,8 @@ if (env === 'production' && useAuth === 'true') {
 var appViews = [
   path.join(__dirname, '/app/views/'),
   path.join(__dirname, '/lib/'),
-  path.join(__dirname, '/node_modules/@govuk-frontend/frontend'), // template path
-  path.join(__dirname, '/node_modules/@govuk-frontend/frontend/components')
+  path.join(__dirname, '/node_modules/govuk-frontend'), // template path
+  path.join(__dirname, '/node_modules/govuk-frontend/components')
 ]
 
 var nunjucksAppEnv = nunjucks.configure(appViews, {
@@ -82,11 +82,11 @@ utils.addNunjucksFilters(nunjucksAppEnv)
 app.set('view engine', 'html')
 
 // Middleware to serve static assets
-app.use('/assets', express.static(path.join(__dirname, '/node_modules/@govuk-frontend/frontend/assets')))
+app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
 app.use('/public', express.static(path.join(__dirname, '/public')))
 
 // load govuk-frontend 'all' js
-app.use('/public/javascripts', express.static(path.join(__dirname, '/node_modules/@govuk-frontend/frontend')))
+app.use('/public/javascripts', express.static(path.join(__dirname, '/node_modules/govuk-frontend')))
 
 // hightlightJS styles
 app.use('/public/vendor/highlight', express.static(path.join(__dirname, '/node_modules/highlight.js/styles')))
@@ -95,8 +95,8 @@ app.use('/public/vendor/highlight', express.static(path.join(__dirname, '/node_m
 if (useDocumentation) {
   var documentationViews = [path.join(__dirname, '/docs/views/'),
     path.join(__dirname, '/lib/'),
-    path.join(__dirname, '/node_modules/@govuk-frontend/frontend'), // template path
-    path.join(__dirname, '/node_modules/@govuk-frontend/frontend/components')]
+    path.join(__dirname, '/node_modules/govuk-frontend'), // template path
+    path.join(__dirname, '/node_modules/govuk-frontend/components')]
 
   var nunjucksDocumentationEnv = nunjucks.configure(documentationViews, {
     autoescape: true,
@@ -152,7 +152,9 @@ app.use(session({
 if (useAutoStoreData === 'true') {
   app.use(utils.autoStoreData)
   utils.addCheckedFunction(nunjucksAppEnv)
-  utils.addCheckedFunction(nunjucksDocumentationEnv)
+  if (config.useDocumentation === 'true') {
+    utils.addCheckedFunction(nunjucksDocumentationEnv)
+  }
 }
 
 // Clear all data in session if you open /prototype-admin/clear-data
@@ -163,7 +165,7 @@ app.get('/prototype-admin/clear-data', function (req, res) {
 
 // Redirect root to /docs when in promo mode.
 if (promoMode === 'true') {
-  console.log('Prototype kit running in promo mode')
+  console.log('Prototype Kit running in promo mode')
 
   app.locals.cookieText = 'GOV.UK uses cookies to make the site simpler. <a href="/docs/cookies">Find out more about cookies</a>'
 
@@ -171,7 +173,7 @@ if (promoMode === 'true') {
     res.redirect('/docs')
   })
 
-  // Allow search engines to index the prototype kit promo site
+  // Allow search engines to index the Prototype Kit promo site
   app.get('/robots.txt', function (req, res) {
     res.type('text/plain')
     res.send('User-agent: *\nAllow: /')
@@ -193,13 +195,13 @@ if (promoMode === 'true') {
 // Load routes (found in app/routes.js)
 if (typeof (routes) !== 'function') {
   console.log(routes.bind)
-  console.log('Warning: the use of bind in routes is deprecated - please check the prototype kit documentation for writing routes.')
+  console.log('Warning: the use of bind in routes is deprecated - please check the Prototype Kit documentation for writing routes.')
   routes.bind(app)
 } else {
   app.use('/', routes)
 }
 
-// Redirect to the zip of the latest release of the prototype kit on GitHub
+// Redirect to the zip of the latest release of the Prototype Kit on GitHub
 app.get('/prototype-admin/download-latest', function (req, res) {
   var url = utils.getLatestRelease()
   res.redirect(url)
@@ -207,8 +209,8 @@ app.get('/prototype-admin/download-latest', function (req, res) {
 
 if (useDocumentation) {
   // Copy app locals to documentation app locals
-  documentationApp.locals = app.locals
-  documentationApp.locals.serviceName = 'Prototype kit'
+  documentationApp.locals = Object.assign({}, app.locals)
+  documentationApp.locals.serviceName = 'Prototype Kit'
 
   // Create separate router for docs
   app.use('/docs', documentationApp)
@@ -247,7 +249,7 @@ app.post(/^\/([^.]+)$/, function (req, res) {
   res.redirect('/' + req.params[0])
 })
 
-console.log('\nGOV.UK Prototype kit v' + releaseVersion)
+console.log('\nGOV.UK Prototype Kit v' + releaseVersion)
 console.log('\nNOTICE: the kit is for building prototypes, do not use it for production services.')
 
 // Find a free port and start the server

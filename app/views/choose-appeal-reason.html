@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Choose a reason for your appeal
+{% endblock %}
+
+{% block main %}
+
+  <div class="govuk-width-container">
+    {{ govukPhaseBanner({
+      tag: {
+        text: "alpha"
+      },
+      html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+    }) }}
+
+    {% set backLinkHref %}
+    {{ backLink }}
+    {% endset -%}
+
+    {{ govukBackLink({
+      text: "Back",
+      href: backLinkHref
+    }) }}
+    <main role="main" class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          {% if errorList.length > 0 %}
+            {{ govukErrorSummary({
+              titleText: "There was a problem with the reason for your appeal",
+              errorList: errorList
+            }) }}
+          {% endif %}
+
+          <form action="" method="post">
+
+            {% if errorList.length > 0 %}
+              {% set appealReasonError = {
+                text: appealReasonErr.text
+              } %}
+            {% else %}
+              {% set appealReasonError = false %}
+            {% endif %}
+
+            {% if errorList.length > 0 %}
+              {% if appealReasonErr.type === 'invalid' %}
+                {% set otherReasonError = true %}
+              {% else %}
+                {% set otherReasonError = false %}
+              {% endif %}
+            {% endif %}
+
+            {% set otherInput %}
+            {{ govukInput({
+              id: "other-reason",
+              name: "otherReason",
+              classes: "",
+              errorMessage: otherReasonError,
+              label: {
+                text: "Reason"
+              }
+            }) }}
+            {% endset -%}
+
+            {{ govukRadios({
+              idPrefix: "appeal-reason",
+              name: "appealReason",
+              errorMessage: appealReasonError,
+              fieldset: {
+                legend: {
+                  text: 'Tell us why you\'re appealing this penalty',
+                  isPageHeading: true,
+                  classes: 'govuk-fieldset__legend--xl'
+                }
+              },
+              items: [
+                {
+                  value: "health",
+                  text: "Illness"
+                },
+                {
+                  value: "disaster",
+                  text: "Theft, fire, flood or other natural disaster"
+                },
+                {
+                  value: "payment",
+                  text: "The company can't pay the penalty"
+                },
+                {
+                  value: "filing",
+                  text: "Not aware of the filing requirements"
+                },
+                {
+                  value: "dormant",
+                  text: "The company is dormant"
+                },
+                {
+                  value: "post",
+                  text: "The accounts were lost in the post"
+                },
+                {
+                  value: "other",
+                  text: "I'm appealing for another reason",
+                  checked: otherReasonError,
+                  conditional: {
+                    html: otherInput
+                  }
+                }
+              ]
+            }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

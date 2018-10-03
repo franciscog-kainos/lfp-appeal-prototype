@@ -1,4 +1,6 @@
 {% extends "template.njk" %}
+{% from "breadcrumbs/macro.njk"   import govukBreadcrumbs %}
+{% from 'back-link/macro.njk' import govukBackLink %}
 
 {% block head %}
   {% include "includes/head.html" %}
@@ -8,7 +10,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  GOV.UK prototype kit
+  GOV.UK Prototype Kit
 {% endblock %}
 
 
@@ -18,16 +20,10 @@
   {% endif %}
 {% endblock %}
 
-
-{% block main %}
-  <div class="govuk-width-container">         
-    <p>{{cookieText | safe }}</p>
-  </div>
-  {{ super() }}
-{% endblock %}
-
 {% block header %}
-
+  <div class="app-cookie-banner js-cookie-banner">
+    <p class="app-cookie-banner__message">{{cookieText | safe }}</p>
+  </div>
   {{ govukHeader({
     "homepageUrl": "/",
     "serviceName": serviceName,
@@ -49,7 +45,6 @@
   ]
   }) }}
 {% endblock %}
-
 
 {% block footer %}
   {{ govukFooter({
@@ -74,5 +69,5 @@
 
 {% block bodyEnd %}
   {% include "includes/scripts.html" %}
-  <!-- GOV.UK Prototype kit {{releaseVersion}} -->
+  <!-- GOV.UK Prototype Kit {{releaseVersion}} -->
 {% endblock %}

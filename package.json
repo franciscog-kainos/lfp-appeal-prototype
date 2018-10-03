@@ -1,7 +1,7 @@
 {
   "name": "express-prototype",
   "description": "GOVUK prototyping app in Express",
-  "version": "7.0.0-beta.7",
+  "version": "7.0.0-beta.9",
   "private": true,
   "engines": {
     "node": ">=6.11.1 <7.0"
@@ -12,7 +12,6 @@
     "test": "gulp test && npm run lint"
   },
   "dependencies": {
-    "@govuk-frontend/frontend": "0.0.31-alpha",
     "basic-auth": "^1.0.3",
     "basic-auth-connect": "^1.0.0",
     "body-parser": "^1.14.1",
@@ -22,6 +21,7 @@
     "express": "4.15.2",
     "express-session": "^1.13.0",
     "express-writer": "0.0.4",
+    "govuk-frontend": "1.0.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-mocha": "^4.3.1",
@@ -44,7 +44,7 @@
     "supertest": "^3.0.0",
     "sync-request": "^4.0.3",
     "universal-analytics": "^0.4.16",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.2"
   },
   "greenkeeper": {
     "ignore": [
