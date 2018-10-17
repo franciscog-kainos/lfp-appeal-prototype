@@ -39,18 +39,17 @@ $govuk-global-styles: true;
   padding: 4px 4px 2px;
 }
 
-
 // Local fixes to GOV.UK frontend
 
 .markdown hr {
-  @include govuk-responsive-margin(6, "top");
-  @include govuk-responsive-margin(6, "bottom");
+  @include govuk-responsive-margin(6, 'top');
+  @include govuk-responsive-margin(6, 'bottom');
 }
 
 .govuk-list + .govuk-heading-l,
 .govuk-list + .govuk-heading-m,
 .govuk-list + .govuk-heading-s {
-  @include govuk-responsive-margin(4, "top");
+  @include govuk-responsive-margin(4, 'top');
 }
 
 // Take a look at in app/assets/sass/patterns/ to see which files are imported.
@@ -58,3 +57,16 @@ $govuk-global-styles: true;
 // @import 'patterns/task-list';
 
 // Add extra styles here, or re-organise the Sass files in whichever way makes most sense to you
+
+.govuk-input--company-number {
+  max-width: 13ex;
+}
+
+.govuk-input--penalty-reference {
+  max-width: 18ex;
+}
+@include govuk-media-query($media-type: print) {
+  .test {
+    border: 3px solid #bbb;
+  }
+}

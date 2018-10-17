@@ -35,7 +35,7 @@
 
             {% if errorList.length > 0 %}
               {% set startDateError = {
-                text: startDateErr.text
+                text: startDateDayErr.text
               } %}
             {% else %}
               {% set startDateError = false %}
@@ -58,15 +58,21 @@
               items: [
                 {
                   name: 'day',
-                  value: startDate.day
+                  id: 'illness-start-day',
+                  value: startDate.day,
+                  classes: inputClasses.day
                 },
                 {
                   name: 'month',
-                  value: startDate.month
+                  id: 'illness-start-month',
+                  value: startDate.month,
+                  classes: inputClasses.month
                 },
                 {
                   name: 'year',
-                  value: startDate.year
+                  id: 'illness-start-year',
+                  value: startDate.year,
+                  classes: inputClasses.year
                 }
               ]
               })

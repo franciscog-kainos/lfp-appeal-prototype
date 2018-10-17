@@ -72,7 +72,7 @@
               errorMessage: appealReasonError,
               fieldset: {
                 legend: {
-                  text: 'Tell us why you\'re appealing this penalty',
+                  text: 'What is the reason for your appeal?',
                   isPageHeading: true,
                   classes: 'govuk-fieldset__legend--xl'
                 }
@@ -92,7 +92,7 @@
                 },
                 {
                   value: "filing",
-                  text: "Not aware of the filing requirements"
+                  text: "I wasn\'t aware of the filing requirements"
                 },
                 {
                   value: "dormant",
@@ -113,13 +113,13 @@
               ]
             }) }}
 
-          {{ govukButton({
+            {{ govukButton({
             text: "Continue"
           }) }}
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
 {% endblock %}
