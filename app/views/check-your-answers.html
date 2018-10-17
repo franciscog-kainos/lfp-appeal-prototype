@@ -1,0 +1,220 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Check the details of your appeal
+{% endblock %}
+
+{% block main %}
+  <div class="govuk-width-container">
+    {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+    {{ govukBackLink({
+    text: "Back",
+    href: "add-appeal-reason"
+  }) }}
+    <main role="main" class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">
+            Check your answers before sending your application
+          </h1>
+          <!-- only add a heading for a list if there is more than one list -->
+          <h2 class="govuk-heading-m">
+            Penalty details
+          </h2>
+          <!-- use additional modifier class to change column widths for multiple groups of questions and answers: -->
+          <!-- * `app-check-your-answers--short` for short questions -->
+          <!-- * `app-check-your-answers__questions-long` for long questions -->
+          <!-- * none for single group of q&a -->
+          <dl class="app-check-your-answers app-check-your-answers--short">
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Company name
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ scenario.company.name }}
+              </dd>
+              <dd class="app-check-your-answers__change">
+                <a href="#">
+                  Change<span class="govuk-visually-hidden">
+                    name</span>
+                </a>
+              </dd>
+            </div>
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Company number
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ scenario.company.number }}
+              </dd>
+              <dd class="app-check-your-answers__change"></dd>
+            </div>
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Type
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                Late Filing Penalty ({{ penaltyReference }})
+              </dd>
+              <dd class="app-check-your-answers__change"></dd>
+            </div>
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Amount
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                &pound;{{ scenario.penalties[0].value }}
+              </dd>
+              <dd class="app-check-your-answers__change"></dd>
+            </div>
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Date
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ scenario.penalties[0].filed }}
+              </dd>
+              <dd class="app-check-your-answers__change"></dd>
+            </div>
+          </dl>
+          {% for reason in appealReasons %}
+            <h2 class="govuk-heading-m">
+              Appeal reason
+              {{ loop.index }}
+            </h2>
+            <dl class="app-check-your-answers app-check-your-answers--short">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Appeal reason
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  Ill health
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Change<span class="govuk-visually-hidden">
+                      previous application number</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Ill person
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  Company officer
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Change<span class="govuk-visually-hidden">
+                      licence type</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Illness start date
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  15 January 2017
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Change<span class="govuk-visually-hidden">
+                      home address</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Illness end date
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  Ongoing illness
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Change<span class="govuk-visually-hidden">
+                      licence period</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Illness details
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque voluptatibus pariatur, corporis, porro laboriosam voluptates tempore totam, non hic dignissimos beatae eaque ipsa similique error quod, facilis suscipit laudantium. Maxime?</p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste, explicabo illum vero beatae dicta natus cumque non eaque similique modi laudantium maiores placeat veniam enim nulla aliquam sit! Dolores, necessitatibus.</p>
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Change<span class="govuk-visually-hidden">
+                      licence period</span>
+                  </a>
+                </dd>
+              </div>
+            </dl>
+            <h2 class="govuk-heading-m">
+              Supporting evidence
+            </h2>
+            <dl class="app-check-your-answers app-check-your-answers--short">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Document 1
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  <a href="" class="govuk-link">evidence-document.doc</a>
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Remove<span class="govuk-visually-hidden">
+                      previous application number</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Document 2
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  <a href="" class="govuk-link">GP-letter.doc</a>
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Remove<span class="govuk-visually-hidden">
+                      licence type</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Document 3
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  <a href="" class="govuk-link">prescription.jpg</a>
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="#">
+                    Remove<span class="govuk-visually-hidden">
+                      home address</span>
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          {% endfor %}
+          <h2 class="govuk-heading-m">Submit your appeal</h2>
+          <p>
+            By submitting this notification you are confirming that, to the best of your knowledge, the details you are providing are true.
+          </p>
+          <a href="confirmation" class="govuk-button" role="button">Accept and submit appeal</a>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
