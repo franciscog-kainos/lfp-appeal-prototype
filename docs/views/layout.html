@@ -1,0 +1,73 @@
+{% extends "template.njk" %}
+{% from "breadcrumbs/macro.njk"   import govukBreadcrumbs %}
+{% from 'back-link/macro.njk' import govukBackLink %}
+
+{% block head %}
+  {% include "includes/head.html" %}
+  {% if doNotTrackEnabled == false and promoMode == 'true' and gtmId %}
+    {% include "includes/tracking_head.html" %}
+  {% endif %}
+{% endblock %}
+
+{% block pageTitle %}
+  GOV.UK Prototype Kit
+{% endblock %}
+
+
+{% block bodyStart %}
+  {% if doNotTrackEnabled == false and promoMode == 'true' and gtmId %}
+    {% include "includes/tracking_body.html" %}
+  {% endif %}
+{% endblock %}
+
+{% block header %}
+  <div class="app-cookie-banner js-cookie-banner">
+    <p class="app-cookie-banner__message">{{cookieText | safe }}</p>
+  </div>
+  {{ govukHeader({
+    "homepageUrl": "/",
+    "serviceName": serviceName,
+    "serviceUrl": "/",
+    "containerClasses": "govuk-width-container",
+    "navigation": [
+    {
+      "href": "/docs/install",
+      "text": "Install"
+    },
+    {
+      "href": "/docs/tutorials-and-examples",
+      "text": "Tutorials and examples"
+    },
+    {
+      "href": "/docs/about",
+      "text": "About"
+    }
+  ]
+  }) }}
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+  "meta": {
+    "items": [
+      {
+        "href": "/prototype-admin/clear-data",
+        "text": "Clear data"
+      },
+      {
+        "href": "/docs/cookies",
+        "text": "Cookies"
+      },
+      {
+        "href": "/docs/privacy-policy",
+        "text": "Privacy policy"
+      }
+    ]
+  }
+}) }}
+{% endblock %}
+
+{% block bodyEnd %}
+  {% include "includes/scripts.html" %}
+  <!-- GOV.UK Prototype Kit {{releaseVersion}} -->
+{% endblock %}

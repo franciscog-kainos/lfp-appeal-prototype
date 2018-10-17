@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Confirmation page example
+{% endblock %}
+
+{% block main %}
+<div class="govuk-width-container">
+
+  <main role="main" class="govuk-main-wrapper">
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-panel govuk-panel--confirmation govuk-!-mb-r6">
+          <h1 class="govuk-panel__title">
+            Appeal submitted
+          </h1>
+          <div class="govuk-panel__body">
+            Your reference number<br><strong>HDJ2123F</strong>
+          </div>
+        </div>
+
+        <p class="govuk-body-l">
+          We have sent you a confirmation email to test.user@mycompany.co.uk.
+        </p>
+
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p>We'll review the information you have provided and make a decision about your appeal.</p>
+        <p>We will contact you within 7 days either to confirm the outcome of your appeal, or to ask for more information.</p>
+        <p><a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html">What did you think of this service?</a> (takes 30 seconds)</p>
+
+
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+{% endblock %}
