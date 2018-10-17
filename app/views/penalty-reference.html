@@ -34,6 +34,7 @@
           <h1 class="govuk-heading-xl">
             Tell us your penalty details
           </h1>
+
           <form method="post" action="">
             {% if companyNumberErr.flag %}
               {{ govukInput({
@@ -41,12 +42,12 @@
                   text: "Company number"
                 },
                 hint: {
-                  text: "This is the 8 character reference that uniquely identifies your company."
+                  text: "This is the 8 character reference issued by Companies House when the company was set up."
                 },
                 errorMessage: {
                   text: companyNumberErr.text
                 },
-                classes: "govuk-input--width-10",
+                classes: "govuk-input--company-number",
                 id: "company-number",
                 name: "companyNumber",
                 value: companyNumber
@@ -57,9 +58,9 @@
                   text: "Company number"
                 },
                 hint: {
-                  text: "This is the 8 character reference that uniquely identifies your company."
+                  text: "This is the 8 character reference issued by Companies House when the company was set up."
                 },
-                classes: "govuk-input--width-10",
+                classes: "govuk-input--company-number",
                 id: "company-number",
                 name: "companyNumber",
                 value: companyNumber
@@ -77,7 +78,7 @@
                 errorMessage: {
                   text: penaltyReferenceErr.text
                 },
-                classes: "govuk-input--width-10",
+                classes: "govuk-input--penalty-reference",
                 id: "penalty-reference",
                 name: "penaltyReference",
                 value: penaltyReference
@@ -90,7 +91,7 @@
                 hint: {
                   text: "This is the 14 character reference shown on your penalty notification."
                 },
-                classes: "govuk-input--width-10",
+                classes: "govuk-input--penalty-reference",
                 id: "penalty-reference",
                 name: "penaltyReference",
                 value: penaltyReference
@@ -98,10 +99,13 @@
             {% endif %}
             <div class="govuk-form-group">
               {% set detailsHTML %}
-              <p>We need to know your nationality so we can work out which elections you’re entitled to vote in. If you can’t provide your nationality, you’ll have to send copies of identity documents through the post.</p><img src='/public/images/PenWebImage280px.png' class='call-out-image' alt=''/>
+              <p>
+                Your company number and penalty reference are shown in a box on the right side of the penalty notification.
+              </p>
+              <img src='/public/images/PenWebImage280px.png' class='call-out-image' alt=''/>
               {% endset -%}
               {{ govukDetails({
-                summaryText: "Where can I find these details?",
+                summaryText: "Help with company number",
                 html: detailsHTML
               }) }}
             </div>
