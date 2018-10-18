@@ -5,17 +5,14 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {{ govukBackLink({
-    href: "/url/of/previous/page",
-    text: "Back"
-  }) }}
+  <a class="govuk-back-link" href="/url/of/previous/page">Back</a>
 {% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <h1 class="govuk-heading-l">
+      <h1 class="govuk-heading-xl">
         Check your answers before sending your application
       </h1>
 
@@ -162,7 +159,9 @@
         By submitting this notification you are confirming that, to the best of your knowledge, the details you are providing are correct.
       </p>
 
-      <a href="confirmation-page" class="govuk-button" role="button">Accept and send application</a>
+      <a class="govuk-button" href="confirmation-page" role="button">
+        Accept and send application
+      </a>
 
     </div>
   </div>

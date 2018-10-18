@@ -1,19 +1,17 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Content page
+  Question page
 {% endblock %}
 
 {% block beforeContent %}
-  {{ govukBackLink({
-    href: "/url/of/previous/page",
-    text: "Back"
-  }) }}
+  <a class="govuk-back-link" href="/url/of/previous/page">Back</a>
 {% endblock %}
+
 {% block content %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
 
       <h1 class="govuk-heading-xl">
         Heading goes here
@@ -25,4 +23,5 @@
 
     </div>
   </div>
+
 {% endblock %}
