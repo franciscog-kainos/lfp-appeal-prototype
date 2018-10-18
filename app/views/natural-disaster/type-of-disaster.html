@@ -1,20 +1,71 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Blank page
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Appeal due to natural disaster: Tell us about the disaster
 {% endblock %}
 
 {% block main %}
-<div class="govuk-width-container">
 
-  <!-- If there's a user need, add back link or breadcrumbs here -->
+  <div class="govuk-width-container">
+    {{ govukPhaseBanner({
+      tag: {
+        text: "alpha"
+      },
+      html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+    }) }}
+    {{ govukBackLink({
+      text: "Back",
+      href: 'about-the-disaster'
+    }) }}
+    <main role="main" class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
-  <main role="main" class="govuk-main-wrapper">
+          {% if errorList.length > 0 %}
+            {{ govukErrorSummary({
+              titleText: "There was a problem with your appeal information",
+              errorList: errorList
+            }) }}
+          {% endif %}
 
-    <!-- Add your content here -->
+          <form action="" method="post">
 
-  </main>
+            {% if errorList.length > 0 %}
+              {% set natureOfDisasterError = {
+                text: natureOfDisasterErr.text
+              } %}
+            {% else %}
+              {% set natureOfDisasterError = false %}
+            {% endif %}
 
-</div>
+            {% set hintHTML %}
+            Anything you tell us to support your appeal will be kept condfidential.
+            {% endset -%}
+
+            <h1 class="govuk-heading-xl">Tell us about the disaster</h1>
+            {{ govukTextarea({
+              name: "natureOfDisaster",
+              id: "nature-of-disaster",
+              errorMessage: natureOfDisasterError,
+              value: natureOfDisaster,
+              rows: '12',
+              label: {
+                text: "Anything you tell us to support your appeal will be kept condfiential.",
+                isPageHeading: false,
+                classes: 'govuk-heading-large'
+              }
+            }) }}
+
+            {{ govukButton({
+              text: "Continue"
+            }) }}
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
 
 {% endblock %}

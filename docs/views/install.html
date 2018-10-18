@@ -5,17 +5,18 @@ Getting started - GOV.UK Prototype Kit
 {% endblock %}
 
 {% block beforeContent %}
-  {{ govukBreadcrumbs({
-    "items": [
-      {
-        "text": "GOV.UK Prototype Kit",
-        "href": "/docs"
-      }
-    ]
-  }) }}
+	{{ govukBreadcrumbs({
+	  items: [
+	    {
+	      text: "GOV.UK Prototype Kit",
+	      href: "/docs"
+	    }
+	  ]
+	}) }}
 {% endblock %}
 
 {% block content %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -26,7 +27,9 @@ Getting started - GOV.UK Prototype Kit
       </p>
 
       <h2 class="govuk-heading-m">1. Download the kit</h2>
-      <p><a href="{{releaseURL}}" data-link="download">Download (zip)</a></p>
+			<p>
+	      <a href="/docs/download" data-link="download">Download (zip)</a>
+			</p>
       <h2 class="govuk-heading-m">2. Install the kit</h2>
 
       <p>Choose from:</p>
@@ -35,6 +38,10 @@ Getting started - GOV.UK Prototype Kit
         <li><a href="/docs/install/developer-install-instructions">advanced install guide</a><br>for users familiar with Node.js, Git and the terminal</li>
       </ul>
 
-    </div>
   </div>
+
+
+</div>
+
+
 {% endblock %}

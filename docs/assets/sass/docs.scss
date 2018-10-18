@@ -1,5 +1,14 @@
-// Add Sass specific to /docs here
-@import "govuk-frontend/all";
+@import "node_modules/govuk-frontend/all";
+
+img{
+  max-width: 100%;
+}
+
+// adjust code block font-size to 19px
+.hljs {
+  font-size: 19px;
+  line-height: 25px;
+}
 
 .app-table--fixed {
   table-layout: fixed;
@@ -9,10 +18,24 @@
   display: block !important;
 }
 
-// adjust code block font-size to 19px
-.hljs {
-  font-size: 19px;
-  line-height: 25px;
+.app-table--fixed {
+  table-layout: fixed;
+}
+
+.app-\!-db {
+  display: block !important;
+}
+
+.app-code {
+  font-size: 16px;
+  position: relative;
+  margin: 0;
+  padding: govuk-spacing(3);
+  overflow: auto;
+  border: 1px solid $govuk-border-colour;
+  background-color: govuk-colour("grey-4");
+  max-width: 38em;
+  @include govuk-responsive-margin(5, "bottom");
 }
 
 .app-prose-scope {
@@ -64,7 +87,24 @@
     @extend %govuk-section-break--visible;
     @extend %govuk-section-break--xl;
   }
+
+  pre {
+    @extend .app-code;
+  }
+
+  p code {
+    border: 1px solid $govuk-border-colour;
+    background-color: govuk-colour("grey-4");
+    padding: 0 govuk-spacing(2);
+  }
+
+  // TODO: Blockquotes are likely the most semantic element to be using, update to use the inset component directly.
+  blockquote {
+    margin-left: 0;
+    @extend .govuk-inset-text;
+  }
 }
+
 .app-prose-scope ul + h2,
 .app-prose-scope ul + h3,
 .app-prose-scope ul + h4,

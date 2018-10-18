@@ -4,36 +4,34 @@
   GOV.UK Prototype Kit
 {% endblock %}
 
-
 {% block beforeContent %}
-  {{ govukBreadcrumbs({
-    "items": [
-      {
-        "text": "GOV.UK Prototype Kit",
-        "href": "/docs"
-      }
-    ]
-  }) }}
+	{{ govukBreadcrumbs({
+	  items: [
+	    {
+	      text: "GOV.UK Prototype Kit",
+	      href: "/docs"
+	    }
+	  ]
+	}) }}
 {% endblock %}
 
 {% block content %}
+
   <h1 class="govuk-heading-xl">Tutorials and examples</h1>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
 
-      <h2 class="govuk-heading-l">Tutorials</h2>
-      <p>
-        These tutorials are being actively developed. If you have suggestions for improvements, we'd love to hear from you.
-      </p>
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-m">Tutorials</h2>
+      <p>These tutorials are being actively developed. If you have suggestions for improvements, we'd love to hear from you.</p>
     </div>
   </div>
-  <div class="govuk-grid-row govuk-!-margin-bottom-8">
-    <div class="govuk-grid-column-one-third govuk-!-margin-top-6">
-      <h3 class="govuk-heading-m">Getting started</h3>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h3 class="govuk-heading-s">Getting started</h3>
       <ul class="govuk-list govuk-list--bullet">
         <li>
-          <a href="/prototype-admin/download-latest" data-link="download">Download kit (zip)</a>
+          <a href="/docs/download" data-link="download">Download kit (zip)</a>
         </li>
         <li>
           <a href="/docs/install/introduction">Simple install guide</a>
@@ -56,8 +54,8 @@
 
 
     </div>
-    <div class="govuk-grid-column-one-third govuk-!-margin-top-6">
-      <h3 class="govuk-heading-m">Getting started</h3>
+    <div class="govuk-grid-column-one-third">
+      <h3 class="govuk-heading-s">Basic usage</h3>
       <ul class="govuk-list govuk-list--bullet">
         <li>
           <a href="/docs/usage-data">Sending kit usage data</a>
@@ -85,16 +83,16 @@
         </li>
       </ul>
     </div>
-    <div class="govuk-grid-column-one-third govuk-!-margin-top-6">
-      <h3 class="govuk-heading-m">Advanced topics</h3>
+    <div class="govuk-grid-column-one-third">
+      <h3 class="govuk-heading-s">Advanced usage</h3>
       <ul class="govuk-list govuk-list--bullet">
         <li>
           <a href="/docs/examples/pass-data">Passing data from page to page</a>
         </li>
-        <!-- <li>
+        <li>
           <a href="/docs/examples/branching">Branching</a>
-          <p class="govuk-core-16">(Showing a different page based on user input)</p>
-        </li> -->
+          <p class="govuk-body-s">(Showing a different page based on user input)</p>
+        </li>
         <li>
           <a href="/docs/creating-routes">Creating routes (server side programming)</a>
         </li>
@@ -107,13 +105,19 @@
         <li>
           <a href="/docs/using-verify">Using GOV.UK Verify</a>
         </li>
+
+        <li>
+          <a href="https://design-system.service.gov.uk/styles/page-template/#changing-template-content">
+            Template partial areas
+          </a>
+        </li>
       </ul>
     </div>
   </div>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h2 class="govuk-heading-l">Page templates</h2>
+      <h2 class="govuk-heading-m">Page templates</h2>
       <p>
         Use these as the basis for your prototypes. We recommend making copies of the files rather than directly editing them.
       </p>
@@ -123,53 +127,54 @@
 
       <ul class="govuk-list govuk-list--bullet">
         <li>
-          <a href="/docs/examples/blank-govuk">
+          <a href="/docs/templates/blank-govuk">
             Blank
-          </a><!--  /
-          <a href="/docs/examples/blank-unbranded">
+          </a> /
+          <a href="/docs/templates/blank-unbranded">
             Blank (non-GOV.UK)
-          </a> -->
+          </a>
         </li>
         <li>
-          <a href="/docs/examples/start-page">
+          <a href="/docs/templates/start">
             Start page
           </a>
         </li>
         <li>
-          <a href="/docs/examples/template-question-page-blank">
+          <a href="/docs/templates/question">
             Question page
           </a>
         </li>
         <li>
-          <a href="/docs/examples/template-content-page">
+          <a href="/docs/templates/content">
             Content page
           </a>
         </li>
         <li>
-          <a href="/docs/examples/task-list-page">
+          <a href="/docs/templates/task-list">
             Task list
           </a>
         </li>
         <li>
-          <a href="/docs/examples/check-your-answers-page">
+          <a href="/docs/templates/check-your-answers">
             Check your answers
           </a>
         </li>
         <li>
-          <a href="/docs/examples/confirmation-page">
+          <a href="/docs/templates/confirmation">
             Confirmation
           </a>
         </li>
       </ul>
 
-      <h2 class="govuk-heading-l">GOV.UK Design System</h2>
+      <h2 class="govuk-heading-m">GOV.UK Design System</h2>
 
       <p>
-        <a href="https://gov.uk/design-system">GOV.UK Design System</a> is a guide to making your prototype look like a GOV.UK
+        <a href="https://design-system.service.gov.uk">GOV.UK Design System</a> is a guide to making your prototype look like a GOV.UK
         service, including typography, forms and more.
       </p>
 
     </div>
+
   </div>
 
 {% endblock %}
