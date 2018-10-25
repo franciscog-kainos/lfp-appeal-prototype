@@ -934,7 +934,20 @@ router.get('/check-your-answers', function (req, res) {
 
 // Confirmation
 router.get('/confirmation', function (req, res) {
-  res.render('confirmation')
+  res.render('confirmation', {
+    email: req.session.email
+  })
+})
+
+router.get('/print-appeal', function (req, res) {
+  res.render('print-appeal', {
+    scenario: req.session.scenario,
+    appealReasons: req.session.appealReasons,
+    email: req.session.email,
+    penaltyReference: req.session.penaltyReference,
+    companyNumber: req.session.companyNumber,
+    backLinkHref: 'confirmation'
+  })
 })
 
 module.exports = router
