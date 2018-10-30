@@ -935,7 +935,10 @@ router.get('/check-your-answers', function (req, res) {
 // Confirmation
 router.get('/confirmation', function (req, res) {
   res.render('confirmation', {
-    email: req.session.email
+    scenario: req.session.scenario,
+    email: req.session.email,
+    penaltyReference: req.session.penaltyReference,
+    companyNumber: req.session.companyNumber
   })
 })
 
