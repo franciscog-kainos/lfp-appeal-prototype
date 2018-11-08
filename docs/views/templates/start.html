@@ -5,32 +5,25 @@
 {% endblock %}
 
 {% block header %}
-
-  {{ govukHeader({
-    "homepageUrl": "/",
-    "containerClasses": "govuk-width-container"
-  }) }}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
 {% endblock %}
 
 {% block beforeContent %}
-  {{ govukBreadcrumbs({
-    "items": [
-      {
-        "text": "Home",
-        "href": "#"
-      },
-      {
-        "text": "Section",
-        "href": "#"
-      },
-      {
-        "text": "Subsection",
-        "href": "#"
-      }
-    ]
-  }) }}
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="https://www.gov.uk">Home</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="#">Section</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link">Subsection</a>
+      </li>
+    </ol>
+  </div>
 {% endblock %}
-
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -45,18 +38,18 @@
       <ul class="govuk-list govuk-list--bullet">
         <li>do something</li>
         <li>update your name, address or other details</li>
-        <li>you need to do this in order to do something else</li>
+        <li>do something else</li>
       </ul>
 
       <p>Registering takes around 5 minutes.</p>
 
-      <a class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8" href="#" role="button">Start now</a>
+      <a href="#" role="button" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">Start now</a>
 
       <h2 class="govuk-heading-m">Before you start</h2>
 
-      <p>You can also <a href="#">register by post.</a></p>
+      <p>You can also <a href="#">register by post</a>.</p>
 
-      <p>The online service is also available in <a href="#">Welsh (Cymraeg).</a></p>
+      <p>The online service is also available in <a href="#">Welsh (Cymraeg)</a>.</p>
 
       <p>You can’t register for this service if you’re in the UK illegally.</p>
 
@@ -69,7 +62,7 @@
           Subsection
         </h2>
         <nav role="navigation" aria-labelledby="subsection-title">
-          <ul class="govuk-list govuk-body-s">
+          <ul class="govuk-list govuk-!-font-size-16">
             <li>
               <a href="#">
                 Related link
@@ -82,7 +75,7 @@
             </li>
             <li>
               <a href="#" class="govuk-!-font-weight-bold">
-                More <span class="visuallyhidden">in Subsection</span>
+                More <span class="govuk-visually-hidden">in Subsection</span>
               </a>
             </li>
           </ul>

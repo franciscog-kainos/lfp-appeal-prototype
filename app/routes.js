@@ -1,56 +1,13 @@
 const express = require('express')
 const router = express.Router()
 
-// ROUTE TEMPLATES
-router.get('/template', function (req, res) {
-  if (req.session.scenario != null) {
-    res.render('template', {
-      scenario: req.session.scenario
-    })
-  } else {
-    res.redirect('/start')
-  }
-})
-router.post('/template', function (req, res) {
-  if (req.session.scenario != null) {
-    var template = req.body.template
-    var errorFlag = false
-    var Err = {}
-    var errorList = []
-
-    if (template === '') {
-      Err.type = 'blank'
-      Err.text = 'You must enter an authentication code'
-      Err.href = '#auth-code'
-      Err.flag = true
-    }
-    if (Err.flag) {
-      errorList.push(Err)
-      errorFlag = true
-    }
-
-    // TEST ERROR FLAG
-    if (errorFlag === true) {
-      res.render('template', {
-        scenario: req.session.scenario,
-        errorList: errorList,
-        Err: Err
-      })
-    } else {
-      res.redirect('/template')
-    }
-  } else {
-    res.redirect('/start')
-  }
-})
-
 // Start
 router.get('/', function (req, res) {
-  req.session.destroy()
+  req.session.scenario = null
   res.render('start')
 })
-router.get('start', function (req, res) {
-  req.session.destroy()
+router.get('/start', function (req, res) {
+  req.session.scenario = null
   res.render('start')
 })
 
@@ -122,13 +79,13 @@ router.post('/penalty-reference', function (req, res) {
   if (req.session.companyNumber.length < 8) {
     companyNumberErr.type = 'invalid'
     companyNumberErr.text = 'You must enter your full eight character company number'
-    companyNumberErr.href = '#companyNumber'
+    companyNumberErr.href = '#company-number'
     companyNumberErr.flag = true
   }
   if (req.session.companyNumber === '') {
     companyNumberErr.type = 'blank'
     companyNumberErr.text = 'You must enter an company number'
-    companyNumberErr.href = '#companyNumber'
+    companyNumberErr.href = '#company-number'
     companyNumberErr.flag = true
   }
   if (companyNumberErr.flag) {
@@ -145,13 +102,13 @@ router.post('/penalty-reference', function (req, res) {
   ) {
     penaltyReferenceErr.type = 'invalid'
     penaltyReferenceErr.text = 'Enter your penalty reference exactly as shown on your penalty letter'
-    penaltyReferenceErr.href = '#penaltyReference'
+    penaltyReferenceErr.href = '#penalty-reference'
     penaltyReferenceErr.flag = true
   }
   if (req.session.penaltyReference === '') {
     penaltyReferenceErr.type = 'blank'
     penaltyReferenceErr.text = 'You must enter a penalty reference'
-    penaltyReferenceErr.href = '#penaltyReference'
+    penaltyReferenceErr.href = '#penalty-reference'
     penaltyReferenceErr.flag = true
   }
   if (penaltyReferenceErr.flag) {
@@ -178,15 +135,18 @@ router.post('/penalty-reference', function (req, res) {
   }
 })
 
+router.all('*', function (req, res, next) {
+  if (typeof req.session.scenario === 'undefined') {
+    return res.redirect('start')
+  }
+  next()
+})
+
 // Authentication code (CHS account)
 router.get('/authenticate', function (req, res) {
-  if (req.session.scenario != null) {
-    res.render('authenticate', {
-      scenario: req.session.scenario
-    })
-  } else {
-    res.redirect('/start')
-  }
+  res.render('authenticate', {
+    scenario: req.session.scenario
+  })
 })
 router.post('/authenticate', function (req, res) {
   if (req.session.scenario != null) {
@@ -287,7 +247,7 @@ router.post('/choose-appeal-reason', function (req, res) {
     if (typeof req.body.appealReason === 'undefined') {
       appealReasonErr.type = 'blank'
       appealReasonErr.text = 'You must tell us the reason for your appeal'
-      appealReasonErr.href = '#appeal-reason'
+      appealReasonErr.href = '#appeal-reason-1'
       appealReasonErr.flag = true
     }
     if (req.body.appealReason === 'other' && req.session.otherReason === '') {
@@ -404,9 +364,15 @@ router.post('/ill-health/who-was-ill', function (req, res) {
 
 // Date illness started
 router.get('/ill-health/date-illness-started', function (req, res) {
+  var inputClasses = {}
+
+  inputClasses.day = 'govuk-input--width-2'
+  inputClasses.month = 'govuk-input--width-2'
+  inputClasses.year = 'govuk-input--width-4'
   if (req.session.scenario != null) {
     res.render('ill-health/date-illness-started', {
-      scenario: req.session.scenario
+      scenario: req.session.scenario,
+      inputClasses: inputClasses
     })
   } else {
     res.redirect('/start')
@@ -415,22 +381,52 @@ router.get('/ill-health/date-illness-started', function (req, res) {
 router.post('/ill-health/date-illness-started', function (req, res) {
   if (req.session.scenario != null) {
     req.session.illnessStartDate = {}
-    req.session.illnessStartDate.day = req.body['illnessStart-day']
-    req.session.illnessStartDate.month = req.body['illnessStart-month']
-    req.session.illnessStartDate.year = req.body['illnessStart-year']
+    req.session.illnessStartDate.day = req.body['day']
+    req.session.illnessStartDate.month = req.body['month']
+    req.session.illnessStartDate.year = req.body['year']
     var reasonObject = {}
     var errorFlag = false
-    var startDateErr = {}
+    var startDateDayErr = {}
+    var startDateMonthErr = {}
+    var startDateYearErr = {}
     var errorList = []
+    var inputClasses = {}
 
-    if (req.session.illnessStartDate.day === '' || req.session.illnessStartDate.month === '' || req.session.illnessStartDate.year === '') {
-      startDateErr.type = 'invalid'
-      startDateErr.text = 'You must tell us when the illness started'
-      startDateErr.href = '#illness-start'
-      startDateErr.flag = true
+    inputClasses.day = 'govuk-input--width-2'
+    inputClasses.month = 'govuk-input--width-2'
+    inputClasses.year = 'govuk-input--width-4'
+
+    if (req.body['day'] === '') {
+      startDateDayErr.type = 'invalid'
+      startDateDayErr.text = 'You must tell us what day the illness started'
+      startDateDayErr.href = '#illness-start-day'
+      startDateDayErr.flag = true
     }
-    if (startDateErr.flag) {
-      errorList.push(startDateErr)
+    if (startDateDayErr.flag) {
+      inputClasses.day = 'govuk-input--width-2 govuk-input--error'
+      errorList.push(startDateDayErr)
+      errorFlag = true
+    }
+    if (req.body['month'] === '') {
+      startDateMonthErr.type = 'invalid'
+      startDateMonthErr.text = 'You must tell us what month the illness started'
+      startDateMonthErr.href = '#illness-start-month'
+      startDateMonthErr.flag = true
+    }
+    if (startDateMonthErr.flag) {
+      inputClasses.month = 'govuk-input--width-2 govuk-input--error'
+      errorList.push(startDateMonthErr)
+      errorFlag = true
+    }
+    if (req.body['year'] === '') {
+      startDateYearErr.type = 'invalid'
+      startDateYearErr.text = 'You must tell us what year the illness started'
+      startDateYearErr.href = '#illness-start-year'
+      startDateYearErr.flag = true
+    }
+    if (startDateYearErr.flag) {
+      inputClasses.year = 'govuk-input--width-4 govuk-input--error'
+      errorList.push(startDateYearErr)
       errorFlag = true
     }
 
@@ -438,8 +434,11 @@ router.post('/ill-health/date-illness-started', function (req, res) {
       res.render('ill-health/date-illness-started', {
         scenario: req.session.scenario,
         errorList: errorList,
-        startDateErr: startDateErr,
-        startDate: req.session.illnessStartDate
+        startDateDayErr: startDateDayErr,
+        startDateMonthErr: startDateMonthErr,
+        startDateYearErr: startDateYearErr,
+        startDate: req.session.illnessStartDate,
+        inputClasses: inputClasses
       })
     } else {
       reasonObject = req.session.appealReasons.pop()
@@ -510,10 +509,16 @@ router.post('/ill-health/continued-illness', function (req, res) {
 
 // Date illness ended
 router.get('/ill-health/date-illness-ended', function (req, res) {
+  var inputClasses = {}
+
+  inputClasses.day = 'govuk-input--width-2'
+  inputClasses.month = 'govuk-input--width-2'
+  inputClasses.year = 'govuk-input--width-4'
   if (req.session.scenario != null) {
     var reasonObject = req.session.appealReasons[req.session.appealReasons.length - 1]
     res.render('ill-health/date-illness-ended', {
       scenario: req.session.scenario,
+      inputClasses: inputClasses,
       startDate: reasonObject.illnessStartDate
     })
   } else {
@@ -523,22 +528,52 @@ router.get('/ill-health/date-illness-ended', function (req, res) {
 router.post('/ill-health/date-illness-ended', function (req, res) {
   if (req.session.scenario != null) {
     req.session.illnessEndDate = {}
-    req.session.illnessEndDate.day = req.body['illnessEnd-day']
-    req.session.illnessEndDate.month = req.body['illnessEnd-month']
-    req.session.illnessEndDate.year = req.body['illnessEnd-year']
+    req.session.illnessEndDate.day = req.body['day']
+    req.session.illnessEndDate.month = req.body['month']
+    req.session.illnessEndDate.year = req.body['year']
     var reasonObject = {}
     var errorFlag = false
-    var endDateErr = {}
+    var endDateDayErr = {}
+    var endDateMonthErr = {}
+    var endDateYearErr = {}
     var errorList = []
+    var inputClasses = {}
 
-    if (req.session.illnessEndDate.day === '' || req.session.illnessEndDate.month === '' || req.session.illnessEndDate.year === '') {
-      endDateErr.type = 'invalid'
-      endDateErr.text = 'You must tell us when the illness ended'
-      endDateErr.href = '#illness-end'
-      endDateErr.flag = true
+    inputClasses.day = 'govuk-input--width-2'
+    inputClasses.month = 'govuk-input--width-2'
+    inputClasses.year = 'govuk-input--width-4'
+
+    if (req.body['day'] === '') {
+      endDateDayErr.type = 'invalid'
+      endDateDayErr.text = 'You must tell us what day the illness ended'
+      endDateDayErr.href = '#illness-end-day'
+      endDateDayErr.flag = true
     }
-    if (endDateErr.flag) {
-      errorList.push(endDateErr)
+    if (endDateDayErr.flag) {
+      inputClasses.day = 'govuk-input--width-2 govuk-input--error'
+      errorList.push(endDateDayErr)
+      errorFlag = true
+    }
+    if (req.body['month'] === '') {
+      endDateMonthErr.type = 'invalid'
+      endDateMonthErr.text = 'You must tell us what month the illness ended'
+      endDateMonthErr.href = '#illness-end-month'
+      endDateMonthErr.flag = true
+    }
+    if (endDateMonthErr.flag) {
+      inputClasses.month = 'govuk-input--width-2 govuk-input--error'
+      errorList.push(endDateMonthErr)
+      errorFlag = true
+    }
+    if (req.body['year'] === '') {
+      endDateYearErr.type = 'invalid'
+      endDateYearErr.text = 'You must tell us what year the illness ended'
+      endDateYearErr.href = '#illness-end-year'
+      endDateYearErr.flag = true
+    }
+    if (endDateYearErr.flag) {
+      inputClasses.year = 'govuk-input--width-4 govuk-input--error'
+      errorList.push(endDateYearErr)
       errorFlag = true
     }
 
@@ -547,9 +582,12 @@ router.post('/ill-health/date-illness-ended', function (req, res) {
       res.render('ill-health/date-illness-ended', {
         scenario: req.session.scenario,
         errorList: errorList,
-        endDateErr: endDateErr,
+        endDateDayErr: endDateDayErr,
+        endDateMonthErr: endDateMonthErr,
+        endDateYearErr: endDateYearErr,
         endDate: req.session.illnessEndDate,
-        startDate: reasonObject.illnessStartDate
+        startDate: reasonObject.illnessStartDate,
+        inputClasses: inputClasses
       })
     } else {
       reasonObject = req.session.appealReasons.pop()
@@ -682,7 +720,51 @@ router.post('/ill-health/nature-of-illness', function (req, res) {
 // NATURAL DISASTER
 // Type of disaster
 router.get('/natural-disaster/type-of-disaster', function (req, res) {
-  res.render('natural-disaster/type-of-disaster')
+  if (req.session.scenario != null) {
+    res.render('natural-disaster/type-of-disaster', {
+      scenario: req.session.scenario,
+      natureOfDisaster: req.session.natureOfDisaster
+    })
+  } else {
+    res.redirect('/start')
+  }
+})
+router.post('/natural-disaster/type-of-disaster', function (req, res) {
+  if (req.session.scenario != null) {
+    req.session.natureOfDisaster = req.body.natureOfDisaster
+    var errorFlag = false
+    var natureOfDisasterErr = {}
+    var errorList = []
+    var reasonObject = {}
+
+    if (req.session.natureOfDisaster === '') {
+      natureOfDisasterErr.type = 'blank'
+      natureOfDisasterErr.text = 'You haven\'t told us more about the disaster'
+      natureOfDisasterErr.href = '#nature-of-disaster'
+      natureOfDisasterErr.flag = true
+    }
+    if (natureOfDisasterErr.flag) {
+      errorList.push(natureOfDisasterErr)
+      errorFlag = true
+    }
+
+    // TEST ERROR FLAG
+    if (errorFlag === true) {
+      res.render('natural-disaster/type-of-disaster', {
+        scenario: req.session.scenario,
+        errorList: errorList,
+        natureOfDisasterErr: natureOfDisasterErr
+      })
+    } else {
+      reasonObject = req.session.appealReasons.pop()
+      reasonObject.natureOfDisaster = req.session.natureOfDisaster
+      req.session.appealReasons.push(reasonObject)
+      console.log(req.session.appealReasons)
+      res.redirect('/supporting-evidence')
+    }
+  } else {
+    res.redirect('/start')
+  }
 })
 
 // Date of disaster
@@ -852,7 +934,23 @@ router.get('/check-your-answers', function (req, res) {
 
 // Confirmation
 router.get('/confirmation', function (req, res) {
-  res.render('confirmation')
+  res.render('confirmation', {
+    scenario: req.session.scenario,
+    email: req.session.email,
+    penaltyReference: req.session.penaltyReference,
+    companyNumber: req.session.companyNumber
+  })
+})
+
+router.get('/print-appeal', function (req, res) {
+  res.render('print-appeal', {
+    scenario: req.session.scenario,
+    appealReasons: req.session.appealReasons,
+    email: req.session.email,
+    penaltyReference: req.session.penaltyReference,
+    companyNumber: req.session.companyNumber,
+    backLinkHref: 'confirmation'
+  })
 })
 
 module.exports = router

@@ -1,23 +1,27 @@
-**Service prototype**
-# Appeal a Late Filing Penalty
+# GOV.UK Prototype Kit · [![Greenkeeper badge](https://badges.greenkeeper.io/alphagov/govuk-prototype-kit.svg)](https://greenkeeper.io/)
 
-## About the service
-Companies House issues late filing penalties to companies who fail to file their accounts by the due date. Companies are notified of a penalty being issued by a letter sent to the companies registered office.
+Go to the [GOV.UK Prototype Kit site](https://govuk-prototype-kit.herokuapp.com/docs) to download the latest version and read the documentation.
 
-Companies who receive a penalty may choose to appeal that decision by contacting Companies House. An appeal will only be upheld if it meets a set of valid conditions.
+## About the Prototype Kit
 
-This service that allows users to submit that appeal electronically.
+The Prototype Kit provides a simple way to make interactive prototypes that look like pages on GOV.UK. These prototypes can be used to show ideas to people you work with, and to do user research.
 
-## Stakeholders
-Contact any of the following people to find out more about this service.
+Read the [project principles](https://govuk-prototype-kit.herokuapp.com/docs/principles).
 
-- Scott Seaward, **Product Owner** (sseaward@companiesouse.gov.uk)
-- Fran Williams, **Project Manager** (fwilliams@companieshouse.gov.uk)
-- Ollie Williams, **Interaction Designer** (owilliams@companieshouse.gov.uk)
-- Phil Martin, **User Researcher** (pmartin@companieshouse.gov.uk)
+## Security
 
-## Useful Links
-- [Confluence page]()
-- [Current live version (Heroku)](https://lfp-appeal-prototype.herokuapp.com/)
-- [UAT Version (Heroku)](https://lfp-appeal-prototype-uat.herokuapp.com/)
-- [Development version (Heroku)](https://lfp-appeal-prototype-dev.herokuapp.com/)
+If you publish your prototypes online, they **must** be protected by a [username and password](https://govuk-prototype-kit.herokuapp.com/docs/publishing-on-heroku). This is to prevent members of the public finding prototypes and thinking they are real services.
+
+You must protect user privacy at all times, even when using prototypes. Prototypes made with the kit look like GOV.UK, but do not have the same security provisions. Always make sure you are handling user data appropriately.
+
+## Installation instructions
+
+- [Installation guide for new users (non technical)](https://govuk-prototype-kit.herokuapp.com/docs/install/introduction)
+- [Installation guide for developers (technical)](https://govuk-prototype-kit.herokuapp.com/docs/install/developer-install-instructions)
+
+## Community
+
+We have two Slack channels for the Prototype Kit. You'll need a government email address to join them.
+
+* [Slack channel for users of the Prototype Kit](https://ukgovernmentdigital.slack.com/messages/prototype-kit/)
+* [Slack channel for developers of the Prototype Kit](https://ukgovernmentdigital.slack.com/messages/prototype-kit-dev/)

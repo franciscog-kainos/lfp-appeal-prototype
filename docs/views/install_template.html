@@ -1,26 +1,23 @@
 {% extends "layout.html" %}
-{% from "breadcrumbs/macro.njk"   import govukBreadcrumbs %}
 
 {% block pageTitle %}
 Install - GOV.UK Prototype Kit
 {% endblock %}
 
-
 {% block beforeContent %}
-  {{ govukBreadcrumbs({
-    "items": [
-      {
-        "text": "GOV.UK Prototype Kit",
-        "href": "/docs"
-      },
-      {
-        "text": "Install",
-        "href": "/docs/install"
-      }
-    ]
-  }) }}
+	{{ govukBreadcrumbs({
+	  items: [
+	    {
+	      text: "GOV.UK Prototype Kit",
+	      href: "/docs"
+	    },
+	    {
+	      text: "Install",
+	      href: "/docs/install"
+	    }
+	  ]
+	}) }}
 {% endblock %}
-
 
 {% block content %}
   <div class="govuk-grid-row">

@@ -4,10 +4,8 @@
 GOV.UK Prototype Kit
 {% endblock %}
 
-{% block beforeContent %}
-{% endblock %}
-
 {% block content %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -16,8 +14,9 @@ GOV.UK Prototype Kit
       <p class="govuk-body-l">
         Rapidly create HTML prototypes of GOV.UK services.
       </p>
-      {{releaseVersion | log }}
+{{releaseVersion | log }}
     </div>
+
 
   </div>
 
@@ -28,11 +27,11 @@ GOV.UK Prototype Kit
 
       <h2 class="govuk-heading-m">What’s new</h2>
       <p>
-        Version 7 of the GOV.UK Prototype Kit uses the new GOV.UK Design System which replaces GOV.UK Elements.
+        From version 7 the GOV.UK Prototype Kit uses the new GOV.UK Design System which replaces GOV.UK Elements.
       </p>
 
       <p>
-        Visit the <a href="https://gov.uk/design-system/">GOV.UK Design System</a> for guidance and examples.
+        Visit the <a href="https://design-system.service.gov.uk">GOV.UK Design System</a> for guidance and examples.
       </p>
 
     </div>
@@ -43,7 +42,7 @@ GOV.UK Prototype Kit
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third govuk-!-margin-top-6">
 
-      <h2 class="govuk-heading-m"><a href="/docs/install">Install</a></h2>
+      <h2 class="govuk-heading-m"><a href="/docs/install" data-hinstall="Install">Install</a></h2>
       <p>
         Download and installation instructions.
       </p>
@@ -51,7 +50,7 @@ GOV.UK Prototype Kit
     </div>
     <div class="govuk-grid-column-one-third govuk-!-margin-top-6">
 
-      <h2 class="govuk-heading-m"><a href="/docs/tutorials-and-examples">Tutorials and examples</a></h2>
+      <h2 class="govuk-heading-m"><a href="/docs/tutorials-and-examples" data-htutorials="Tutorials and examples">Tutorials and examples</a></h2>
       <p>
         Tutorials, examples and templates.
       </p>
@@ -59,7 +58,7 @@ GOV.UK Prototype Kit
     </div>
     <div class="govuk-grid-column-one-third govuk-!-margin-top-6">
 
-      <h2 class="govuk-heading-m"><a href="/docs/about">About</a></h2>
+      <h2 class="govuk-heading-m"><a href="/docs/about" data-habout="About">About</a></h2>
       <p>
         Get support, Prototype Kit principles, privacy.
       </p>

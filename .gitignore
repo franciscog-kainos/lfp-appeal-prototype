@@ -6,7 +6,6 @@ usage-data-config.json
 .start.pid
 .port.tmp
 public
-govuk_modules
-/node_modules
+node_modules/*
 .tmuxp.*
 package-lock.json
