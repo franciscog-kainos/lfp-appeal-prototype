@@ -7,37 +7,36 @@
   Tell us your penalty details
 {% endblock %}
 
-{% block main %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBackLink({
+    text: "Back",
+    href: "sign-in"
+  }) }}
+{% endblock %}
 
-  <div class="govuk-width-container">
+{% block content %}
 
-    {{ govukPhaseBanner({
-      tag: {
-        text: "alpha"
-      },
-      html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-    }) }}
-
-    {{ govukBackLink({
-      text: "Back",
-      href: "sign-in"
-    }) }}
-    <main role="main" class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {% if errorList.length > 0 %}
-            {{ govukErrorSummary({
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
               titleText: "We couldn't find your penalty",
               errorList: errorList
             }) }}
-          {% endif %}
-          <h1 class="govuk-heading-xl">
-            Tell us your penalty details
-          </h1>
+      {% endif %}
+      <h1 class="govuk-heading-xl">
+        What are your penalty details?
+      </h1>
 
-          <form method="post" action="">
-            {% if companyNumberErr.flag %}
-              {{ govukInput({
+      <form method="post" action="">
+        {% if companyNumberErr.flag %}
+          {{ govukInput({
                 label: {
                   text: "Company number"
                 },
@@ -52,8 +51,8 @@
                 name: "companyNumber",
                 value: companyNumber
               }) }}
-            {% else %}
-              {{ govukInput({
+        {% else %}
+          {{ govukInput({
                 label: {
                   text: "Company number"
                 },
@@ -65,10 +64,10 @@
                 name: "companyNumber",
                 value: companyNumber
               }) }}
-            {% endif %}
+        {% endif %}
 
-            {% if penaltyReferenceErr.flag %}
-              {{ govukInput({
+        {% if penaltyReferenceErr.flag %}
+          {{ govukInput({
                 label: {
                   text: "Penalty reference"
                 },
@@ -83,8 +82,8 @@
                 name: "penaltyReference",
                 value: penaltyReference
               }) }}
-            {% else %}
-              {{ govukInput({
+        {% else %}
+          {{ govukInput({
                 label: {
                   text: "Penalty reference"
                 },
@@ -96,26 +95,24 @@
                 name: "penaltyReference",
                 value: penaltyReference
               }) }}
-            {% endif %}
-            <div class="govuk-form-group">
-              {% set detailsHTML %}
-              <p>
-                Your company number and penalty reference are shown in a box on the right side of the penalty notification.
-              </p>
-              <img src='/public/images/PenWebImage280px.png' class='call-out-image' alt=''/>
-              {% endset -%}
-              {{ govukDetails({
+        {% endif %}
+        <div class="govuk-form-group">
+          {% set detailsHTML %}
+          <p>
+            Your company number and penalty reference are shown in a box on the right side of the penalty notification.
+          </p>
+          <img src='/public/images/PenWebImage280px.png' class='call-out-image' alt=''/>
+          {% endset -%}
+          {{ govukDetails({
                 summaryText: "Help with company number",
                 html: detailsHTML
               }) }}
-            </div>
-            {{ govukButton({
+        </div>
+        {{ govukButton({
               text: "Continue"
             }) }}
-          </form>
-        </div>
-      </div>
-    </main>
+      </form>
+    </div>
   </div>
 
 {% endblock %}
