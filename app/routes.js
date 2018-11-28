@@ -776,7 +776,7 @@ router.get('/natural-disaster/date-of-disaster', function (req, res) {
 router.get('/other-appeal', function (req, res) {
   res.render('other-appeal')
 })
-router.post('other-appeal', function (req, res) {
+router.post('/other-appeal', function (req, res) {
   var otherInformation = req.body.otherInformation
   var errorFlag = false
   var otherReasonErr = {}
