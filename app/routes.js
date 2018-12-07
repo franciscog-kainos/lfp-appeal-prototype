@@ -499,7 +499,7 @@ router.post('/ill-health/continued-illness', function (req, res) {
       if (req.session.continuedIllness === 'no') {
         res.redirect('/ill-health/date-illness-ended')
       } else {
-        res.redirect('/ill-health/about-the-illness')
+        res.redirect('/ill-health/nature-of-illness')
       }
     }
   } else {
@@ -594,7 +594,7 @@ router.post('/ill-health/date-illness-ended', function (req, res) {
       reasonObject.illnessEndDate = req.session.illnessEndDate
       req.session.appealReasons.push(reasonObject)
       console.log(req.session.appealReasons)
-      res.redirect('/ill-health/about-the-illness')
+      res.redirect('/ill-health/nature-of-illness')
     }
   } else {
     res.redirect('/start')
