@@ -1,22 +1,53 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Blank page
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Appealing for other reasons
 {% endblock %}
-
-{% block main %}
-<div class="govuk-width-container">
-
-  <!-- If there's a user need, add back link or breadcrumbs here -->
-
-  <main role="main" class="govuk-main-wrapper">
-
-    <!-- Add your content here -->
-
-    {{otherReason}}
-
-  </main>
-
-</div>
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "/choose-appeal-reason"
+}) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% set hintHTML %}
+      Anything you tell us to support your appeal will be kept confidential.
+      {% endset %}
+      <form action="" method="post">
+        {% if errorList.length > 0 %}
+          {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+        {% endif %}
+        <h1 class="govuk-heading-xl">Provide more information to support your appeal</h1>
+        {{ govukTextarea({
+          name: "otherInformation",
+          id: "other-information",
+          errorMessage: otherReasonErr.text,
+          rows: '8',
+          label: {
+            text: "Anything you tell us to support your appeal will be kept confidential.",
+            isPageHeading: true,
+            classes: 'govuk-heading-large'
+          }
+        }) }}
+        {{ govukButton({
+            text: "Continue"
+          }) }}
+      </form>
+    </div>
+  </div>
 
 {% endblock %}

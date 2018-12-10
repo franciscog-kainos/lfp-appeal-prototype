@@ -499,7 +499,7 @@ router.post('/ill-health/continued-illness', function (req, res) {
       if (req.session.continuedIllness === 'no') {
         res.redirect('/ill-health/date-illness-ended')
       } else {
-        res.redirect('/ill-health/about-the-illness')
+        res.redirect('/ill-health/nature-of-illness')
       }
     }
   } else {
@@ -594,7 +594,7 @@ router.post('/ill-health/date-illness-ended', function (req, res) {
       reasonObject.illnessEndDate = req.session.illnessEndDate
       req.session.appealReasons.push(reasonObject)
       console.log(req.session.appealReasons)
-      res.redirect('/ill-health/about-the-illness')
+      res.redirect('/ill-health/nature-of-illness')
     }
   } else {
     res.redirect('/start')
@@ -774,9 +774,36 @@ router.get('/natural-disaster/date-of-disaster', function (req, res) {
 
 // Other appeal
 router.get('/other-appeal', function (req, res) {
-  res.render('other-appeal', {
-    otherReason: req.session.otherReason
-  })
+  res.render('other-appeal')
+})
+router.post('/other-appeal', function (req, res) {
+  var otherInformation = req.body.otherInformation
+  var errorFlag = false
+  var otherReasonErr = {}
+  var errorList = []
+
+  if (otherInformation === '') {
+    otherReasonErr.type = 'blank'
+    otherReasonErr.text = 'You must give us more information'
+    otherReasonErr.href = '#other-appeal'
+    otherReasonErr.flag = true
+  }
+  if (otherReasonErr.flag) {
+    errorList.push(otherReasonErr)
+    errorFlag = true
+  }
+  if (errorFlag === true) {
+    res.render('other-appeal', {
+      errorList: errorList,
+      Err: otherReasonErr
+    })
+  } else {
+    var reasonObject = req.session.appealReasons.pop()
+    reasonObject.otherInformation = req.body.otherInformation
+    req.session.appealReasons.push(reasonObject)
+    res.redirect('/supporting-evidence')
+    console.log(req.session.appealReasons)
+  }
 })
 
 // Supporting evidence
@@ -952,5 +979,4 @@ router.get('/print-appeal', function (req, res) {
     backLinkHref: 'confirmation'
   })
 })
-
 module.exports = router
