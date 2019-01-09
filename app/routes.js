@@ -278,7 +278,8 @@ router.post('/choose-appeal-reason', function (req, res) {
         case 'disaster':
           reasonObject.reason = req.session.appealReason
           req.session.appealReasons.push(reasonObject)
-          res.redirect('/natural-disaster/type-of-disaster')
+          console.log(req.session.appealReasons)
+          res.redirect('/natural-disaster/date-of-disaster')
           break
         case 'payment':
           res.redirect('/payment-appeal')
@@ -310,9 +311,22 @@ router.post('/choose-appeal-reason', function (req, res) {
 // Who was ill
 router.get('/ill-health/who-was-ill', function (req, res) {
   if (req.session.scenario != null) {
-    res.render('ill-health/who-was-ill', {
-      scenario: req.session.scenario
-    })
+    var id = 0
+    var info = ''
+    var reasonObject = req.session.appealReasons[req.session.appealReasons.length - 1]
+    if (req.query.id) {
+      id = req.query.id
+      info = req.session.appealReasons[id].illPerson
+      console.log(req.session.appealReasons)
+      res.render('ill-health/who-was-ill', {
+        scenario: req.session.scenario,
+        startDate: reasonObject.illnessStartDate,
+        id: id,
+        info: info
+      })
+    } else {
+      res.render('ill-health/who-was-ill')
+    }
   } else {
     res.redirect('/start')
   }
@@ -321,6 +335,7 @@ router.post('/ill-health/who-was-ill', function (req, res) {
   if (req.session.scenario != null) {
     req.session.illPerson = req.body.illPerson
     req.session.otherIllPerson = req.body.otherIllPerson
+    var editId = req.body.editId
     var reasonObject = {}
     var errorFlag = false
     var illPersonErr = {}
@@ -350,12 +365,18 @@ router.post('/ill-health/who-was-ill', function (req, res) {
         illPersonErr: illPersonErr
       })
     } else {
-      reasonObject = req.session.appealReasons.pop()
-      reasonObject.illPerson = req.session.illPerson
-      reasonObject.otherIllPerson = req.session.otherIllPerson
-      req.session.appealReasons.push(reasonObject)
-      console.log(req.session.appealReasons)
-      res.redirect('/ill-health/date-illness-started')
+      if (req.body.editId !== '') {
+        req.session.appealReasons[editId].illPerson = req.body.illPerson
+        req.session.appealReasons[editId].otherIllPerson = req.body.otherIllPerson
+        res.redirect('/check-your-answers')
+      } else {
+        reasonObject = req.session.appealReasons.pop()
+        reasonObject.illPerson = req.body.illPerson
+        reasonObject.otherIllPerson = req.body.otherIllPerson
+        req.session.appealReasons.push(reasonObject)
+        console.log(req.session.appealReasons)
+        res.redirect('/ill-health/date-illness-started')
+      }
     }
   } else {
     res.redirect('/start')
@@ -365,15 +386,26 @@ router.post('/ill-health/who-was-ill', function (req, res) {
 // Date illness started
 router.get('/ill-health/date-illness-started', function (req, res) {
   var inputClasses = {}
-
   inputClasses.day = 'govuk-input--width-2'
   inputClasses.month = 'govuk-input--width-2'
   inputClasses.year = 'govuk-input--width-4'
   if (req.session.scenario != null) {
-    res.render('ill-health/date-illness-started', {
-      scenario: req.session.scenario,
-      inputClasses: inputClasses
-    })
+    var id = 0
+    var info = ''
+    var reasonObject = req.session.appealReasons[req.session.appealReasons.length - 1]
+    if (req.query.id) {
+      id = req.query.id
+      info = req.session.appealReasons[id].illnessStartDate
+      res.render('ill-health/date-illness-started', {
+        scenario: req.session.scenario,
+        inputClasses: inputClasses,
+        illperson: reasonObject.illPerson,
+        id: id,
+        info: info
+      })
+    } else {
+      res.render('ill-health/date-illness-started')
+    }
   } else {
     res.redirect('/start')
   }
@@ -384,6 +416,7 @@ router.post('/ill-health/date-illness-started', function (req, res) {
     req.session.illnessStartDate.day = req.body['day']
     req.session.illnessStartDate.month = req.body['month']
     req.session.illnessStartDate.year = req.body['year']
+    var editId = req.body.editId
     var reasonObject = {}
     var errorFlag = false
     var startDateDayErr = {}
@@ -441,11 +474,16 @@ router.post('/ill-health/date-illness-started', function (req, res) {
         inputClasses: inputClasses
       })
     } else {
-      reasonObject = req.session.appealReasons.pop()
-      reasonObject.illnessStartDate = req.session.illnessStartDate
-      req.session.appealReasons.push(reasonObject)
-      console.log(req.session.appealReasons)
-      res.redirect('/ill-health/continued-illness')
+      if (req.body.editId !== '') {
+        req.session.appealReasons[editId].illnessStartDate = req.session.illnessStartDate
+        res.redirect('/check-your-answers')
+      } else {
+        reasonObject = req.session.appealReasons.pop()
+        reasonObject.illnessStartDate = req.session.illnessStartDate
+        req.session.appealReasons.push(reasonObject)
+        console.log(req.session.appealReasons)
+        res.redirect('/ill-health/continued-illness')
+      }
     }
   } else {
     res.redirect('/start')
@@ -456,10 +494,20 @@ router.post('/ill-health/date-illness-started', function (req, res) {
 router.get('/ill-health/continued-illness', function (req, res) {
   if (req.session.scenario != null) {
     var reasonObject = req.session.appealReasons[req.session.appealReasons.length - 1]
-    res.render('ill-health/continued-illness', {
-      scenario: req.session.scenario,
-      startDate: reasonObject.illnessStartDate
-    })
+    var id = 0
+    var info = ''
+    if (req.query.id) {
+      id = req.query.id
+      info = req.session.appealReasons[id].continuedIllness
+      res.render('ill-health/continued-illness', {
+        scenario: req.session.scenario,
+        startDate: reasonObject.illnessStartDate,
+        id: id,
+        info: info
+      })
+    } else {
+      res.render('ill-health/continued-illness')
+    }
   } else {
     res.redirect('/start')
   }
@@ -467,43 +515,44 @@ router.get('/ill-health/continued-illness', function (req, res) {
 router.post('/ill-health/continued-illness', function (req, res) {
   if (req.session.scenario != null) {
     req.session.continuedIllness = req.body.continuedIllness
+    var editId = req.body.editId
     var errorFlag = false
     var continuedIllnessErr = {}
     var errorList = []
-
-    if (typeof req.session.continuedIllness === 'undefined') {
-      continuedIllnessErr.type = 'blank'
-      continuedIllnessErr.text = 'You must tell us if this person is still ill'
-      continuedIllnessErr.href = '#continued-illness'
-      continuedIllnessErr.flag = true
-    }
-    if (continuedIllnessErr.flag) {
-      errorList.push(continuedIllnessErr)
-      errorFlag = true
-    }
-
-    // TEST ERROR FLAG
-    if (errorFlag === true) {
-      var reasonObject = req.session.appealReasons[req.session.appealReasons.length - 1]
-      res.render('ill-health/continued-illness', {
-        scenario: req.session.scenario,
-        errorList: errorList,
-        continuedIllnessErr: continuedIllnessErr,
-        startDate: reasonObject.illnessStartDate
-      })
-    } else {
-      reasonObject = req.session.appealReasons.pop()
-      reasonObject.continuedIllness = req.session.continuedIllness
-      req.session.appealReasons.push(reasonObject)
-      console.log(req.session.appealReasons)
-      if (req.session.continuedIllness === 'no') {
-        res.redirect('/ill-health/date-illness-ended')
-      } else {
-        res.redirect('/ill-health/nature-of-illness')
-      }
-    }
   } else {
     res.redirect('/start')
+  }
+
+  if (typeof req.session.continuedIllness === 'undefined') {
+    continuedIllnessErr.type = 'blank'
+    continuedIllnessErr.text = 'You must tell us if this person is still ill'
+    continuedIllnessErr.href = '#continued-illness'
+    continuedIllnessErr.flag = true
+  }
+  if (continuedIllnessErr.flag) {
+    errorList.push(continuedIllnessErr)
+    errorFlag = true
+  }
+
+  // TEST ERROR FLAG
+  if (errorFlag === true) {
+    var reasonObject = req.session.appealReasons[req.session.appealReasons.length - 1]
+    res.render('ill-health/continued-illness', {
+      scenario: req.session.scenario,
+      errorList: errorList,
+      continuedIllnessErr: continuedIllnessErr,
+      startDate: reasonObject.illnessStartDate
+    })
+  } else {
+    reasonObject = req.session.appealReasons.pop()
+    reasonObject.continuedIllness = req.session.continuedIllness
+    req.session.appealReasons.push(reasonObject)
+    console.log(req.session.appealReasons)
+    if (req.session.continuedIllness === 'no') {
+      res.redirect('/ill-health/date-illness-ended')
+    } else {
+      res.redirect('/ill-health/nature-of-illness')
+    }
   }
 })
 
@@ -718,6 +767,95 @@ router.post('/ill-health/nature-of-illness', function (req, res) {
 })
 
 // NATURAL DISASTER
+// Date of disaster
+router.get('/natural-disaster/date-of-disaster', function (req, res) {
+  var inputClasses = {}
+
+  inputClasses.day = 'govuk-input--width-2'
+  inputClasses.month = 'govuk-input--width-2'
+  inputClasses.year = 'govuk-input--width-4'
+  if (req.session.scenario != null) {
+    res.render('natural-disaster/date-of-disaster', {
+      scenario: req.session.scenario,
+      inputClasses: inputClasses
+    })
+  } else {
+    res.redirect('/start')
+  }
+})
+router.post('/natural-disaster/date-of-disaster', function (req, res) {
+  if (req.session.scenario != null) {
+    req.session.disasterDate = {}
+    req.session.disasterDate.day = req.body['day']
+    req.session.disasterDate.month = req.body['month']
+    req.session.disasterDate.year = req.body['year']
+    var reasonObject = {}
+    var errorFlag = false
+    var disasterDateDayErr = {}
+    var disasterDateMonthErr = {}
+    var disasterDateYearErr = {}
+    var errorList = []
+    var inputClasses = {}
+
+    inputClasses.day = 'govuk-input--width-2'
+    inputClasses.month = 'govuk-input--width-2'
+    inputClasses.year = 'govuk-input--width-4'
+
+    if (req.body['day'] === '') {
+      disasterDateDayErr.type = 'invalid'
+      disasterDateDayErr.text = 'You must tell us what day the disaster happened'
+      disasterDateDayErr.href = '#disaster-date-day'
+      disasterDateDayErr.flag = true
+    }
+    if (disasterDateDayErr.flag) {
+      inputClasses.day = 'govuk-input--width-2 govuk-input--error'
+      errorList.push(disasterDateDayErr)
+      errorFlag = true
+    }
+    if (req.body['month'] === '') {
+      disasterDateMonthErr.type = 'invalid'
+      disasterDateMonthErr.text = 'You must tell us what month the disaster happened'
+      disasterDateMonthErr.href = '#disaster-date-month'
+      disasterDateMonthErr.flag = true
+    }
+    if (disasterDateMonthErr.flag) {
+      inputClasses.month = 'govuk-input--width-2 govuk-input--error'
+      errorList.push(disasterDateMonthErr)
+      errorFlag = true
+    }
+    if (req.body['year'] === '') {
+      disasterDateYearErr.type = 'invalid'
+      disasterDateYearErr.text = 'You must tell us what year the disaster happened'
+      disasterDateYearErr.href = '#disaster-date-year'
+      disasterDateYearErr.flag = true
+    }
+    if (disasterDateYearErr.flag) {
+      inputClasses.year = 'govuk-input--width-4 govuk-input--error'
+      errorList.push(disasterDateYearErr)
+      errorFlag = true
+    }
+
+    if (errorFlag === true) {
+      res.render('natural-disaster/date-of-disaster', {
+        scenario: req.session.scenario,
+        errorList: errorList,
+        disasterDateDayErr: disasterDateDayErr,
+        disasterDateMonthErr: disasterDateMonthErr,
+        disasterDateYearErr: disasterDateYearErr,
+        disasterDate: req.session.disasterDate,
+        inputClasses: inputClasses
+      })
+    } else {
+      reasonObject = req.session.appealReasons.pop()
+      reasonObject.disasterDate = req.session.disasterDate
+      req.session.appealReasons.push(reasonObject)
+      console.log(req.session.appealReasons)
+      res.redirect('/natural-disaster/type-of-disaster')
+    }
+  } else {
+    res.redirect('/start')
+  }
+})
 // Type of disaster
 router.get('/natural-disaster/type-of-disaster', function (req, res) {
   if (req.session.scenario != null) {
@@ -765,11 +903,6 @@ router.post('/natural-disaster/type-of-disaster', function (req, res) {
   } else {
     res.redirect('/start')
   }
-})
-
-// Date of disaster
-router.get('/natural-disaster/date-of-disaster', function (req, res) {
-  res.render('natural-disaster/date-of-disaster')
 })
 
 // Other appeal
@@ -958,7 +1091,16 @@ router.get('/check-your-answers', function (req, res) {
     companyNumber: req.session.companyNumber
   })
 })
-
+// Remove reason
+router.get('/remove-reason', function (req, res) {
+  res.render('remove-reason', {
+    scenario: req.session.scenario,
+    appealReasons: req.session.appealReasons
+  })
+})
+router.post('/remove-reason', function (req, res) {
+  res.redirect('check-your-answers')
+})
 // Confirmation
 router.get('/confirmation', function (req, res) {
   res.render('confirmation', {

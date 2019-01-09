@@ -77,6 +77,14 @@
               ]
               })
             }}
+
+            {{ govukInput({
+                      id: "editId",
+                      name: "editId",
+                      type: "hidden",
+                      value: id
+                    }) }}
+
             {{ govukButton({
               text: "Continue"
             }) }}

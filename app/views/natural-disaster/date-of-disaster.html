@@ -1,20 +1,96 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Blank page
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Appeal due to natural disaster: Tell us the date of the incident
 {% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "/choose-appeal-reason"
+}) }}
+{% endblock %}
+{% block content %}
 
-{% block main %}
-<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="" method="post">
+        {% if errorList.length > 0 %}
+          {{ govukErrorSummary({
+            titleText: "There was a disaster with the date you gave us",
+            errorList: errorList
+          }) }}
+        {% endif %}
 
-  <!-- If there's a user need, add back link or breadcrumbs here -->
+        {% if errorList.length > 0 %}
+          {% set disasterDateError = {
+            text: disasterDateErr.text
+          } %}
+        {% else %}
+          {% set disasterDateError = false %}
+        {% endif %}
 
-  <main role="main" class="govuk-main-wrapper">
+        {% set hintHTML %}
+        For example, 31 8 2018
+        {% endset -%}
 
-    <!-- Add your content here -->
+        {{ govukDateInput({
+          id: "disaster-date",
+          namePrefix: "disasterDate",
+          errorMessage: disasterDateError,
+          fieldset: {
+            legend: {
+              text: "When did the incident happen?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+                html: hintHTML
+              },
+                items: [
+                    {
+                      classes: "govuk-input--width-2",
+                      id: 'disaster-date-day',
+                      value: disasterDate.day,
+                      name: 'day'
+                    },
+                    {
+                      classes: "govuk-input--width-2",
+                      id: 'disaster-date-month',
+                      value: disasterDate.month,
+                      name: 'month'
+                    },
+                    {
+                      classes: "govuk-input--width-4",
+                      id: 'disaster-date-year',
+                      value: disasterDate.year,
+                      name: 'year'
+                    }
+            ]
+          })
+        }}
 
-  </main>
+        {{ govukInput({
+          id: "editId",
+          name: "editId",
+          type: "hidden",
+          value: id
+        }) }}
 
-</div>
+        {{ govukButton({
+         text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
 
 {% endblock %}

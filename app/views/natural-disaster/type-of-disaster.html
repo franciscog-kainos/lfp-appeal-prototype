@@ -45,7 +45,7 @@
             Anything you tell us to support your appeal will be kept confidential.
             {% endset -%}
 
-            <h1 class="govuk-heading-xl">Tell us about the disaster</h1>
+            <h1 class="govuk-heading-xl">How did this affect your ability to file on time?</h1>
             {{ govukTextarea({
               name: "natureOfDisaster",
               id: "nature-of-disaster",
@@ -58,6 +58,13 @@
                 classes: 'govuk-heading-large'
               }
             }) }}
+
+            {{ govukInput({
+                      id: "editId",
+                      name: "editId",
+                      type: "hidden",
+                      value: id
+                    }) }}
 
             {{ govukButton({
               text: "Continue"
