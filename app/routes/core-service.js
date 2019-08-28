@@ -14,52 +14,85 @@ module.exports = function (router) {
   })
   router.post('/signin', function (req, res) {
     req.session.userEmail = req.body.email
-    res.redirect('company-number')
+    res.redirect('penalty-reference')
   })
-  router.get('/company-number', function (req, res) {
-    res.render('company-number')
-  })
-  router.post('/company-number', function (req, res) {
-    var companyNumber = req.body.companyNumber
-    var errorFlag = false
-    var Err = {}
-    var errorList = []
-    var file = ''
-    var savedSession = {}
-
-    if (companyNumber === '') {
-      Err.type = 'blank'
-      Err.text = 'You must enter a company number'
-      Err.href = '#company-number'
-      Err.flag = true
-    }
-    if (Err.flag) {
-      errorList.push(Err)
-      errorFlag = true
-    }
-    if (errorFlag === true) {
-      res.render('company-number', {
-        errorList: errorList,
-        Err: Err
+  router.get('/penalty-reference', function (req, res) {
+    if (req.session.scenario != null) {
+      res.render('penalty-reference', {
+        scenario: req.session.scenario,
+        companyNumber: req.session.scenario.company.number,
+        penaltyReference: req.session.penaltyReference
       })
     } else {
-      if (fs.existsSync('public/saved-sessions/' + companyNumber + '.json')) {
-        file = 'public/saved-sessions/' + companyNumber + '.json'
-        fs.readFile(file, function (err, data) {
-          if (err) {
-            return done(err, data)
-          }
-          savedSession = JSON.parse(data)
-          req.session.userEmail = savedSession.userEmail
-          req.session.scenario = savedSession.scenario
-          req.session.extensionReasons = savedSession.extensionReasons
-          res.redirect('resume-application')
-        })
-      } else {
-        req.session.scenario = require('../assets/scenarios/' + companyNumber)
-        req.session.extensionReasons = []
-        res.redirect('confirm-company')
+      res.render('penalty-reference')
+    }
+  })
+  router.post('/penalty-reference', function (req, res) {
+    req.session.companyNumber = req.body.companyNumber
+    req.session.penaltyReference = req.body.penaltyReference
+    req.session.penaltyReference = req.session.penaltyReference.toUpperCase()
+    var errorFlag = false
+    var companyNumberErr = {}
+    var penaltyReferenceErr = {}
+    var errorList = []
+
+  // VALIDATE USER INPUTS
+    if (req.session.companyNumber.length < 8) {
+      companyNumberErr.type = 'invalid'
+      companyNumberErr.text = 'You must enter your full eight character company number'
+      companyNumberErr.href = '#company-number'
+      companyNumberErr.flag = true
+    }
+    if (req.session.companyNumber === '') {
+      companyNumberErr.type = 'blank'
+      companyNumberErr.text = 'You must enter an company number'
+      companyNumberErr.href = '#company-number'
+      companyNumberErr.flag = true
+    }
+    if (companyNumberErr.flag) {
+      errorList.push(companyNumberErr)
+      errorFlag = true
+    }
+
+    if (
+    req.session.penaltyReference !== 'PEN1A/12345677' &&
+    req.session.penaltyReference !== 'PEN2A/12345677' &&
+    req.session.penaltyReference !== 'PEN1A/12345671' &&
+    req.session.penaltyReference !== 'PEN2A/12345671' &&
+    req.session.penaltyReference !== 'PEN1A/12345672'
+  ) {
+      penaltyReferenceErr.type = 'invalid'
+      penaltyReferenceErr.text = 'Enter your penalty reference exactly as shown on your penalty letter'
+      penaltyReferenceErr.href = '#penalty-reference'
+      penaltyReferenceErr.flag = true
+    }
+    if (req.session.penaltyReference === '') {
+      penaltyReferenceErr.type = 'blank'
+      penaltyReferenceErr.text = 'You must enter a penalty reference'
+      penaltyReferenceErr.href = '#penalty-reference'
+      penaltyReferenceErr.flag = true
+    }
+    if (penaltyReferenceErr.flag) {
+      errorList.push(penaltyReferenceErr)
+      errorFlag = true
+    }
+
+  // TEST ERROR FLAG
+    if (errorFlag === true) {
+      res.render('penalty-reference', {
+        errorList: errorList,
+        companyNumberErr: companyNumberErr,
+        penaltyReferenceErr: penaltyReferenceErr,
+        companyNumber: req.session.companyNumber,
+        penaltyReference: req.session.penaltyReference
+      })
+    } else {
+      if (req.session.penaltyReference === 'PEN1A/12345677' || req.session.penaltyReference === 'PEN2A/12345677') {
+        req.session.scenario = require('./assets/data/scenarios/00345567')
+      } else if (req.session.penaltyReference === 'PEN1A/12345671' || req.session.penaltyReference === 'PEN2A/12345671' || req.session.penaltyReference === 'PEN1A/12345672') {
+        req.session.scenario = require('./assets/data/scenarios/00987512')
       }
+      res.redirect('/authenticate')
     }
   })
   router.get('/confirm-company', function (req, res) {

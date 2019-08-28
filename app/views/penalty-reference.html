@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Tell us your penalty details
+  Tell us the penalty details
 {% endblock %}
 
 {% block beforeContent %}
@@ -26,12 +26,12 @@
     <div class="govuk-grid-column-two-thirds">
       {% if errorList.length > 0 %}
         {{ govukErrorSummary({
-              titleText: "We couldn't find your penalty",
+              titleText: "We couldn't find the penalty",
               errorList: errorList
             }) }}
       {% endif %}
       <h1 class="govuk-heading-xl">
-        What are your penalty details?
+        What are the penalty details?
       </h1>
 
       <form method="post" action="">
@@ -72,7 +72,7 @@
                   text: "Penalty reference"
                 },
                 hint: {
-                  text: "This is the 14 character reference shown on your penalty notification."
+                  text: "This is the 14 character reference shown on the penalty notification."
                 },
                 errorMessage: {
                   text: penaltyReferenceErr.text
@@ -88,7 +88,7 @@
                   text: "Penalty reference"
                 },
                 hint: {
-                  text: "This is the 14 character reference shown on your penalty notification."
+                  text: "This is the 14 character reference shown on the penalty letter."
                 },
                 classes: "govuk-input--penalty-reference",
                 id: "penalty-reference",
@@ -99,7 +99,7 @@
         <div class="govuk-form-group">
           {% set detailsHTML %}
           <p>
-            Your company number and penalty reference are shown in a box on the right side of the penalty notification.
+            The company number and penalty reference are shown in a box on the right side of the penalty letter.
           </p>
           <img src='/public/images/PenWebImage280px.png' class='call-out-image' alt=''/>
           {% endset -%}
