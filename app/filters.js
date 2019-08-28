@@ -79,11 +79,6 @@ module.exports = function (env) {
     }
   }
 
-  filters.displayPound = function (value) {
-    if (value !== '') {
-      return '£' + value
-    }
-  }
   /* ------------------------------------------------------------------
     keep the following line to return your filters to the app
   ------------------------------------------------------------------ */

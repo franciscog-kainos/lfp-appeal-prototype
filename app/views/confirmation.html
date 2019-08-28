@@ -7,46 +7,91 @@
   Confirmation page
 {% endblock %}
 
-{% block main %}
-  <div class="govuk-width-container">
+{% block content %}
 
-    <main role="main" class="govuk-main-wrapper">
+  {% set shortdeadlineHTML %}
+  <span class="govuk-!-font-weight-bold">You may not hear from us before your accounts are due. If your application is accepted, the extension period will start from the date your accounts are due.</span>
+  {% endset %}
 
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-          <div class="govuk-panel govuk-panel--confirmation">
-            <h1 class="govuk-panel__title">
-              Appeal submitted
-            </h1>
+      {% if authCodeFlag === true %}
+        <div class="govuk-panel govuk-panel--confirmation">
+          {% if scenario.company.deadlineStatus === 'Near' %}
+            <h1 class="govuk-panel__title">Application accepted</h1>
             <div class="govuk-panel__body">
-              Your reference number is your company number<br>
-              <strong>{{ companyNumber }}</strong>
+              The filing deadline for
+              {{ scenario.company.name }}
+              has been extended by 14 days.
             </div>
-          </div>
-
-          <p class="govuk-body-l">
-            We've sent a confirmation email to
-            <span class="govuk-body-l govuk-!-font-weight-bold">{{ email }}</span>
-            which contains your reference number.
-          </p>
-
-          <p class="govuk-body">
-            <a href="print-appeal" class="govuk-link">Print or save a copy of this appeal</a>
-          </p>
-
-          <h2 class="govuk-heading-m">What happens next</h2>
-          <p>We'll review the information you've provided and make a decision about your appeal.</p>
-          <p>We'll contact you within 7 working days to confirm the outcome of your appeal. We may also contact you if we need more information.</p>
-          <p>
-            <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html">What did you think of this service?</a>
-            (takes 30 seconds)</p>
-
+          {% elseif scenario.company.deadlineStatus !== 'Near' %}
+            <h1 class="govuk-panel__title">Extension not required</h1>
+            <div class="govuk-panel__body">
+              {{ scenario.company.name }}
+              still has time to file its accounts before the deadline.
+            </div>
+          {% endif %}
         </div>
-      </div>
+      {% else %}
+        <div class="govuk-panel govuk-panel--confirmation">
+          <h1 class="govuk-panel__title">Application submitted</h1>
+          <div class="govuk-panel__body">
+            Your reference number is the company number<br>
+            <strong>{{ scenario.company.number }}</strong>
+          </div>
+        </div>
+      {% endif %}
 
-    </main>
+      {% if authCodeFlag !== true %}
+        <p class="govuk-body-l">
+          We've sent a confirmation email to
+          <span class="govuk-body-l govuk-!-font-weight-bold">{{ userEmail }}</span>
+          which contains your reference number and application information.
+        </p>
+      {% else %}
+        <p class="govuk-body-l">
+          We've sent a confirmation email to
+          <span class="govuk-body-l govuk-!-font-weight-bold">{{ userEmail }}</span>
+          which contains your application information.
+        </p>
+        <p class="govuk-body-l">
+          {% if scenario.company.deadlineStatus === 'Near' %}
+            Your new filing deadline is
+            <span class="govuk-!-font-weight-bold">3 September 2019</span>.
+          {% endif %}
+          We've also sent a new authentication code to your registered office address.
+        </p>
+      {% endif %}
 
+      <p class="govuk-body">
+        <a href="javascript:if(window.print)window.print()" class="govuk-link">Print a copy of this application</a>
+      </p>
+
+      {% if (scenario.company.deadlineStatus === 'Near') and (authCodeFlag === false) %}
+        {{ govukInsetText({
+          html: shortdeadlineHTML
+        }) }}
+      {% endif %}
+      <h2 class="govuk-heading-m">What happens next</h2>
+      {% if authCodeFlag === true %}
+        <p>You should receive the authentication code at the registered office within 5 working days.</p>
+        {% if scenario.company.deadlineStatus === 'Near' %}
+          <p>You should file your accounts using your new code by
+            <b>{{scenario.company.extensionTwoWeek}}</b>.
+          </p>
+        {% elseif scenario.company.deadlineStatus !== 'Near' %}
+          <p>You will not receive an extension to your filing deadline and should file before your due date of
+            <b>{{ scenario.company.accountsDue }}</b>.</p>
+        {% endif %}
+      {% else %}
+        <p>It will take up to 5 working days to review your application. We’ll contact you by email with our decision. Accepted applications normally receive an extension of 28 days. We may also contact you if we need more information.</p>
+      {% endif %}
+      <p class="govuk-body">
+        <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html" class="govuk-link">What did you think of this service?</a>
+        (takes 30 seconds)
+      </p>
+    </div>
   </div>
 
 {% endblock %}
