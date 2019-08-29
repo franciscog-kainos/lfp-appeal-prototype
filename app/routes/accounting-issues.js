@@ -4,14 +4,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].accountsDate
+      info = req.session.appealReasons[id].accountsDate
       res.render('accounts/accounts-date', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -40,9 +40,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -83,7 +83,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('accounts/accounts-date', {
         errorList: errorList,
         accountsDateDayErr: accountsDateDayErr,
@@ -99,7 +99,7 @@ module.exports = function (router) {
         accountsDate.day = accountsDateDay
         accountsDate.month = accountsDateMonth
         accountsDate.year = accountsDateYear
-        req.session.extensionReasons[editId].accountsDate = accountsDate
+        req.session.appealReasons[editId].accountsDate = accountsDate
         res.redirect('/check-your-answers')
       } else {
         accountsDate.day = req.body['accountsDate-day']
@@ -107,7 +107,7 @@ module.exports = function (router) {
         accountsDate.year = req.body['accountsDate-year']
         reasonObject.accountsDate = accountsDate
         reasonObject.nextStep = 'accounts/reason-accounts'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/accounts/reason-accounts')
       }
     }
@@ -117,7 +117,7 @@ module.exports = function (router) {
     var info = ''
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].accounts
+      info = req.session.appealReasons[id].accounts
       res.render('accounts/reason-accounts', {
         id: id,
         info: info
@@ -150,14 +150,14 @@ module.exports = function (router) {
         Err: Err
       })
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
       if (req.body.editId !== '') {
-        req.session.extensionReasons[editId].accounts = accounts
+        req.session.appealReasons[editId].accounts = accounts
         res.redirect('/check-your-answers')
       } else {
         reasonObject.accounts = req.body.accounts
         reasonObject.nextStep = 'evidence'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/evidence')
       }
     }

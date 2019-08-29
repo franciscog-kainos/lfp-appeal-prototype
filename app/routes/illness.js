@@ -11,7 +11,7 @@ module.exports = function (router) {
 
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].illPerson
+      info = req.session.appealReasons[id].illPerson
       switch (info) {
         case 'Company director or officer':
           checked.officer = true
@@ -80,15 +80,15 @@ module.exports = function (router) {
       })
     } else {
       if (req.body.editId !== '') {
-        req.session.extensionReasons[editId].illPerson = illPerson
-        req.session.extensionReasons[editId].otherPerson = otherPerson
+        req.session.appealReasons[editId].illPerson = illPerson
+        req.session.appealReasons[editId].otherPerson = otherPerson
         res.redirect('/check-your-answers')
       } else {
-        reasonObject = req.session.extensionReasons.pop()
+        reasonObject = req.session.appealReasons.pop()
         reasonObject.illPerson = req.body.illPerson
         reasonObject.otherPerson = req.body.otherPerson
         reasonObject.nextStep = 'illness/illness-start-date'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/illness/illness-start-date')
       }
     }
@@ -98,14 +98,14 @@ module.exports = function (router) {
     var id = 0
     var info = ''
     var inputClasses = {}
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].illnessStartDate
+      info = req.session.appealReasons[id].illnessStartDate
       res.render('illness/illness-start-date', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -134,9 +134,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -177,7 +177,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('illness/illness-start-date', {
         errorList: errorList,
         illnessStartDayErr: illnessStartDayErr,
@@ -191,7 +191,7 @@ module.exports = function (router) {
         illnessStartDate.day = illnessStartDay
         illnessStartDate.month = illnessStartMonth
         illnessStartDate.year = illnessStartYear
-        req.session.extensionReasons[editId].illnessStartDate = illnessStartDate
+        req.session.appealReasons[editId].illnessStartDate = illnessStartDate
         res.redirect('/check-your-answers')
       } else {
         illnessStartDate.day = req.body['illnessStart-day']
@@ -199,7 +199,7 @@ module.exports = function (router) {
         illnessStartDate.year = req.body['illnessStart-year']
         reasonObject.illnessStartDate = illnessStartDate
         reasonObject.nextStep = 'illness/continued-illness'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/illness/continued-illness')
       }
     }
@@ -209,12 +209,12 @@ module.exports = function (router) {
     var info = ''
     var reasonObject = {}
 
-    reasonObject = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(reasonObject)
+    reasonObject = req.session.appealReasons.pop()
+    req.session.appealReasons.push(reasonObject)
 
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].continuedIllness
+      info = req.session.appealReasons[id].continuedIllness
       res.render('illness/continued-illness', {
         scenario: req.session.scenario,
         reason: reasonObject,
@@ -229,9 +229,9 @@ module.exports = function (router) {
     }
   })
   router.post('/illness/continued-illness', function (req, res) {
-    var reasonObject = req.session.extensionReasons.pop()
+    var reasonObject = req.session.appealReasons.pop()
     reasonObject.continuedIllness = req.body.continuedIllness
-    req.session.extensionReasons.push(reasonObject)
+    req.session.appealReasons.push(reasonObject)
     var continuedIllness = req.body.continuedIllness
     var editId = req.body.editId
     var errorFlag = false
@@ -249,7 +249,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      reasonObject = req.session.extensionReasons[req.session.extensionReasons.length - 1]
+      reasonObject = req.session.appealReasons[req.session.appealReasons.length - 1]
       res.render('illness/continued-illness', {
         errorList: errorList,
         Err: Err,
@@ -260,25 +260,25 @@ module.exports = function (router) {
       switch (req.body.continuedIllness) {
         case 'yes':
           if (req.body.editId !== '') {
-            req.session.extensionReasons[editId].continuedIllness = continuedIllness
+            req.session.appealReasons[editId].continuedIllness = continuedIllness
             res.redirect('/check-your-answers')
           } else {
-            req.session.extensionReasons.pop()
+            req.session.appealReasons.pop()
             reasonObject.continuedIllness = req.body.continuedIllness
             reasonObject.nextStep = 'illness/illness-information'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
             res.redirect('/illness/illness-information')
           }
           break
         case 'no':
           if (req.body.editId !== '') {
-            req.session.extensionReasons[editId].continuedIllness = continuedIllness
+            req.session.appealReasons[editId].continuedIllness = continuedIllness
             res.redirect('/illness/illness-end-date')
           } else {
-            reasonObject = req.session.extensionReasons.pop()
+            reasonObject = req.session.appealReasons.pop()
             reasonObject.continuedIllness = req.body.continuedIllness
             reasonObject.nextStep = 'illness/illness-end-date'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
             res.redirect('/illness/illness-end-date')
             break
           }
@@ -290,14 +290,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].illnessEndDate
+      info = req.session.appealReasons[id].illnessEndDate
       res.render('illness/illness-end-date', {
         inputClasses: inputClasses,
         scenario: req.session.scenario,
@@ -327,9 +327,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -370,7 +370,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('illness/illness-end-date', {
         errorList: errorList,
         illnessEndDayErr: illnessEndDayErr,
@@ -388,16 +388,16 @@ module.exports = function (router) {
         illnessEndDate.day = req.body['illnessEndDate-day']
         illnessEndDate.month = req.body['illnessEndDate-month']
         illnessEndDate.year = req.body['illnessEndDate-year']
-        req.session.extensionReasons[editId].illnessEndDate = illnessEndDate
+        req.session.appealReasons[editId].illnessEndDate = illnessEndDate
         res.redirect('/check-your-answers')
       } else {
-        req.session.extensionReasons.pop()
+        req.session.appealReasons.pop()
         illnessEndDate.day = req.body['illnessEndDate-day']
         illnessEndDate.month = req.body['illnessEndDate-month']
         illnessEndDate.year = req.body['illnessEndDate-year']
         reasonObject.illnessEndDate = illnessEndDate
         reasonObject.nextStep = 'illness/illness-information'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/illness/illness-information')
       }
     }
@@ -442,7 +442,7 @@ module.exports = function (router) {
     var info = ''
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].illnessInformation
+      info = req.session.appealReasons[id].illnessInformation
       res.render('illness/illness-information', {
         id: id,
         info: info
@@ -475,13 +475,13 @@ module.exports = function (router) {
       })
     } else {
       if (req.body.editId !== '') {
-        req.session.extensionReasons[editId].illnessInformation = illnessInformation
+        req.session.appealReasons[editId].illnessInformation = illnessInformation
         res.redirect('/check-your-answers')
       } else {
-        var reasonObject = req.session.extensionReasons.pop()
+        var reasonObject = req.session.appealReasons.pop()
         reasonObject.illnessInformation = req.body.illnessInformation
         reasonObject.nextStep = 'evidence'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/evidence')
       }
     }

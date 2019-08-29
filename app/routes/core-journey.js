@@ -14,13 +14,13 @@ module.exports = function (router) {
     var checkedDisaster = false
 
     if (req.query.restart === 'yes') {
-      req.session.extensionReasons = []
+      req.session.appealReasons = []
       del('public/saved-sessions/' + companyNumber + '.json')
       res.render('choose-reason')
     } else if (req.query.id) {
       id = req.query.id
-      console.log(req.session.extensionReasons)
-      reasonObject = req.session.extensionReasons[id]
+      console.log(req.session.appealReasons)
+      reasonObject = req.session.appealReasons[id]
       switch (reasonObject.reason) {
         case 'illness':
           checkedIllness = true
@@ -60,29 +60,29 @@ module.exports = function (router) {
   })
   router.post('/choose-reason', function (req, res) {
     var reasonObject = {}
-    var extensionReason = req.body.extensionReason
+    var appealReason = req.body.appealReason
     var otherReason = req.body.otherReason
     var editId = req.body.editId
     var errorFlag = false
-    var extensionReasonErr = {}
+    var appealReasonErr = {}
     var otherReasonErr = {}
     var errorList = []
     reasonObject.documents = []
 
-    if (typeof extensionReason === 'undefined') {
-      extensionReasonErr.type = 'blank'
-      extensionReasonErr.text = 'You must select a reason'
-      extensionReasonErr.href = '#choose-reason-1'
-      extensionReasonErr.flag = true
+    if (typeof appealReason === 'undefined') {
+      appealReasonErr.type = 'blank'
+      appealReasonErr.text = 'You must select a reason'
+      appealReasonErr.href = '#choose-reason-1'
+      appealReasonErr.flag = true
     }
-    if (extensionReason === 'other' && otherReason === '') {
-      extensionReasonErr.type = 'invalid'
-      extensionReasonErr.text = 'You must tell us the reason'
-      extensionReasonErr.href = '#other-reason'
-      extensionReasonErr.flag = true
+    if (appealReason === 'other' && otherReason === '') {
+      appealReasonErr.type = 'invalid'
+      appealReasonErr.text = 'You must tell us the reason'
+      appealReasonErr.href = '#other-reason'
+      appealReasonErr.flag = true
     }
-    if (extensionReasonErr.flag) {
-      errorList.push(extensionReasonErr)
+    if (appealReasonErr.flag) {
+      errorList.push(appealReasonErr)
       errorFlag = true
     }
     if (otherReasonErr.flag) {
@@ -90,111 +90,111 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('choose-reason', {
         errorList: errorList,
-        extensionReasonErr: extensionReasonErr,
+        appealReasonErr: appealReasonErr,
         otherReasonErr: otherReasonErr,
-        extensionReason: extensionReason,
+        appealReason: appealReason,
         otherReason: otherReason
       })
     } else {
-      reasonObject.reason = req.body.extensionReason
+      reasonObject.reason = req.body.appealReason
       reasonObject.complete = false
-      switch (req.body.extensionReason) {
+      switch (req.body.appealReason) {
         case 'illness':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
             reasonObject.nextStep = 'illness/who-was-ill'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/illness/who-was-ill')
           break
         case 'authCode':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
             reasonObject.nextStep = '/auth-code/address'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/auth-code/address')
           break
         case 'damage':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
             reasonObject.nextStep = '/theft-criminal-damage/damage-date'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/theft-criminal-damage/damage-date')
           break
         case 'disaster':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
             reasonObject.nextStep = '/natural-disaster/disaster-date'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/natural-disaster/disaster-date')
           break
         case 'accounts':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
             reasonObject.nextStep = '/accounts/accounts-date'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/accounts/accounts-date')
           break
         case 'companyChanges':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
             reasonObject.nextStep = '/company-changes/change-happened'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/company-changes/change-happened')
           break
         case 'computerProblem':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
             reasonObject.nextStep = '/computer-problem/choose-computer-problem'
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/computer-problem/choose-computer-problem')
           break
         case 'death':
           if (editId !== '') {
-            req.session.extensionReasons[editId].reason = reasonObject.reason
+            req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           res.redirect('/death/reason-death')
           break
         case 'other':
           reasonObject.otherReason = req.body.otherReason
           reasonObject.nextStep = 'other/reason-other'
-          req.session.extensionReasons.push(reasonObject)
+          req.session.appealReasons.push(reasonObject)
           res.redirect('other/reason-other')
           break
       }
     }
   })
-  router.get('/add-extension-reason', function (req, res) {
-    res.render('add-extension-reason')
+  router.get('/add-appeal-reason', function (req, res) {
+    res.render('add-appeal-reason')
   })
-  router.post('/add-extension-reason', function (req, res) {
-    var addExtensionReason = req.body.addExtensionReason
+  router.post('/add-appeal-reason', function (req, res) {
+    var addAppealReason = req.body.addAppealReason
     var errorFlag = false
     var Err = {}
     var errorList = []
 
-    if (typeof addExtensionReason === 'undefined') {
+    if (typeof addAppealReason === 'undefined') {
       Err.type = 'blank'
-      Err.text = 'You must tell us if there is another reason for your extension'
-      Err.href = '#add-extension-reason-1'
+      Err.text = 'You must tell us if there is another reason for your appeal'
+      Err.href = '#add-appeal-reason-1'
       Err.flag = true
     }
     if (Err.flag) {
@@ -202,12 +202,12 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      res.render('add-extension-reason', {
+      res.render('add-appeal-reason', {
         errorList: errorList,
         Err: Err
       })
     } else {
-      switch (req.body.addExtensionReason) {
+      switch (req.body.addAppealReason) {
         case 'yes':
           res.redirect('/choose-reason')
           break
@@ -244,21 +244,21 @@ module.exports = function (router) {
         Err: Err
       })
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
       reasonObject.supportingEvidence = req.body.supportingEvidence
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       switch (req.body.supportingEvidence) {
         case 'yes':
           reasonObject.nextStep = 'evidence-upload'
           res.redirect('/evidence-upload')
           break
         case 'no':
-          if (req.session.extensionReasons.length > 1) {
+          if (req.session.appealReasons.length > 1) {
             reasonObject.nextStep = 'check-your-answers'
             res.redirect('/check-your-answers')
           } else {
-            reasonObject.nextStep = 'add-extension-reason'
-            res.redirect('/add-extension-reason')
+            reasonObject.nextStep = 'add-appeal-reason'
+            res.redirect('/add-appeal-reason')
           }
           break
       }
@@ -272,15 +272,15 @@ module.exports = function (router) {
     console.log(id)
 
     if (req.query.id) {
-      reasonObject = req.session.extensionReasons[id]
+      reasonObject = req.session.appealReasons[id]
       continueLink = 'check-your-answers'
     } else {
-      reasonObject = req.session.extensionReasons.pop()
-      req.session.extensionReasons.push(reasonObject)
-      if (req.session.extensionReasons.length > 1) {
+      reasonObject = req.session.appealReasons.pop()
+      req.session.appealReasons.push(reasonObject)
+      if (req.session.appealReasons.length > 1) {
         continueLink = 'check-your-answers'
       } else {
-        continueLink = 'add-extension-reason'
+        continueLink = 'add-appeal-reason'
       }
     }
 
@@ -306,7 +306,7 @@ module.exports = function (router) {
 
     if (fileName === 'txt') {
       Err.type = 'unsupported'
-      Err.text = 'We don\'t support files with an extension of \'.' + fileName + '\''
+      Err.text = 'We don\'t support files with an appeal of \'.' + fileName + '\''
       Err.href = '#file-upload'
       Err.flag = true
       errorList.push(Err)
@@ -314,15 +314,15 @@ module.exports = function (router) {
     }
     if (errorFlag === true) {
       if (req.body.id) {
-        reasonObject = req.session.extensionReasons[id]
+        reasonObject = req.session.appealReasons[id]
         continueLink = 'check-your-answers'
       } else {
-        reasonObject = req.session.extensionReasons.pop()
-        req.session.extensionReasons.push(reasonObject)
-        if (req.session.extensionReasons.length > 1) {
+        reasonObject = req.session.appealReasons.pop()
+        req.session.appealReasons.push(reasonObject)
+        if (req.session.appealReasons.length > 1) {
           continueLink = 'check-your-answers'
         } else {
-          continueLink = 'add-extension-reason'
+          continueLink = 'add-appeal-reason'
         }
       }
       res.render('evidence-upload', {
@@ -336,13 +336,13 @@ module.exports = function (router) {
     } else {
       if (req.body.id) {
         reasonObject.nextStep = 'check-your-answers'
-        req.session.extensionReasons[id].documents.push(doc)
+        req.session.appealReasons[id].documents.push(doc)
         res.redirect('/evidence-upload?id=' + id)
       } else {
         reasonObject.nextStep = 'evidence-upload'
-        reasonObject = req.session.extensionReasons.pop()
+        reasonObject = req.session.appealReasons.pop()
         reasonObject.documents.push(doc)
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/evidence-upload')
       }
     }
@@ -353,10 +353,10 @@ module.exports = function (router) {
     var reasonObject = {}
 
     if (reasonID === '') {
-      reasonObject = req.session.extensionReasons.pop()
-      req.session.extensionReasons.push(reasonObject)
+      reasonObject = req.session.appealReasons.pop()
+      req.session.appealReasons.push(reasonObject)
     } else {
-      reasonObject = req.session.extensionReasons[reasonID]
+      reasonObject = req.session.appealReasons[reasonID]
     }
 
     res.render('remove-document', {
@@ -375,9 +375,9 @@ module.exports = function (router) {
     var errorList = []
 
     if (reasonID === '') {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     } else {
-      reasonObject = req.session.extensionReasons[reasonID]
+      reasonObject = req.session.appealReasons[reasonID]
     }
 
     if (typeof removeDocument === 'undefined') {
@@ -392,7 +392,7 @@ module.exports = function (router) {
     }
     if (errorFlag === true) {
       if (reasonID === '') {
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
       }
       res.render('remove-document', {
         errorList: errorList,
@@ -406,15 +406,15 @@ module.exports = function (router) {
         case 'yes':
           if (reasonID === '') {
             reasonObject.documents.splice(documentID, 1)
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           } else {
             reasonObject.documents.splice(documentID, 1)
-            req.session.extensionReasons[reasonID] = reasonObject
+            req.session.appealReasons[reasonID] = reasonObject
           }
           break
         case 'no':
           if (reasonID === '') {
-            req.session.extensionReasons.push(reasonObject)
+            req.session.appealReasons.push(reasonObject)
           }
           break
       }
@@ -490,9 +490,9 @@ module.exports = function (router) {
     res.render('filing-deadline')
   })
   router.post('/filing-deadline', function (req, res) {
-    req.session.extensionApply = req.body.extensionApply
+    req.session.appealApply = req.body.appealApply
 
-    switch (req.session.extensionApply) {
+    switch (req.session.appealApply) {
       case 'yes':
         res.redirect('choose-reason')
         break
@@ -504,10 +504,10 @@ module.exports = function (router) {
   router.get('/remove-reason', function (req, res) {
     var id = req.query.id
     var reasonObject = {}
-    reasonObject = req.session.extensionReasons[id]
+    reasonObject = req.session.appealReasons[id]
     res.render('remove-reason', {
       scenario: req.session.scenario,
-      extensionReasons: req.session.extensionReasons,
+      appealReasons: req.session.appealReasons,
       reason: reasonObject,
       id: id
     })
@@ -520,7 +520,7 @@ module.exports = function (router) {
     var Err = {}
     var errorList = []
 
-    reasonObject = req.session.extensionReasons[id]
+    reasonObject = req.session.appealReasons[id]
 
     if (typeof removeReason === 'undefined') {
       Err.type = 'blank'
@@ -537,13 +537,13 @@ module.exports = function (router) {
         errorList: errorList,
         Err: Err,
         reason: reasonObject,
-        extensionReasons: req.session.extensionReasons
+        appealReasons: req.session.appealReasons
       })
     } else {
       switch (removeReason) {
         case 'yes':
-          req.session.extensionReasons.splice(id, 1)
-          if (req.session.extensionReasons.length === 0) {
+          req.session.appealReasons.splice(id, 1)
+          if (req.session.appealReasons.length === 0) {
             res.redirect('/choose-reason')
           } else {
             res.redirect('/check-your-answers')

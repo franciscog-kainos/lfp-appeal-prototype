@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Extension due to ill health: Who was ill?
+  Appeal due to ill health: Who was ill?
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -26,7 +26,7 @@
 
         {% if errorList.length > 0 %}
           {{ govukErrorSummary({
-                titleText: "There is an error on the page",
+                titleText: "There is a problem",
                 errorList: errorList
               }) }}
         {% endif %}

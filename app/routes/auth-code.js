@@ -33,14 +33,14 @@ module.exports = function (router) {
     } else {
       switch (authCodeRequested) {
         case 'yes':
-          reasonObject = req.session.extensionReasons.pop()
+          reasonObject = req.session.appealReasons.pop()
           reasonObject.requestedFlag = authCodeRequestedFlag
           reasonObject.flag = authCodeFlag
-          req.session.extensionReasons.push(reasonObject)
-          if (req.session.extensionReasons.length > 1) {
+          req.session.appealReasons.push(reasonObject)
+          if (req.session.appealReasons.length > 1) {
             res.redirect('/check-your-answers')
           } else {
-            res.redirect('/add-extension-reason')
+            res.redirect('/add-appeal-reason')
           }
           break
         case 'no':
@@ -82,13 +82,13 @@ module.exports = function (router) {
     } else {
       switch (confirmAddress) {
         case 'yes':
-          reasonObject = req.session.extensionReasons.pop()
+          reasonObject = req.session.appealReasons.pop()
           reasonObject.flag = authCodeFlag
-          req.session.extensionReasons.push(reasonObject)
-          if (req.session.extensionReasons.length > 1) {
+          req.session.appealReasons.push(reasonObject)
+          if (req.session.appealReasons.length > 1) {
             res.redirect('/check-your-answers')
           } else {
-            res.redirect('/add-extension-reason')
+            res.redirect('/add-appeal-reason')
           }
           break
         case 'no':
@@ -107,8 +107,8 @@ module.exports = function (router) {
     var id = req.body.id
 
     res.render('auth-code/change-address')
-    reasonObject = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(reasonObject)
+    reasonObject = req.session.appealReasons.pop()
+    req.session.appealReasons.push(reasonObject)
     reasonObject.nextStep = '/auth-code/address'
   })
 }

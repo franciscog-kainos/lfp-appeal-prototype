@@ -4,14 +4,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].accountsDate
+      info = req.session.appealReasons[id].accountsDate
       res.render('theft-criminal-damage/damage-date', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -40,9 +40,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -83,7 +83,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('theft-criminal-damage/damage-date', {
         errorList: errorList,
         damageDateDayErr: damageDateDayErr,
@@ -99,7 +99,7 @@ module.exports = function (router) {
         damageDate.day = damageDateDay
         damageDate.month = damageDateMonth
         damageDate.year = damageDateYear
-        req.session.extensionReasons[editId].damageDate = damageDate
+        req.session.appealReasons[editId].damageDate = damageDate
         res.redirect('/check-your-answers')
       } else {
         damageDate.day = req.body['damageDate-day']
@@ -107,7 +107,7 @@ module.exports = function (router) {
         damageDate.year = req.body['damageDate-year']
         reasonObject.damageDate = damageDate
         reasonObject.nextStep = 'theft-criminal-damage/reason-damage'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/theft-criminal-damage/reason-damage')
       }
     }
@@ -117,7 +117,7 @@ module.exports = function (router) {
     var info = ''
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].damage
+      info = req.session.appealReasons[id].damage
       res.render('theft-criminal-damage/reason-damage', {
         id: id,
         info: info
@@ -135,9 +135,9 @@ module.exports = function (router) {
     var errorList = []
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     if (damage === '') {
@@ -157,12 +157,12 @@ module.exports = function (router) {
       })
     } else {
       if (req.body.editId !== '') {
-        req.session.extensionReasons[editId].damage = damage
+        req.session.appealReasons[editId].damage = damage
         res.redirect('/check-your-answers')
       } else {
         reasonObject.damage = req.body.damage
         reasonObject.nextStep = 'evidence'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/evidence')
       }
     }

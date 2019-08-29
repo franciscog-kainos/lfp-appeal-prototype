@@ -3,11 +3,11 @@ module.exports = function (router) {
     var currentReason = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].problemReason
+      info = req.session.appealReasons[id].problemReason
       res.render('computer-problem/choose-computer-problem', {
         id: id,
         info: info
@@ -47,28 +47,28 @@ module.exports = function (router) {
         problemReasonErr: problemReasonErr
       })
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
       if (problemReason === 'Authentication code') {
         reasonObject.problemReason = req.body.problemReason
         if (editId !== '') {
-          req.session.extensionReasons[editId].problemReason = reasonObject.problemReason
+          req.session.appealReasons[editId].problemReason = reasonObject.problemReason
         } else {
-          req.session.extensionReasons.push(reasonObject)
+          req.session.appealReasons.push(reasonObject)
         }
-        res.redirect('/add-extension-reason')
+        res.redirect('/add-appeal-reason')
       } else if (problemReason === 'Companies House website' || problemReason === 'Computer problems') {
         reasonObject.problemReason = req.body.problemReason
         if (editId !== '') {
-          req.session.extensionReasons[editId].problemReason = reasonObject.problemReason
+          req.session.appealReasons[editId].problemReason = reasonObject.problemReason
         } else {
-          req.session.extensionReasons.push(reasonObject)
+          req.session.appealReasons.push(reasonObject)
         }
         res.redirect('/computer-problem/problem-date')
       } else {
         reasonObject.problemReason = req.body.problemReason
         reasonObject.otherProblemReason = req.body.otherProblemReason
         reasonObject.nextStep = 'computer-problem/problem-date'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/computer-problem/problem-date')
       }
     }
@@ -78,14 +78,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].problemDate
+      info = req.session.appealReasons[id].problemDate
       res.render('computer-problem/problem-date', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -114,9 +114,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -157,7 +157,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('computer-problem/problem-date', {
         errorList: errorList,
         problemDateDayErr: problemDateDayErr,
@@ -173,7 +173,7 @@ module.exports = function (router) {
         problemDate.day = problemDateDay
         problemDate.month = problemDateMonth
         problemDate.year = problemDateYear
-        req.session.extensionReasons[editId].problemDate = problemDate
+        req.session.appealReasons[editId].problemDate = problemDate
         res.redirect('/check-your-answers')
       } else {
         problemDate.day = req.body['problemDate-day']
@@ -181,8 +181,8 @@ module.exports = function (router) {
         problemDate.year = req.body['problemDate-year']
         reasonObject.problemDate = problemDate
         reasonObject.nextStep = 'computer-problem/reason-computer-problem'
-        req.session.extensionReasons.push(reasonObject)
-        console.log(req.session.extensionReasons)
+        req.session.appealReasons.push(reasonObject)
+        console.log(req.session.appealReasons)
         res.redirect('/computer-problem/reason-computer-problem')
         console.log(reasonObject)
       }
@@ -193,7 +193,7 @@ module.exports = function (router) {
     var info = ''
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].computerProblem
+      info = req.session.appealReasons[id].computerProblem
       res.render('computer-problem/reason-computer-problem', {
         id: id,
         info: info
@@ -226,13 +226,13 @@ module.exports = function (router) {
       })
     } else {
       if (req.body.editId !== '') {
-        req.session.extensionReasons[editId].computerProblem = computerProblem
+        req.session.appealReasons[editId].computerProblem = computerProblem
         res.redirect('/check-your-answers')
       } else {
-        var reasonObject = req.session.extensionReasons.pop()
+        var reasonObject = req.session.appealReasons.pop()
         reasonObject.computerProblem = req.body.computerProblem
         reasonObject.nextStep = 'evidence'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         console.log(reasonObject)
         res.redirect('/evidence')
       }

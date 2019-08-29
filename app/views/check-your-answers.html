@@ -13,7 +13,7 @@
 }) }}
   {{ govukBackLink({
   text: "Back",
-  href: "add-extension-reason"
+  href: "add-appeal-reason"
 }) }}
 {% endblock %}
 
@@ -29,7 +29,10 @@
           Check your application
         </h1>
       {% endif %}
-      <dl class="app-check-your-answers app-check-your-answers--long govuk-!-margin-bottom-8">
+      <h2 class="govuk-heading-m">
+        Penalty details
+      </h2>
+      <dl class="app-check-your-answers app-check-your-answers--short govuk-!-margin-bottom-8">
         <div class="app-check-your-answers__contents">
           <dt class="app-check-your-answers__question">
             Company Name
@@ -50,25 +53,34 @@
         </div>
         <div class="app-check-your-answers__contents">
           <dt class="app-check-your-answers__question">
-            Address
+            Type
           </dt>
           <dd class="app-check-your-answers__answer">
-            {{ scenario.company.address | nl2br | safe }}
+            Late Filing Penalty ({{ penaltyReference }})
           </dd>
           <dd class="app-check-your-answers__change"></dd>
         </div>
         <div class="app-check-your-answers__contents">
           <dt class="app-check-your-answers__question">
-            Accounts due
+            Amount
           </dt>
           <dd class="app-check-your-answers__answer">
-            {{ scenario.company.accountsDue }}
+            &pound;{{ scenario.penalties[0].value }}
           </dd>
           <dd class="app-check-your-answers__change"></dd>
         </div>
         <div class="app-check-your-answers__contents">
           <dt class="app-check-your-answers__question">
-            Contact email address
+            Date
+          </dt>
+          <dd class="app-check-your-answers__answer">
+            {{ scenario.penalties[0].filed }}
+          </dd>
+          <dd class="app-check-your-answers__change"></dd>
+        </div>
+        <div class="app-check-your-answers__contents">
+          <dt class="app-check-your-answers__question">
+            Contact email
           </dt>
           <dd class="app-check-your-answers__answer">
             {{ userEmail }}
@@ -76,22 +88,22 @@
           <dd class="app-check-your-answers__change"></dd>
         </div>
       </dl>
-      {% if extensionReasons.length > 1 %}
-        <h2 class="govuk-heading-l">Extension reasons</h2>
+      {% if appealReasons.length > 1 %}
+        <h2 class="govuk-heading-l">Reasons for appeal</h2>
       {% else %}
-        <h2 class="govuk-heading-l">Extension reason</h2>
+        <h2 class="govuk-heading-l">Reason for appeal</h2>
       {% endif %}
-      {% for reason in extensionReasons %}
-        {% if extensionReasons.length > 1 %}
-          {% set extensionListIndex %}
+      {% for reason in appealReasons %}
+        {% if appealReasons.length > 1 %}
+          {% set appealListIndex %}
           {{loop.index}}:
           {% endset %}
         {% else %}
-          {% set extensionListIndex = '' %}
+          {% set appealListIndex = '' %}
         {% endif %}
         <div class="reason-container">
           {% if reason.reason === 'illness' %}
-            <h3 class="govuk-heading-m">{{extensionListIndex}}Illness</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Illness</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">
@@ -190,7 +202,7 @@
               </div>
             </dl>
           {% elif reason.reason === 'authCode' %}
-            <h3 class="govuk-heading-m">{{extensionListIndex}}Missing company authentication code</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Missing company authentication code</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">
@@ -202,7 +214,7 @@
               </div>
             </dl>
           {% elif reason.reason === 'damage' %}
-            <h3 class="govuk-heading-m">{{extensionListIndex}}Theft or criminal damage</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Theft or criminal damage</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">
@@ -255,7 +267,7 @@
               </div>
             </dl>
           {% elif reason.reason === 'disaster' %}
-            <h3 class="govuk-heading-m">{{extensionListIndex}}Natural disaster</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Natural disaster</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">
@@ -300,7 +312,7 @@
               {% endif %}
             </dl>
           {% elif reason.reason === 'accounts' %}
-            <h3 class="govuk-heading-m">{{extensionListIndex}}Accounting issues</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Accounting issues</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">
@@ -345,7 +357,7 @@
               {% endif %}
             </dl>
           {% elif reason.reason === 'companyChanges' %}
-            <h3 class="govuk-heading-m">{{extensionListIndex}}Changes to the company</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Changes to the company</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               {% if reason.dateWasChanged != null %}
                 <div class="app-check-your-answers__contents">
@@ -423,7 +435,7 @@
               {% endif %}
             </dl>
           {% elif reason.reason === 'computerProblem' %}
-            <h3 class="govuk-heading-m">{{extensionListIndex}}Problems filing online</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Problems filing online</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">

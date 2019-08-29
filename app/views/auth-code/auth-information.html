@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Appeal due to ill health: Tell us about the illness
+  Appeal due to missing authentication code: Tell us more
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -15,7 +15,7 @@
 }) }}
   {{ govukBackLink({
   text: "Back",
-  href: "continued-illness"
+  href: "/choose-reason"
 }) }}
 {% endblock %}
 {% block content %}

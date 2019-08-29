@@ -24,9 +24,9 @@ module.exports = function (router) {
         Err: Err
       })
     } else {
-      var reasonObject = req.session.extensionReasons.pop()
+      var reasonObject = req.session.appealReasons.pop()
       reasonObject.otherInformation = req.body.otherInformation
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.redirect('/evidence')
     }
   })

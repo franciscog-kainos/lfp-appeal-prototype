@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Choose a reason for your extension
+  You must tell us the reason for the appeal
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -31,15 +31,15 @@
         {% endif %}
 
         {% if errorList.length > 0 %}
-          {% set extensionReasonError = {
-            text: extensionReasonErr.text
+          {% set appealReasonError = {
+            text: appealReasonErr.text
           } %}
         {% else %}
-          {% set extensionReasonError = false %}
+          {% set appealReasonError = false %}
         {% endif %}
 
         {% if errorList.length > 0 %}
-          {% if extensionReasonErr.type === 'invalid' %}
+          {% if appealReasonErr.type === 'invalid' %}
             {% set otherReasonError = true %}
           {% else %}
             {% set otherReasonError = false %}
@@ -60,11 +60,11 @@
 
         {{ govukRadios({
                 idPrefix: "choose-reason",
-                name: "extensionReason",
-                errorMessage: extensionReasonError,
+                name: "appealReason",
+                errorMessage: appealReasonError,
                 fieldset: {
                   legend: {
-                    text: 'Why are you applying for an extension?',
+                    text: 'Why are you appealing this penalty?',
                     isPageHeading: true,
                     classes: 'govuk-fieldset__legend--xl'
                   }
@@ -107,7 +107,7 @@
                   },
                   {
                     value: "other",
-                    text: "I'm applying for another reason",
+                    text: "I'm appealing for another reason",
                     checked: otherReasonError,
                     conditional: {
                       html: otherInput

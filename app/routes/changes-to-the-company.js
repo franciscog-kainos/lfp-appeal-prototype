@@ -25,16 +25,16 @@ module.exports = function (router) {
         Err: Err
       })
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
       switch (req.body.changeHappened) {
         case 'yes':
           reasonObject.nextStep = 'company-changes/date-was-changed'
-          req.session.extensionReasons.push(reasonObject)
+          req.session.appealReasons.push(reasonObject)
           res.redirect('/company-changes/date-was-changed')
           break
         case 'no':
           reasonObject.nextStep = 'company-changes/date-will-change'
-          req.session.extensionReasons.push(reasonObject)
+          req.session.appealReasons.push(reasonObject)
           res.redirect('/company-changes/date-will-change')
           break
       }
@@ -66,16 +66,16 @@ module.exports = function (router) {
         Err: Err
       })
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
       switch (req.body.awareOfChange) {
         case 'yes':
           reasonObject.nextStep = 'company-changes/aware-change-date'
-          req.session.extensionReasons.push(reasonObject)
+          req.session.appealReasons.push(reasonObject)
           res.redirect('/company-changes/aware-change-date')
           break
         case 'no':
           reasonObject.nextStep = 'company-changes/reason-company-changes'
-          req.session.extensionReasons.push(reasonObject)
+          req.session.appealReasons.push(reasonObject)
           res.redirect('/company-changes/reason-company-changes')
           break
       }
@@ -86,14 +86,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].awareChangeDate
+      info = req.session.appealReasons[id].awareChangeDate
       res.render('company-changes/aware-change-date', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -122,9 +122,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -165,7 +165,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('company-changes/aware-change-date', {
         errorList: errorList,
         awareChangeDayErr: awareChangeDayErr,
@@ -181,7 +181,7 @@ module.exports = function (router) {
         awareChangeDate.day = awareChangeDay
         awareChangeDate.month = awareChangeMonth
         awareChangeDate.year = awareChangeYear
-        req.session.extensionReasons[editId].awareChangeDate = awareChangeDate
+        req.session.appealReasons[editId].awareChangeDate = awareChangeDate
         res.redirect('/check-your-answers')
       } else {
         awareChangeDate.day = req.body['awareChangeDate-day']
@@ -189,7 +189,7 @@ module.exports = function (router) {
         awareChangeDate.year = req.body['awareChangeDate-year']
         reasonObject.awareChangeDate = awareChangeDate
         reasonObject.nextStep = 'company-changes/reason-company-changes'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/company-changes/reason-company-changes')
       }
     }
@@ -199,14 +199,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].dateWasChanged
+      info = req.session.appealReasons[id].dateWasChanged
       res.render('company-changes/date-was-changed', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -235,9 +235,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -278,7 +278,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('company-changes/date-was-changed', {
         errorList: errorList,
         dateWasChangedDayErr: dateWasChangedDayErr,
@@ -294,7 +294,7 @@ module.exports = function (router) {
         dateWasChanged.day = dateWasChangedDay
         dateWasChanged.month = dateWasChangedMonth
         dateWasChanged.year = dateWasChangedYear
-        req.session.extensionReasons[editId].dateWasChanged = dateWasChanged
+        req.session.appealReasons[editId].dateWasChanged = dateWasChanged
         res.redirect('/check-your-answers')
       } else {
         dateWasChanged.day = req.body['dateWasChanged-day']
@@ -302,8 +302,8 @@ module.exports = function (router) {
         dateWasChanged.year = req.body['dateWasChanged-year']
         reasonObject.dateWasChanged = dateWasChanged
         reasonObject.nextStep = 'company-changes/aware-of-change'
-        req.session.extensionReasons.push(reasonObject)
-        console.log(req.session.extensionReasons)
+        req.session.appealReasons.push(reasonObject)
+        console.log(req.session.appealReasons)
         res.redirect('/company-changes/aware-of-change')
       }
     }
@@ -313,14 +313,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].dateWasChanged
+      info = req.session.appealReasons[id].dateWasChanged
       res.render('company-changes/date-will-change', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -349,9 +349,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -392,7 +392,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('company-changes/date-will-change', {
         errorList: errorList,
         dateWillChangeDayErr: dateWillChangeDayErr,
@@ -408,7 +408,7 @@ module.exports = function (router) {
         dateWillChange.day = dateWillChangeDay
         dateWillChange.month = dateWillChangeMonth
         dateWillChange.year = dateWillChangeYear
-        req.session.extensionReasons[editId].dateWillChange = dateWillChange
+        req.session.appealReasons[editId].dateWillChange = dateWillChange
         res.redirect('/check-your-answers')
       } else {
         dateWillChange.day = req.body['dateWillChange-day']
@@ -416,8 +416,8 @@ module.exports = function (router) {
         dateWillChange.year = req.body['dateWillChange-year']
         reasonObject.dateWillChange = dateWillChange
         reasonObject.nextStep = 'company-changes/aware-change-date'
-        req.session.extensionReasons.push(reasonObject)
-        console.log(req.session.extensionReasons)
+        req.session.appealReasons.push(reasonObject)
+        console.log(req.session.appealReasons)
         res.redirect('/company-changes/aware-change-date')
       }
     }
@@ -427,7 +427,7 @@ module.exports = function (router) {
     var info = ''
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].companyChanges
+      info = req.session.appealReasons[id].companyChanges
       res.render('company-changes/reason-company-changes', {
         id: id,
         info: info
@@ -445,9 +445,9 @@ module.exports = function (router) {
     var errorList = []
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     if (companyChanges === '') {
@@ -467,12 +467,12 @@ module.exports = function (router) {
       })
     } else {
       if (req.body.editId !== '') {
-        req.session.extensionReasons[editId].companyChanges = companyChanges
+        req.session.appealReasons[editId].companyChanges = companyChanges
         res.redirect('/check-your-answers')
       } else {
         reasonObject.companyChanges = req.body.companyChanges
         reasonObject.nextStep = 'evidence'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/evidence')
       }
     }

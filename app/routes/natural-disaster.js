@@ -4,14 +4,14 @@ module.exports = function (router) {
     var inputClasses = {}
     var id = 0
     var info = ''
-    currentReason = req.session.extensionReasons.pop()
-    req.session.extensionReasons.push(currentReason)
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
     inputClasses.day = 'govuk-input--width-2'
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].accountsDate
+      info = req.session.appealReasons[id].accountsDate
       res.render('natural-disaster/disaster-date', {
         inputClasses: inputClasses,
         reason: currentReason,
@@ -40,9 +40,9 @@ module.exports = function (router) {
     var inputClasses = {}
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     inputClasses.day = 'govuk-input--width-2'
@@ -83,7 +83,7 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      req.session.extensionReasons.push(reasonObject)
+      req.session.appealReasons.push(reasonObject)
       res.render('natural-disaster/disaster-date', {
         errorList: errorList,
         disasterDateDayErr: disasterDateDayErr,
@@ -99,14 +99,14 @@ module.exports = function (router) {
         disasterDate.day = disasterDateDay
         disasterDate.month = disasterDateMonth
         disasterDate.year = disasterDateYear
-        req.session.extensionReasons[editId].disasterDate = disasterDate
+        req.session.appealReasons[editId].disasterDate = disasterDate
         res.redirect('/check-your-answers')
       } else {
         disasterDate.day = req.body['disasterDate-day']
         disasterDate.month = req.body['disasterDate-month']
         disasterDate.year = req.body['disasterDate-year']
         reasonObject.disasterDate = disasterDate
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/natural-disaster/reason-natural-disaster')
       }
     }
@@ -116,7 +116,7 @@ module.exports = function (router) {
     var info = ''
     if (req.query.id) {
       id = req.query.id
-      info = req.session.extensionReasons[id].naturalDisaster
+      info = req.session.appealReasons[id].naturalDisaster
       res.render('natural-disaster/reason-natural-disaster', {
         id: id,
         info: info
@@ -134,9 +134,9 @@ module.exports = function (router) {
     var errorList = []
 
     if (req.body.editId !== '') {
-      reasonObject = req.session.extensionReasons[editId]
+      reasonObject = req.session.appealReasons[editId]
     } else {
-      reasonObject = req.session.extensionReasons.pop()
+      reasonObject = req.session.appealReasons.pop()
     }
 
     if (naturalDisaster === '') {
@@ -156,12 +156,12 @@ module.exports = function (router) {
       })
     } else {
       if (req.body.editId !== '') {
-        req.session.extensionReasons[editId].naturalDistaster = naturalDisaster
+        req.session.appealReasons[editId].naturalDistaster = naturalDisaster
         res.redirect('/check-your-answers')
       } else {
         reasonObject.naturalDisaster = req.body.naturalDisaster
         reasonObject.nextStep = 'evidence'
-        req.session.extensionReasons.push(reasonObject)
+        req.session.appealReasons.push(reasonObject)
         res.redirect('/evidence')
       }
     }
