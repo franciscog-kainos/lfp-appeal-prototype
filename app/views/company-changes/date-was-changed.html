@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Applying for an extension due to company change: Tell us when the change happened
+  Appealing due to company change: Tell us when the change happened
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -56,7 +56,7 @@
           errorMessage: dateWasChangedError,
           fieldset: {
             legend: {
-              text: "When did the changes to the company happen?",
+              text: "When did the change to the company happen?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }

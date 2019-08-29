@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Applying for an extension for other reasons
+  Appealing for other reasons
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -22,7 +22,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% set hintHTML %}
-      Anything you tell us to support your extension will be kept confidential.
+      Anything you tell us to support your application will be kept confidential.
       {% endset %}
       <form action="" method="post">
         {% if errorList.length > 0 %}
@@ -31,7 +31,7 @@
             errorList: errorList
           }) }}
         {% endif %}
-        <h1 class="govuk-heading-xl">How does this affect your ability to file on time?</h1>
+        <h1 class="govuk-heading-xl">How did this affect your ability to file on time?</h1>
         {{ govukTextarea({
           name: "damage",
           id: "damage",

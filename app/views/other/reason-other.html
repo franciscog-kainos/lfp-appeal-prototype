@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Applying for an extension for other reasons
+  Appealing for other reasons
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -31,14 +31,14 @@
           errorList: errorList
         }) }}
         {% endif %}
-        <h1 class="govuk-heading-xl">Provide more information to support your extension</h1>
+        <h1 class="govuk-heading-xl">Provide more information to support your application</h1>
         {{ govukTextarea({
           name: "otherInformation",
           id: "other-information",
           errorMessage: Err.text,
           rows: '8',
           label: {
-            text: "Anything you tell us to support your extension will be kept confidential.",
+            text: "Anything you tell us to support your application will be kept confidential.",
             isPageHeading: false,
             classes: 'govuk-heading-large'
           }

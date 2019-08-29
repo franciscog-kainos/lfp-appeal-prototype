@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Remove extension reason
+  Remove this reason for appeal
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -68,7 +68,7 @@
         }) }}
         {% if extensionReasons.length === 1 %}
           {{ govukInsetText({
-            text: "You must have at least one reason to apply for an extension. By removing this reason, you'll need to enter another reason."
+            text: "You must have at least one reason to apply to appeal a late filing penalty. By removing this reason, you'll need to enter another reason."
           }) }}
         {% endif %}
 
