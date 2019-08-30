@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Confirm the company
+{% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "company-number"
+}) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Check company details</h1>
+      <h2 class="govuk-heading-l">{{scenario.company.name}}</h2>
+
+      {% set inactiveHTML %}
+      {% if scenario.company.status === 'Inactive' %}
+        <span class="govuk-!-font-weight-bold">Dissolved</span>
+      {% else %}
+        {{scenario.company.status}}
+      {% endif %}
+      {% endset %}
+
+      {% set overdueHTML %}
+      {% if scenario.company.deadlineStatus === 'Overdue' %}
+        {{scenario.company.accountsDue}}
+        <br/>
+        <span class="govuk-!-font-weight-bold">Your accounts are overdue</span>
+      {% elseif scenario.company.accountsDue === 'inactive' %}
+        You don’t have to file final accounts with Companies House
+      {% else %}
+        {{scenario.company.accountsDue}}
+      {% endif %}
+      {% endset %}
+
+      {{ govukTable({
+
+  firstCellIsHeader: true,
+  classes: "align-top",
+  rows: [
+    [
+      {
+        text: "Company number"
+      },
+      {
+        text: scenario.company.number
+      }
+    ],
+    [
+      {
+        text: "Status"
+      },
+      {
+        html: inactiveHTML
+      }
+    ],
+    [
+      {
+        text: "Incorporation date"
+      },
+      {
+        text: scenario.company.incorporationDate
+      }
+    ],
+    [
+      {
+        text: "Company type"
+      },
+      {
+        text: scenario.company.companyType
+      }
+    ],
+    [
+      {
+        text: "Registered office address"
+      },
+      {
+        html: scenario.company.address | nl2br
+      }
+    ],
+    [
+      {
+        text: "Accounts due"
+      },
+      {
+        html: overdueHTML
+      }
+    ]
+  ]
+}) }}
+
+      {% if scenario.company.deadlineStatus === 'Overdue' %}
+        {{ govukButton({
+text: "Continue",
+href: "ptf/ptf"
+}) }}
+      {% elif scenario.company.deadlineStatus === 'notDue' %}
+        {{ govukButton({
+text: "Continue",
+href: "accountsnotdue"
+}) }}
+      {% elif scenario.company.deadlineStatus === 'unlimited' %}
+        {{ govukButton({
+text: "Continue",
+href: "accountsnotneeded"
+}) }}
+      {% elif scenario.company.accountingReferenceDateRequested === 'yes' %}
+        {{ govukButton({
+text: "Continue",
+href: "account-reference-date"
+}) }}
+      {% else %}
+        {{ govukButton({
+text: "Continue",
+href: "choose-reason"
+}) }}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

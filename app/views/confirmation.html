@@ -7,46 +7,37 @@
   Confirmation page
 {% endblock %}
 
-{% block main %}
-  <div class="govuk-width-container">
+{% block content %}
 
-    <main role="main" class="govuk-main-wrapper">
-
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-
-          <div class="govuk-panel govuk-panel--confirmation">
-            <h1 class="govuk-panel__title">
-              Appeal submitted
-            </h1>
-            <div class="govuk-panel__body">
-              Your reference number is your company number<br>
-              <strong>{{ companyNumber }}</strong>
-            </div>
-          </div>
-
-          <p class="govuk-body-l">
-            We've sent a confirmation email to
-            <span class="govuk-body-l govuk-!-font-weight-bold">{{ email }}</span>
-            which contains your reference number.
-          </p>
-
-          <p class="govuk-body">
-            <a href="print-appeal" class="govuk-link">Print or save a copy of this appeal</a>
-          </p>
-
-          <h2 class="govuk-heading-m">What happens next</h2>
-          <p>We'll review the information you've provided and make a decision about your appeal.</p>
-          <p>We'll contact you within 7 working days to confirm the outcome of your appeal. We may also contact you if we need more information.</p>
-          <p>
-            <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html">What did you think of this service?</a>
-            (takes 30 seconds)</p>
-
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">Application submitted</h1>
+        <div class="govuk-panel__body">
+          Your reference number is the company number<br>
+          <strong>{{ scenario.company.number }}</strong>
         </div>
       </div>
 
-    </main>
+      <p class="govuk-body-l">
+        We've sent a confirmation email to
+        <span class="govuk-body-l govuk-!-font-weight-bold">{{ userEmail }}</span>
+        which contains your application information.
+      </p>
+      <p class="govuk-body-l">
 
-  </div>
+        <p class="govuk-body">
+          <a href="javascript:if(window.print)window.print()" class="govuk-link">Print a copy of this application</a>
+        </p>
 
-{% endblock %}
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p>We'll review the information you've provided and make a decision about your appeal.</p>
+        <p>We'll contact you within 7 working days to confirm the outcome of your appeal. We may also contact you if we need more information.</p>
+        <p class="govuk-body">
+          <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html" class="govuk-link">What did you think of this service?</a>
+          (takes 30 seconds)
+        </p>
+      </div>
+    </div>
+
+  {% endblock %}

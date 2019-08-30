@@ -1,259 +1,574 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Check the details of your appeal
+  Check your answers before sending your application
 {% endblock %}
 
-{% block main %}
-  <div class="govuk-width-container">
-    {{ govukPhaseBanner({
-    tag: {
-      text: "alpha"
-    },
-    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-  }) }}
-    {{ govukBackLink({
-    text: "Back",
-    href: "add-appeal-reason"
-  }) }}
-    <main role="main" class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-xl">
-            Check your appeal
-          </h1>
-          <!-- only add a heading for a list if there is more than one list -->
-          <h2 class="govuk-heading-m">
-            Penalty details
-          </h2>
-          <dl class="app-check-your-answers app-check-your-answers--short">
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Company name
-              </dt>
-              <dd class="app-check-your-answers__answer">
-                {{ scenario.company.name }}
-              </dd>
-              <dd class="app-check-your-answers__change"></dd>
-            </div>
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Company number
-              </dt>
-              <dd class="app-check-your-answers__answer">
-                {{ scenario.company.number }}
-              </dd>
-              <dd class="app-check-your-answers__change"></dd>
-            </div>
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Type
-              </dt>
-              <dd class="app-check-your-answers__answer">
-                Late Filing Penalty ({{ penaltyReference }})
-              </dd>
-              <dd class="app-check-your-answers__change"></dd>
-            </div>
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Amount
-              </dt>
-              <dd class="app-check-your-answers__answer">
-                &pound;{{ scenario.penalties[0].value }}
-              </dd>
-              <dd class="app-check-your-answers__change"></dd>
-            </div>
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Date
-              </dt>
-              <dd class="app-check-your-answers__answer">
-                {{ scenario.penalties[0].filed }}
-              </dd>
-              <dd class="app-check-your-answers__change"></dd>
-            </div>
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Contact email
-              </dt>
-              <dd class="app-check-your-answers__answer">
-                {{ email }}
-              </dd>
-              <dd class="app-check-your-answers__change"></dd>
-            </div>
-          </dl>
-          {% if appealReasons.length > 1 %}
-            <h2 class="govuk-heading-l">Appeal reasons</h2>
-          {% else %}
-            <h2 class="govuk-heading-l">Appeal reason</h2>
-          {% endif %}
-          {% for reason in appealReasons %}
-            {% if appealReasons.length > 1 %}
-              <h3 class="govuk-heading-m">Reason
-                {{loop.index}}</h3>
-            {% endif %}
-            {% if reason.reason === 'health' %}
-              <dl class="app-check-your-answers app-check-your-answers--long">
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "add-appeal-reason"
+}) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if mode %}
+        <h1 class="govuk-heading-xl">
+          You already have an application in progress
+        </h1>
+      {% else %}
+        <h1 class="govuk-heading-xl">
+          Check your application
+        </h1>
+      {% endif %}
+      <h2 class="govuk-heading-m">
+        Penalty details
+      </h2>
+      <dl class="app-check-your-answers app-check-your-answers--short govuk-!-margin-bottom-8">
+        <div class="app-check-your-answers__contents">
+          <dt class="app-check-your-answers__question">
+            Company Name
+          </dt>
+          <dd class="app-check-your-answers__answer">
+            {{ scenario.company.name }}
+          </dd>
+          <dd class="app-check-your-answers__change"></dd>
+        </div>
+        <div class="app-check-your-answers__contents">
+          <dt class="app-check-your-answers__question">
+            Company Number
+          </dt>
+          <dd class="app-check-your-answers__answer">
+            {{ scenario.company.number }}
+          </dd>
+          <dd class="app-check-your-answers__change"></dd>
+        </div>
+        <div class="app-check-your-answers__contents">
+          <dt class="app-check-your-answers__question">
+            Type
+          </dt>
+          <dd class="app-check-your-answers__answer">
+            Late Filing Penalty ({{ penaltyReference }})
+          </dd>
+          <dd class="app-check-your-answers__change"></dd>
+        </div>
+        <div class="app-check-your-answers__contents">
+          <dt class="app-check-your-answers__question">
+            Amount
+          </dt>
+          <dd class="app-check-your-answers__answer">
+            &pound;{{ scenario.penalties[0].value }}
+          </dd>
+          <dd class="app-check-your-answers__change"></dd>
+        </div>
+        <div class="app-check-your-answers__contents">
+          <dt class="app-check-your-answers__question">
+            Date
+          </dt>
+          <dd class="app-check-your-answers__answer">
+            {{ scenario.penalties[0].filed }}
+          </dd>
+          <dd class="app-check-your-answers__change"></dd>
+        </div>
+        <div class="app-check-your-answers__contents">
+          <dt class="app-check-your-answers__question">
+            Contact email
+          </dt>
+          <dd class="app-check-your-answers__answer">
+            {{ userEmail }}
+          </dd>
+          <dd class="app-check-your-answers__change"></dd>
+        </div>
+      </dl>
+      {% if appealReasons.length > 1 %}
+        <h2 class="govuk-heading-l">Reasons for appeal</h2>
+      {% else %}
+        <h2 class="govuk-heading-l">Reason for appeal</h2>
+      {% endif %}
+      {% for reason in appealReasons %}
+        {% if appealReasons.length > 1 %}
+          {% set appealListIndex %}
+          {{loop.index}}:
+          {% endset %}
+        {% else %}
+          {% set appealListIndex = '' %}
+        {% endif %}
+        <div class="reason-container">
+          {% if reason.reason === 'illness' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Illness</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Who was ill?
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {% if reason.illPerson === 'Someone else' %}
+                    Someone else -
+                    {{ reason.otherPerson }}
+                  {% else %}
+                    {{ reason.illPerson | capitalize }}
+                  {% endif %}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="illness/who-was-ill/?id={{loop.index0}}">Change</a>
+                </dd>
+                <dd class="app-check-your-answers__change"></dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Illness start date
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.illnessStartDate.day }}
+                  {{ reason.illnessStartDate.month | displayMonth }}
+                  {{ reason.illnessStartDate.year }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="illness/illness-start-date/?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              {% if reason.continuedIllness === 'yes' %}
                 <div class="app-check-your-answers__contents">
                   <dt class="app-check-your-answers__question">
-                    Appeal reason
+                    Continuing illness?
                   </dt>
                   <dd class="app-check-your-answers__answer">
-                    Ill health
+                    {{ reason.continuedIllness | capitalize }}
                   </dd>
                   <dd class="app-check-your-answers__change">
-                    <a href="#">
-                      Change<span class="govuk-visually-hidden">
-                        appeal reason</span>
-                    </a>
+                    <a href="illness/continued-illness/?id={{loop.index0}}">Change</a>
                   </dd>
                 </div>
-                <div class="app-check-your-answers__contents">
-                  <dt class="app-check-your-answers__question">
-                    Ill person
-                  </dt>
-                  <dd class="app-check-your-answers__answer">
-                    {{ reason.illPerson }}
-                  </dd>
-                  <dd class="app-check-your-answers__change"></dd>
-                </div>
-                <div class="app-check-your-answers__contents">
-                  <dt class="app-check-your-answers__question">
-                    Illness start date
-                  </dt>
-                  <dd class="app-check-your-answers__answer">
-                    {{ reason.illnessStartDate.day }}
-                    {{ reason.illnessStartDate.month | displayMonth }}
-                    {{ reason.illnessStartDate.year }}
-                  </dd>
-                  <dd class="app-check-your-answers__change"></dd>
-                </div>
-                {% if reason.continuedIllness === 'no' %}
-                  <div class="app-check-your-answers__contents">
-                    <dt class="app-check-your-answers__question">
-                      Illness end date
-                    </dt>
-                    <dd class="app-check-your-answers__answer">
-                      {{ reason.illnessEndDate.day }}
-                      {{ reason.illnessEndDate.month | displayMonth }}
-                      {{ reason.illnessEndDate.year }}
-                    </dd>
-                    <dd class="app-check-your-answers__change"></dd>
-                  </div>
-                {% else %}
-                  <div class="app-check-your-answers__contents">
-                    <dt class="app-check-your-answers__question">
-                      Continuing illness
-                    </dt>
-                    <dd class="app-check-your-answers__answer">
-                      Yes
-                    </dd>
-                    <dd class="app-check-your-answers__change"></dd>
-                  </div>
-                {% endif %}
-                {% if reason.natureOfIllness !== '' %}
-                  <div class="app-check-your-answers__contents">
-                    <dt class="app-check-your-answers__question">
-                      Illness details
-                    </dt>
-                    <dd class="app-check-your-answers__answer">
-                      {{ reason.natureOfIllness | safe | nl2br}}
-                    </dd>
-                    <dd class="app-check-your-answers__change"></dd>
-                  </div>
-                {% endif %}
-                {% if reason.supportingEvidence !== 'no' %}
-                  <div class="app-check-your-answers__contents">
-                    <dt class="app-check-your-answers__question">
-                      Supporting evidence
-                    </dt>
-                    <dd class="app-check-your-answers__answer">
-                      <a href="" class="govuk-link">GP-letter.doc</a>
-                    </dd>
-                    <dd class="app-check-your-answers__change"></dd>
-                  </div>
-                {% endif %}
-              </dl>
-            {% elif reason.reason === 'disaster' %}
-              <dl class="app-check-your-answers app-check-your-answers--long">
-                <div class="app-check-your-answers__contents">
-                  <dt class="app-check-your-answers__question">
-                    Appeal reason
-                  </dt>
-                  <dd class="app-check-your-answers__answer">
-                    Fire, theft or natural disaster
-                  </dd>
-                  <dd class="app-check-your-answers__change">
-                    <a href="#">
-                      Change<span class="govuk-visually-hidden">
-                        appeal reason</span>
-                    </a>
-                  </dd>
-                </div>
-                <div class="app-check-your-answers__contents">
-                  <dt class="app-check-your-answers__question">
-                    Disaster details
-                  </dt>
-                  <dd class="app-check-your-answers__answer">
-                    {{ reason.natureOfDisaster | safe | nl2br}}
-                  </dd>
-                  <dd class="app-check-your-answers__change"></dd>
-                </div>
-                {% if reason.supportingEvidence !== 'no' %}
-                  <div class="app-check-your-answers__contents">
-                    <dt class="app-check-your-answers__question">
-                      Supporting evidence
-                    </dt>
-                    <dd class="app-check-your-answers__answer">
-                      <a href="" class="govuk-link">GP-letter.doc</a>
-                    </dd>
-                  </div>
-                {% endif %}
               {% else %}
-                <dl class="app-check-your-answers app-check-your-answers--long">
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Illness end date
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    {{ reason.illnessEndDate.day }}
+                    {{ reason.illnessEndDate.month | displayMonth }}
+                    {{ reason.illnessEndDate.year }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="illness/illness-end-date/?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% endif %}
+              {% if reason.illnessInformation != null %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question app-check-your-answers__question-full-width">
+                    Further information
+                  </dt>
+                  <dd class="app-check-your-answers__answer app-check-your-answers__question--full-width">
+                    {{ reason.illnessInformation | safe | nl2br }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="illness/illness-information/?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% endif %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Supporting documents
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {% if reason.documents.length > 0 %}
+                    <ul class="govuk-list govuk-list--bullet">
+                      {% for document in reason.documents | reverse %}
+                        <li>
+                          <a href='' class='govuk-link' download="download">{{ document }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% else %}
+                    None
+                  {% endif %}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  {% if reason.documents.length > 0 %}
+                    <a href="evidence-upload?id={{loop.index0}}">Change</a>
+                  {% else %}
+                    <a href="evidence?id={{loop.index0}}">Change</a>
+                  {% endif %}
+                </dd>
+              </div>
+            </dl>
+          {% elif reason.reason === 'authCode' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Missing company authentication code</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Registered office address
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ scenario.company.address | nl2br | safe }}
+                </dd>
+              </div>
+            </dl>
+          {% elif reason.reason === 'damage' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Theft or criminal damage</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Date of incident
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.damageDate.day }}
+                  {{ reason.damageDate.month | displayMonth }}
+                  {{ reason.damageDate.year }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="theft-criminal-damage/damage-date/?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.damage | safe | nl2br }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="/theft-criminal-damage/reason-damage?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Supporting documents
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {% if reason.documents.length > 0 %}
+                    <ul class="govuk-list govuk-list--bullet">
+                      {% for document in reason.documents | reverse %}
+                        <li>
+                          <a href='' class='govuk-link' download="download">{{ document }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% else %}
+                    None
+                  {% endif %}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  {% if reason.documents.length > 0 %}
+                    <a href="evidence-upload?id={{loop.index0}}">Change</a>
+                  {% else %}
+                    <a href="evidence?id={{loop.index0}}">Change</a>
+                  {% endif %}
+                </dd>
+              </div>
+            </dl>
+          {% elif reason.reason === 'disaster' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Natural disaster</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Date natural disaster happened
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.disasterDate.day }}
+                  {{ reason.disasterDate.month | displayMonth }}
+                  {{ reason.disasterDate.year }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="natural-disaster/disaster-date/?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.naturalDisaster | safe | nl2br }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="/natural-disaster/reason-natural-disaster?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              {% if reason.supportingEvidence === 'yes' %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Supporting documents
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    <ul class="govuk-list govuk-list--bullet">
+                      <li>
+                        <a href='' class='govuk-link'>evidence-letter.jpg</a>
+                      </li>
+                    </ul>
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="illness/illness-information/?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% endif %}
+            </dl>
+          {% elif reason.reason === 'accounts' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Accounting issues</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Date issue happened
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.accountsDate.day }}
+                  {{ reason.accountsDate.month | displayMonth }}
+                  {{ reason.accountsDate.year }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="accounts/accounts-date/?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.accounts | safe | nl2br }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="/accounts/reason-accounts?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              {% if reason.supportingEvidence === 'yes' %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Supporting documents
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    <ul class="govuk-list govuk-list--bullet">
+                      <li>
+                        <a href='' class='govuk-link'>evidence-letter.jpg</a>
+                      </li>
+                    </ul>
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% endif %}
+            </dl>
+          {% elif reason.reason === 'companyChanges' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Changes to the company</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              {% if reason.dateWasChanged != null %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Date the changes happened
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    {{ reason.dateWasChanged.day }}
+                    {{ reason.dateWasChanged.month | displayMonth }}
+                    {{ reason.dateWasChanged.year }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/company-changes/aware-change-date?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% elseif reason.dateWillChange != null %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Date the changes will happen
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    {{ reason.dateWillChange.day }}
+                    {{ reason.dateWillChange.month | displayMonth }}
+                    {{ reason.dateWillChange.year }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/company-changes/date-will-change?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% else %}
+              {% endif %}
+              {% if reason.awareChangeDate != null %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Date aware of change
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    {{ reason.awareChangeDate.day }}
+                    {{ reason.awareChangeDate.month | displayMonth }}
+                    {{ reason.awareChangeDate.year }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/company-changes/aware-change-date?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% else %}
+              {% endif %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.companyChanges | safe | nl2br }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="/company-changes/reason-company-changes?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              {% if reason.supportingEvidence === 'yes' %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Supporting documents
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    <ul class="govuk-list govuk-list--bullet">
+                      <li>
+                        <a href='' class='govuk-link'>evidence-letter.jpg</a>
+                      </li>
+                    </ul>
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% endif %}
+            </dl>
+          {% elif reason.reason === 'computerProblem' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Problems filing online</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Reason
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {% if reason.problemReason === 'other' %}
+                    Other reason -
+                    {{ reason.otherProblemReason }}
+                  {% else %}
+                    {{ reason.problemReason | safe | nl2br }}
+                  {% endif %}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="/computer-problem/choose-computer-problem?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              {% if reason.problemReason !== 'Authentication code' %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    You tried to file
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    {{ reason.problemDate.day }}
+                    {{ reason.problemDate.month | displayMonth }}
+                    {{ reason.problemDate.year }}
+                    {{ reason.problemTime.hour }}
+                    {{ reason.problemTime.minute }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/computer-problem/problem-date?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Further information
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    {{ reason.computerProblem | safe | nl2br }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/computer-problem/reason-computer-problem?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+                {% if reason.supportingEvidence === 'yes' %}
                   <div class="app-check-your-answers__contents">
                     <dt class="app-check-your-answers__question">
-                      Reason for extension
+                      Supporting documents
                     </dt>
                     <dd class="app-check-your-answers__answer">
-                      {{ reason.otherReason }}
+                      <ul class="govuk-list govuk-list--bullet">
+                        <li>
+                          <a href='' class='govuk-link'>evidence-letter.jpg</a>
+                        </li>
+                      </ul>
                     </dd>
                     <dd class="app-check-your-answers__change">
-                      <a href="/choose-appeal-reason">Change</a>
+                      <a href="/?id={{loop.index0}}">Change</a>
                     </dd>
                   </div>
-                  {% if reason.otherInformation != null %}
-                    <div class="app-check-your-answers__contents">
-                      <dt class="app-check-your-answers__question">
-                        Further information
-                      </dt>
-                      <dd class="app-check-your-answers__answer">
-                        {{ reason.otherInformation }}
-                      </dd>
-                      <dd class="app-check-your-answers__change"></dd>
-                    </div>
-                    {% if reason.supportingEvidence !== 'no' %}
-                      <div class="app-check-your-answers__contents">
-                        <dt class="app-check-your-answers__question">
-                          Supporting evidence
-                        </dt>
-                        <dd class="app-check-your-answers__answer">
-                          <a href="" class="govuk-link">GP-letter.doc</a>
-                        </dd>
-                        <dd class="app-check-your-answers__change"></dd>
-                      </div>
-                    {% endif %}
-                  {% endif %}
                 {% endif %}
-              {% endfor %}
+              {% endif %}
             </dl>
-            <h2 class="govuk-heading-m">Submit your appeal</h2>
-            <p>
-              By submitting this appeal you are confirming that, to the best of your knowledge, the details you are providing are true.
-            </p>
-            <a href="confirmation" class="govuk-button" role="button">Confirm and submit</a>
-          </div>
+          {% else %}
+            <h3 class="govuk-heading-m">{{loop.index}}:
+              {{ reason.otherReason }}</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              {% if reason.otherInformation != null %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Further information
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    {{ reason.otherInformation | safe | nl2br }}
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/other/reason-other?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% endif %}
+              {% if reason.supportingEvidence === 'yes' %}
+                <div class="app-check-your-answers__contents">
+                  <dt class="app-check-your-answers__question">
+                    Supporting documents
+                  </dt>
+                  <dd class="app-check-your-answers__answer">
+                    <ul class="govuk-list govuk-list--bullet">
+                      <li>
+                        <a href='' class='govuk-link'>evidence-letter.jpg</a>
+                      </li>
+                    </ul>
+                  </dd>
+                  <dd class="app-check-your-answers__change">
+                    <a href="/?id={{loop.index0}}">Change</a>
+                  </dd>
+                </div>
+              {% endif %}
+            </dl>
+          {% endif %}
+          <p class="govuk-body">
+            <a href="/remove-reason?id={{loop.index0}}" class="govuk-link">Remove this reason</a>
+          </p>
         </div>
-      </main>
+      {% endfor %}
+      <p class="govuk-!-margin-bottom-7 govuk-!-margin-top-7">
+        <a href="/choose-reason" class="govuk-link">Add another reason</a>
+      </p>
+      {% if mode %}
+        <form action="" method="post">
+          {{ govukButton({
+            text: "Continue with this application"
+          }) }}
+          <p>
+            <a href="choose-reason?restart=yes" class="govuk-link">Start a new application</a>
+          </p>
+          <p>
+            <a href="sign-out" class="govuk-link">Sign out</a>
+          </p>
+        </form>
+      {% else %}
+        <h2 class="govuk-heading-m">Submit your application</h2>
+        <p>
+          By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are true.
+        </p>
+        <form action="" method="post">
+          {{ govukButton({
+            text: "Confirm and submit"
+          }) }}
+          <p>
+            <a href="/sign-out" class="govuk-link">Save and sign out</a>
+          </p>
+        </form>
+      {% endif %}
     </div>
-  {% endblock %}
+  </div>
+{% endblock %}
