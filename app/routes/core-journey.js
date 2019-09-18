@@ -115,10 +115,10 @@ module.exports = function (router) {
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
-            reasonObject.nextStep = '/auth-code/address'
+            reasonObject.nextStep = '/add-appeal-reason'
             req.session.appealReasons.push(reasonObject)
           }
-          res.redirect('/auth-code/address')
+          res.redirect('/add-appeal-reason')
           break
         case 'damage':
           if (editId !== '') {
