@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Change registered office
+{% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "/confirm-company"
+}) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Update the registered office</h1>
+      <p>You must
+        <a href="https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/287369/AD01_change_of_registered_office_address.pdf" target="_blank">tell us the new registered office address</a>
+        for
+        {{ scenario.company.name }}.
+      </p>
+      <p>Once we've confirmed the address, we'll send a new authentication code to the registered office.</p>
+      <p>You can then
+        <a href="resume-application">resume your application</a>
+        to extend the filing deadline.</p>
+    </div>
+  </div>
+  {{ govukInput({
+    id: "id",
+    name: "id",
+    type: "hidden",
+    value: id
+  }) }}
+  <p>
+    <a href="/sign-out" class="govuk-link">Save and sign out</a>
+  </p>
+{% endblock %}
