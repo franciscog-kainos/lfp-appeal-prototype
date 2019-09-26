@@ -46,22 +46,13 @@
           {% endif %}
         {% endif %}
 
-        {% set otherInput %}
-        {{ govukInput({
-              id: "other-reason",
-              name: "otherReason",
-              classes: "",
-              errorMessage: otherReasonError,
-              label: {
-                text: "Short description of the reason"
-              }
-            }) }}
-        {% endset %}
-
         {{ govukRadios({
                 idPrefix: "choose-reason",
                 name: "appealReason",
                 errorMessage: appealReasonError,
+                hint: {
+                  text: "You can add more reasons later"
+                },
                 fieldset: {
                   legend: {
                     text: 'Why are you appealing this penalty?',
@@ -108,10 +99,7 @@
                   {
                     value: "other",
                     text: "I'm appealing for another reason",
-                    checked: otherReasonError,
-                    conditional: {
-                      html: otherInput
-                    }
+                    checked: otherReasonError
                   }
                 ]
               }) }}
