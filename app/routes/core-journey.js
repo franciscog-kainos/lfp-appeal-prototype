@@ -61,7 +61,6 @@ module.exports = function (router) {
   router.post('/choose-reason', function (req, res) {
     var reasonObject = {}
     var appealReason = req.body.appealReason
-    var otherReason = req.body.otherReason
     var editId = req.body.editId
     var errorFlag = false
     var appealReasonErr = {}
@@ -75,18 +74,8 @@ module.exports = function (router) {
       appealReasonErr.href = '#choose-reason-1'
       appealReasonErr.flag = true
     }
-    if (appealReason === 'other' && otherReason === '') {
-      appealReasonErr.type = 'invalid'
-      appealReasonErr.text = 'You must tell us the reason'
-      appealReasonErr.href = '#other-reason'
-      appealReasonErr.flag = true
-    }
     if (appealReasonErr.flag) {
       errorList.push(appealReasonErr)
-      errorFlag = true
-    }
-    if (otherReasonErr.flag) {
-      errorList.push(otherReasonErr)
       errorFlag = true
     }
     if (errorFlag === true) {
@@ -94,9 +83,7 @@ module.exports = function (router) {
       res.render('choose-reason', {
         errorList: errorList,
         appealReasonErr: appealReasonErr,
-        otherReasonErr: otherReasonErr,
-        appealReason: appealReason,
-        otherReason: otherReason
+        appealReason: appealReason
       })
     } else {
       reasonObject.reason = req.body.appealReason
@@ -174,9 +161,12 @@ module.exports = function (router) {
           res.redirect('/death/reason-death')
           break
         case 'other':
-          reasonObject.otherReason = req.body.otherReason
-          reasonObject.nextStep = 'other/reason-other'
-          req.session.appealReasons.push(reasonObject)
+          if (editId !== '') {
+            req.session.appealReasons[editId].reason = reasonObject.reason
+          } else {
+            reasonObject.nextStep = 'other/reason-other'
+            req.session.appealReasons.push(reasonObject)
+          }
           res.redirect('other/reason-other')
           break
       }
