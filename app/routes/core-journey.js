@@ -164,13 +164,21 @@ module.exports = function (router) {
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
-            reasonObject.nextStep = 'other/reason-other'
+            reasonObject.nextStep = 'bad-reasons'
             req.session.appealReasons.push(reasonObject)
           }
-          res.redirect('other/reason-other')
+          res.redirect('/bad-reasons')
           break
       }
     }
+  })
+  router.get('/bad-reasons', function (req, res) {
+    res.render('bad-reasons', {
+      scenario: req.session.scenario
+    })
+  })
+  router.post('/bad-reasons', function (req, res) {
+    res.redirect('other/reason-other')
   })
   router.get('/add-appeal-reason', function (req, res) {
     res.render('add-appeal-reason')
