@@ -18,7 +18,7 @@ $govuk-global-styles: true;
 }
 
 .govuk-input--penalty-reference {
-  max-width: 18ex;
+  max-width: 20ex;
 }
 @include govuk-media-query($media-type: print) {
   .test {
@@ -49,6 +49,123 @@ $govuk-global-styles: true;
   @include govuk-link-common;
   @include govuk-link-style-default;
   @include govuk-link-print-friendly;
+}
+/// interruption card ///
+
+.circle-step-white {
+  height: 1.4em;
+  width: 1.4em;
+  background-color: govuk-colour("white");
+  color: govuk-colour("black");
+  border-radius: 50%;
+  display: inline-block;
+  padding: .5em;
+  text-align: center;
+  font-weight: bold;
+  margin: -0.4em .5em 0 0;
+}
+
+.circle-step-black {
+  height: 1.4em;
+  width: 1.4em;
+  background-color: govuk-colour("black");
+  color: govuk-colour("white");
+  border-radius: 50%;
+  display: inline-block;
+  padding: .5em;
+  text-align: center;
+  font-weight: bold;
+  margin: -0.4em .5em 1em 0;
+}
+
+.interruption-card {
+  padding: 2em 3em;
+  background-color: govuk-colour("light-blue");
+
+  &.interruption-card-paper {
+    background-color: govuk-colour("light-blue");
+  }
+  @include govuk-media-query($until: tablet) {
+    background-image: none !important;
+  }
+
+  .govuk-button {
+    background-color: govuk-colour("white");
+    color: govuk-colour("black");
+
+    &:hover {
+      background-color: govuk-colour("light-grey");
+    }
+  }
+
+  h1 {
+    color: govuk-colour("white");
+  }
+
+  h2 {
+    display: inline;
+    color: govuk-colour("white");
+  }
+
+  h3 {
+    padding-left: 3em;
+    padding-bottom: em;
+    color: govuk-colour("light-grey");
+  }
+
+  p {
+    color: govuk-colour("white");
+  }
+
+  ul {
+    width: 75%;
+    padding: 2em 0 0;
+    @include govuk-media-query(mobile) {
+      width: 100%;
+      margin-top: .5em;
+    }
+
+    li {
+      h2 {
+        padding-bottom: .5em;
+        display: inline-block;
+        width: 85%;
+        margin: 0 0 0 .2em;
+        @include govuk-media-query(mobile) {
+          width: 80%;
+        }
+      }
+
+      span {
+        vertical-align: top;
+      }
+    }
+  }
+
+  a:link,
+  a:visited {
+    color: govuk-colour("white") !important;
+  }
+
+  .button {
+    background-color: govuk-colour("white");
+    color: $govuk-link-colour;
+    font-weight: 700;
+
+    &:focus,
+    &:hover {
+      background-color: govuk-colour("light-grey");
+      color: $govuk-link-colour;
+    }
+  }
+
+  .circle-white {
+    background-color: govuk-colour("white");
+    color: govuk-colour("black");
+    margin-right: .5em;
+    position: relative;
+    top: -.3em;
+  }
 }
 
 .app-check-your-answers {
