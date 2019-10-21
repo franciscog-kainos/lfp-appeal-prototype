@@ -19,7 +19,14 @@
 }) }}
 {% endblock %}
 {% block content %}
-  <div class="govuk-grid-row">
+
+  {% set otherHTML %}
+  <div class="govuk-inset-text">
+    <a href="https://www.gov.uk/government/publications/late-filing-penalties/late-filing-penalties#appealing">Read the guidance</a>
+    to find out what reasons are unlikely to be successful.
+  </div>
+  {% endset %}
+  <div class="govuk-grid-row" ="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form action="" method="post">
 
@@ -65,11 +72,6 @@
                     value: "illness",
                     text: "Illness",
                     checked: checkedIllness
-                  },
-                  {
-                    value: "authCode",
-                    text: "Missing company authentication code",
-                    checked: checkedAuthCode
                   },
                   {
                     value: "accounts",
