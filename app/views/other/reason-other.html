@@ -24,24 +24,42 @@
       <form action="" method="post">
         {% if errorList.length > 0 %}
           {{ govukErrorSummary({
-          titleText: "There is a problem",
-          errorList: errorList
-        }) }}
-        {% endif %}
-        <h1 class="govuk-heading-xl">Provide more information to support your application</h1>
-        <p class="govuk-body-l">Anything you tell us to support your application will be kept confidential.</p>
-        {{ govukInput({
-            id: "other-reason",
-            name: "otherReason",
-            label: {
-              text: "Short title for the reason (optional)"
-            },
-            value: otherReason
+            titleText: "There is a problem with the information you entered",
+            errorList: errorList
           }) }}
+        {% endif %}
+        <h1 class="govuk-heading-xl">Tell us why you're appealing this penalty</h1>
+        <p class="govuk-body-l">Anything you tell us to support your appeal will be kept confidential.</p>
+        {% if errTitle.flag %}
+          {% set titleError = {
+            text: errTitle.text
+          }  %}
+        {% else %}
+          {% set titleError = false %}
+        {% endif %}
+
+        {{ govukInput({
+          id: "other-reason",
+          name: "otherReason",
+          errorMessage: titleError,
+          label: {
+            text: "Short title for the reason"
+          },
+          value: otherReason
+        }) }}
+
+        {% if errDescription.flag %}
+          {% set descriptionError = {
+            text: errDescription.text
+          }  %}
+        {% else %}
+          {% set descriptionError = false %}
+        {% endif %}
+
         {{ govukTextarea({
           name: "otherInformation",
           id: "other-information",
-          errorMessage: Err.text,
+          errorMessage: descriptionError,
           rows: '8',
           label: {
             text: "Detailed description of the reason",

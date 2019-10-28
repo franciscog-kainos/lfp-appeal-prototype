@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Unlikely appeal examples
+{% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/choose-reason"
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div class="interruption-card">
+        <h1 class="govuk-heading-xl">Before you continue</h1>
+        <p class="govuk-body-l">We may reject your appeal if:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>your company is dormant</li>
+          <li>there was a problem with your accountant</li>
+          <li>these are your first accounts</li>
+          <li>you are not familiar with the filing requirements</li>
+          <li>your company or its directors have financial difficulties</li>
+          <li>your accounts were delayed or lost in the post</li>
+          <li>the directors live or were travelling overseas</li>
+          <li>another director is responsible for preparing the accounts</li>
+          <li>the company has more than one director</li>
+        </ul>
+        {{ govukButton({
+          text: "Continue with appeal",
+          href: "/other/reason-other",
+          classes: "govuk-link govuk-!-margin-top-5 govuk-link--interrupt"
+        }) }}
+        <p>
+          <a href="/sign-out" class="govuk-link">Save and sign out</a>
+        </p>
+    </div>
+  {% endblock %}

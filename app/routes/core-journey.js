@@ -164,21 +164,13 @@ module.exports = function (router) {
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
-            reasonObject.nextStep = 'bad-reasons'
+            reasonObject.nextStep = 'other-reason-entry'
             req.session.appealReasons.push(reasonObject)
           }
-          res.redirect('/bad-reasons')
+          res.redirect('/other/other-reason-entry')
           break
       }
     }
-  })
-  router.get('/bad-reasons', function (req, res) {
-    res.render('bad-reasons', {
-      scenario: req.session.scenario
-    })
-  })
-  router.post('/bad-reasons', function (req, res) {
-    res.redirect('other/reason-other')
   })
   router.get('/add-appeal-reason', function (req, res) {
     res.render('add-appeal-reason')
@@ -192,7 +184,7 @@ module.exports = function (router) {
     if (typeof addAppealReason === 'undefined') {
       Err.type = 'blank'
       Err.text = 'You must tell us if there is another reason for your appeal'
-      Err.href = '#add-appeal-reason-1'
+      Err.href = '#add-appeal-reason'
       Err.flag = true
     }
     if (Err.flag) {
