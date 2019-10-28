@@ -4,10 +4,6 @@
   Appeal a late filing penalty
 {% endblock %}
 
-{% block header %}
-  {{ govukHeader() }}
-{% endblock %}
-
 {% block beforeContent %}
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
@@ -34,7 +30,11 @@
       </h1>
       <p class="govuk-body-l">Use this service to appeal against a penalty for late filing of annual accounts.</p>
       <p>It may take up to 30 minutes to complete this application.</p>
-      <a href="signin" role="button" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">Start now</a>
+      {{ govukButton({
+        text: "Start now",
+        href: "signin",
+        isStartButton: true
+      }) }}
       <h2 class="govuk-heading-m">Before you start</h2>
       <p>
         <a href="https://www.gov.uk/government/publications/late-filing-penalties/late-filing-penalties#appealing" target="_blank">Read the guidance on appealing a penalty.</a>

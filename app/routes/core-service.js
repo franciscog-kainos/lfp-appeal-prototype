@@ -4,9 +4,11 @@ const postmark = require('postmark')
 module.exports = function (router) {
   // Sign in pages
   router.get('/', function (req, res) {
+    req.session.scenario = {}
     res.render('start')
   })
   router.get('/start', function (req, res) {
+    req.session.scenario = {}
     res.render('start')
   })
   router.get('/signin', function (req, res) {
@@ -17,15 +19,7 @@ module.exports = function (router) {
     res.redirect('penalty-reference')
   })
   router.get('/penalty-reference', function (req, res) {
-    if (req.session.scenario != null) {
-      res.render('penalty-reference', {
-        scenario: req.session.scenario,
-        companyNumber: req.session.scenario.company.number,
-        penaltyReference: req.session.penaltyReference
-      })
-    } else {
-      res.render('penalty-reference')
-    }
+    res.render('penalty-reference')
   })
   router.post('/penalty-reference', function (req, res) {
     req.session.companyNumber = req.body.companyNumber
@@ -36,7 +30,7 @@ module.exports = function (router) {
     var penaltyReferenceErr = {}
     var errorList = []
 
-  // VALIDATE USER INPUTS
+    // VALIDATE USER INPUTS
     if (req.session.companyNumber.length < 8) {
       companyNumberErr.type = 'invalid'
       companyNumberErr.text = 'You must enter your full eight character company number'
@@ -55,20 +49,17 @@ module.exports = function (router) {
     }
 
     if (
-      req.session.penaltyReference !== 'PEN1A/12345677' &&
-    req.session.penaltyReference !== 'PEN2A/12345677' &&
-    req.session.penaltyReference !== 'PEN1A/12345671' &&
-    req.session.penaltyReference !== 'PEN2A/12345671' &&
-    req.session.penaltyReference !== 'PEN1A/12345672'
+      req.session.penaltyReference !== 'A00000001' &&
+      req.session.penaltyReference !== 'B00000001'
     ) {
       penaltyReferenceErr.type = 'invalid'
-      penaltyReferenceErr.text = 'Enter your penalty reference exactly as shown on your penalty letter'
+      penaltyReferenceErr.text = 'Enter your reference number exactly as shown on your penalty notice'
       penaltyReferenceErr.href = '#penalty-reference'
       penaltyReferenceErr.flag = true
     }
     if (req.session.penaltyReference === '') {
       penaltyReferenceErr.type = 'blank'
-      penaltyReferenceErr.text = 'You must enter a penalty reference'
+      penaltyReferenceErr.text = 'You must enter a reference number'
       penaltyReferenceErr.href = '#penalty-reference'
       penaltyReferenceErr.flag = true
     }
@@ -87,11 +78,7 @@ module.exports = function (router) {
         penaltyReference: req.session.penaltyReference
       })
     } else {
-      if (req.session.penaltyReference === 'PEN1A/12345677' || req.session.penaltyReference === 'PEN2A/12345677') {
-        req.session.scenario = require('../assets/data/scenarios/00345567')
-      } else if (req.session.penaltyReference === 'PEN1A/12345671' || req.session.penaltyReference === 'PEN2A/12345671' || req.session.penaltyReference === 'PEN1A/12345672') {
-        req.session.scenario = require('../assets/data/scenarios/00987512')
-      }
+      req.session.scenario = require('../assets/data/scenarios/' + req.session.companyNumber)
       res.redirect('/authenticate')
     }
   })
@@ -194,7 +181,7 @@ module.exports = function (router) {
         errorFlag = true
       }
 
-    // TEST ERROR FLAG
+      // TEST ERROR FLAG
       if (errorFlag === true) {
         res.render('authenticate', {
           scenario: req.session.scenario,
@@ -210,7 +197,7 @@ module.exports = function (router) {
     }
   })
 
-// Review penalty details
+  // Review penalty details
   router.get('/review-penalty', function (req, res) {
     if (req.session.scenario != null) {
       req.session.appealReasons = []

@@ -23,7 +23,7 @@
     <div class="govuk-grid-column-two-thirds">
       {% if errorList.length > 0 %}
         {{ govukErrorSummary({
-          titleText: "There was a problem with your appeal information",
+          titleText: "There is a problem with your answer",
           errorList: errorList
         }) }}
       {% endif %}
@@ -42,7 +42,7 @@
               errorMessage: addAppealReasonError,
               fieldset: {
                 legend: {
-                  text: 'Do you want to add another appeal reason?',
+                  text: 'Do you want to add another reason for your appeal?',
                   isPageHeading: true,
                   classes: 'govuk-fieldset__legend--xl'
                 }
