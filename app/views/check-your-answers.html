@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-  Check your answers before sending your application
+  Check your answers before submitting your appeal
 {% endblock %}
 
 {% block beforeContent %}
@@ -22,11 +22,11 @@
     <div class="govuk-grid-column-two-thirds">
       {% if mode %}
         <h1 class="govuk-heading-xl">
-          You already have an application in progress
+          You already have an appeal in progress
         </h1>
       {% else %}
         <h1 class="govuk-heading-xl">
-          Check your application
+          Check your appeal
         </h1>
       {% endif %}
       <h2 class="govuk-heading-m">
@@ -506,18 +506,14 @@
               {% endif %}
             </dl>
           {% else %}
-            <h3 class="govuk-heading-m">{{loop.index}}:Other reason</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Other reason</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">
                   Reason title
                 </dt>
                 <dd class="app-check-your-answers__answer">
-                  {% if reason.otherReason != "" %}
                     {{ reason.otherReason }}
-                  {% else %}
-                    Not provided
-                  {% endif %}
                 </dd>
                 <dd class="app-check-your-answers__change">
                   <a href="/other/reason-other?id={{loop.index0}}">Change</a>
@@ -574,23 +570,23 @@
       {% if mode %}
         <form action="" method="post">
           {{ govukButton({
-            text: "Continue with this application"
+            text: "Continue with this appeal"
           }) }}
           <p>
-            <a href="choose-reason?restart=yes" class="govuk-link">Start a new application</a>
+            <a href="choose-reason?restart=yes" class="govuk-link">Start a new appeal</a>
           </p>
           <p>
             <a href="sign-out" class="govuk-link">Sign out</a>
           </p>
         </form>
       {% else %}
-        <h2 class="govuk-heading-m">Submit your application</h2>
+        <h2 class="govuk-heading-m">Submit your appeal</h2>
         <p>
-          By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are true.
+          By submitting this appeal you are confirming that, to the best of your knowledge, the details you are providing are true.
         </p>
         <form action="" method="post">
           {{ govukButton({
-            text: "Confirm and submit"
+            text: "Confirm and submit appeal"
           }) }}
           <p>
             <a href="/sign-out" class="govuk-link">Save and sign out</a>

@@ -1,4 +1,9 @@
 module.exports = function (router) {
+  router.get('/other/other-reason-entry', function (req, res) {
+    res.render('other/other-reason-entry', {
+      scenario: req.session.scenario
+    })
+  })
   router.get('/other/reason-other', function (req, res) {
     var id = 0
     var otherReason = ''
@@ -20,24 +25,31 @@ module.exports = function (router) {
     var otherInformation = req.body.otherInformation
     var otherReason = req.body.otherReason
     var editId = req.body.editId
-    var errorFlag = false
-    var Err = {}
+    var errTitle = {}
+    var errDescription = {}
     var errorList = []
 
     if (otherInformation === '') {
-      Err.type = 'blank'
-      Err.text = 'You must give us more information'
-      Err.href = '#other-information'
-      Err.flag = true
+      errDescription.type = 'blank'
+      errDescription.text = 'You must give us more information'
+      errDescription.href = '#other-information'
+      errDescription.flag = true
+      errorList.push(errDescription)
     }
-    if (Err.flag) {
-      errorList.push(Err)
-      errorFlag = true
+
+    if (otherReason === '') {
+      errTitle.type = 'blank'
+      errTitle.text = 'You must give your reason a title'
+      errTitle.href = '#other-reason'
+      errTitle.flag = true
+      errorList.push(errTitle)
     }
-    if (errorFlag === true) {
+
+    if (errorList.length > 0) {
       res.render('other/reason-other', {
         errorList: errorList,
-        Err: Err,
+        errTitle: errTitle,
+        errDescription: errDescription,
         id: editId,
         otherReason: otherReason,
         otherInformation: otherInformation
