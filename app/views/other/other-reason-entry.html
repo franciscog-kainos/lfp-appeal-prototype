@@ -20,17 +20,16 @@
     <div class="govuk-grid-column-full">
       <div class="interruption-card">
         <h1 class="govuk-heading-xl">Before you continue</h1>
-        <p class="govuk-body-l">We may reject your appeal if:</p>
+        <p class="govuk-body-l">We may reject your appeal if you tell us:</p>
         <ul class="govuk-list govuk-list--bullet">
+
+          <li>there is a problem with your accountant</li>
           <li>your company is dormant</li>
-          <li>there was a problem with your accountant</li>
-          <li>these are your first accounts</li>
           <li>you are not familiar with the filing requirements</li>
           <li>your company or its directors have financial difficulties</li>
-          <li>your accounts were delayed or lost in the post</li>
+          <li>your accounts were delayed or lost</li>
           <li>the directors live or were travelling overseas</li>
           <li>another director is responsible for preparing the accounts</li>
-          <li>the company has more than one director</li>
         </ul>
         {{ govukButton({
           text: "Continue with appeal",
@@ -40,5 +39,5 @@
         <p>
           <a href="/sign-out" class="govuk-link">Save and sign out</a>
         </p>
-    </div>
-  {% endblock %}
+      </div>
+    {% endblock %}
