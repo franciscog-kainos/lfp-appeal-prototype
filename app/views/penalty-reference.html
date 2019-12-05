@@ -38,7 +38,7 @@
         {% if companyNumberErr.flag %}
           {% set conoError = {
             text: companyNumberErr.text
-          }  %}
+          } %}
         {% else %}
           {% set conoError = false %}
         {% endif %}
@@ -48,7 +48,7 @@
             text: "Company number"
           },
           hint: {
-            text: "This is the 8 character reference issued by Companies House when the company was set up."
+            text: "This is the 8-character reference issued by Companies House when the company was set up."
           },
           errorMessage: conoError,
           classes: "govuk-input--company-number",
@@ -60,7 +60,7 @@
         {% if penaltyReferenceErr.flag %}
           {% set refError = {
             text: penaltyReferenceErr.text
-          }  %}
+          } %}
         {% else %}
           {% set refError = false %}
         {% endif %}
@@ -70,7 +70,7 @@
             text: "Reference number"
           },
           hint: {
-            text: "This is the 9 character reference shown on the penalty notice."
+            text: "This is the 9-character reference shown on the penalty notice."
           },
           errorMessage: refError,
           classes: "govuk-input--penalty-reference",
@@ -87,7 +87,7 @@
           <img src='/public/images/penalty-notice-image.png' class='call-out-image' alt=''/>
           {% endset -%}
           {{ govukDetails({
-            summaryText: "Help with company number",
+            summaryText: "Help with company number and penalty reference number",
             html: detailsHTML
           }) }}
         </div>
