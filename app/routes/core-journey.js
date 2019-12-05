@@ -6,8 +6,8 @@ module.exports = function (router) {
     var id = 0
     var reasonObject = {}
     var checkedIllness = false
-    var checkedAuthCode = false
-    var checkedDamage = false
+    var checkedPersonal = false
+    var checkedRejectedAccounts = false
     var checkedComputer = false
     var checkedAccounts = false
     var checkedCompany = false
@@ -25,11 +25,11 @@ module.exports = function (router) {
         case 'illness':
           checkedIllness = true
           break
-        case 'authCode':
-          checkedAuthCode = true
+        case 'personal':
+          checkedPersonal = true
           break
         case 'damage':
-          checkedDamage = true
+          checkedRejectedAccounts = true
           break
         case 'computerProblem':
           checkedComputer = true
@@ -46,8 +46,8 @@ module.exports = function (router) {
       }
       res.render('choose-reason', {
         checkedIllness: checkedIllness,
-        checkedAuthCode: checkedAuthCode,
-        checkedDamage: checkedDamage,
+        checkedPersonal: checkedPersonal,
+        checkedRejectedAccounts: checkedRejectedAccounts,
         checkedComputer: checkedComputer,
         checkedAccounts: checkedAccounts,
         checkedCompany: checkedCompany,
@@ -98,23 +98,23 @@ module.exports = function (router) {
           }
           res.redirect('/illness/who-was-ill')
           break
-        case 'authCode':
+        case 'personal':
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
-            reasonObject.nextStep = '/add-appeal-reason'
+            reasonObject.nextStep = '/personal/personal-information'
             req.session.appealReasons.push(reasonObject)
           }
-          res.redirect('/add-appeal-reason')
+          res.redirect('/personal/personal-information')
           break
-        case 'damage':
+        case 'rejectedAccounts':
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
-            reasonObject.nextStep = '/theft-criminal-damage/damage-date'
+            reasonObject.nextStep = '/accounts/accounts-date'
             req.session.appealReasons.push(reasonObject)
           }
-          res.redirect('/theft-criminal-damage/damage-date')
+          res.redirect('/accounts/accounts-date')
           break
         case 'disaster':
           if (editId !== '') {
@@ -125,15 +125,6 @@ module.exports = function (router) {
           }
           res.redirect('/natural-disaster/disaster-date')
           break
-        case 'accounts':
-          if (editId !== '') {
-            req.session.appealReasons[editId].reason = reasonObject.reason
-          } else {
-            reasonObject.nextStep = '/accounts/accounts-date'
-            req.session.appealReasons.push(reasonObject)
-          }
-          res.redirect('/accounts/accounts-date')
-          break
         case 'companyChanges':
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
@@ -143,7 +134,7 @@ module.exports = function (router) {
           }
           res.redirect('/company-changes/change-happened')
           break
-        case 'computerProblem':
+        case 'filingService':
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
           } else {

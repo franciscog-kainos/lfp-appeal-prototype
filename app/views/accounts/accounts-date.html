@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Appealing due to accounting issues: Tell us when the issue happened
+  Appealing due to rejected accounts: Tell us when you filed
 {% endblock %}
 {% block beforeContent %}
   {{ govukPhaseBanner({
@@ -49,7 +49,7 @@
           errorMessage: accountsDateError,
           fieldset: {
             legend: {
-              text: "When did the accounting issue happen?",
+              text: "When did you file your accounts?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }

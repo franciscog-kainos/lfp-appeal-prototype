@@ -1,5 +1,79 @@
 module.exports = function (router) {
-  router.get('/theft-criminal-damage/damage-date', function (req, res) {
+  router.get('/computer-problem/choose-computer-problem', function (req, res) {
+    var currentReason = {}
+    var id = 0
+    var info = ''
+    currentReason = req.session.appealReasons.pop()
+    req.session.appealReasons.push(currentReason)
+    if (req.query.id) {
+      id = req.query.id
+      info = req.session.appealReasons[id].problemReason
+      res.render('computer-problem/choose-computer-problem', {
+        id: id,
+        info: info
+      })
+    } else {
+      res.render('computer-problem/choose-computer-problem')
+    }
+  })
+  router.post('/computer-problem/choose-computer-problem', function (req, res) {
+    var reasonObject = {}
+    var problemReason = req.body.problemReason
+    var otherProblemReason = req.body.otherProblemReason
+    var editId = req.body.editId
+    var errorFlag = false
+    var problemReasonErr = {}
+    var errorList = []
+
+    if (typeof problemReason === 'undefined') {
+      problemReasonErr.type = 'blank'
+      problemReasonErr.text = 'You must choose a reason'
+      problemReasonErr.href = '#problemReason'
+      problemReasonErr.flag = true
+    }
+    if (problemReason === 'other' && otherProblemReason === '') {
+      problemReasonErr.type = 'invalid'
+      problemReasonErr.text = 'You must tell us the reason'
+      problemReasonErr.href = '#other-reason'
+      problemReasonErr.flag = true
+    }
+    if (problemReasonErr.flag) {
+      errorList.push(problemReasonErr)
+      errorFlag = true
+    }
+    if (errorFlag === true) {
+      res.render('computer-problem/choose-computer-problem', {
+        errorList: errorList,
+        problemReasonErr: problemReasonErr
+      })
+    } else {
+      reasonObject = req.session.appealReasons.pop()
+      if (problemReason === 'Authentication code') {
+        reasonObject.problemReason = req.body.problemReason
+        if (editId !== '') {
+          req.session.appealReasons[editId].problemReason = reasonObject.problemReason
+        } else {
+          req.session.appealReasons.push(reasonObject)
+        }
+        res.redirect('/add-appeal-reason')
+      } else if (problemReason === 'Companies House website' || problemReason === 'Computer problems') {
+        reasonObject.problemReason = req.body.problemReason
+        if (editId !== '') {
+          req.session.appealReasons[editId].problemReason = reasonObject.problemReason
+        } else {
+          req.session.appealReasons.push(reasonObject)
+        }
+        res.redirect('/computer-problem/problem-date')
+      } else {
+        reasonObject.problemReason = req.body.problemReason
+        reasonObject.otherProblemReason = req.body.otherProblemReason
+        reasonObject.nextStep = 'computer-problem/problem-date'
+        req.session.appealReasons.push(reasonObject)
+        res.redirect('/computer-problem/problem-date')
+      }
+    }
+  })
+  router.get('/computer-problem/problem-date', function (req, res) {
     var currentReason = {}
     var inputClasses = {}
     var id = 0
@@ -11,35 +85,35 @@ module.exports = function (router) {
     inputClasses.year = 'govuk-input--width-4'
     if (req.query.id) {
       id = req.query.id
-      info = req.session.appealReasons[id].accountsDate
-      res.render('theft-criminal-damage/damage-date', {
+      info = req.session.appealReasons[id].problemDate
+      res.render('computer-problem/problem-date', {
         inputClasses: inputClasses,
         reason: currentReason,
         id: id,
         info: info
       })
     } else {
-      res.render('theft-criminal-damage/damage-date', {
+      res.render('computer-problem/problem-date', {
         inputClasses: inputClasses,
         reason: currentReason
       })
     }
   })
-  router.post('/theft-criminal-damage/damage-date', function (req, res) {
+  router.post('/computer-problem/problem-date', function (req, res) {
     var editId = req.body.editId
     var reasonObject = {}
-    var damageDateDay = req.body['damageDate-day']
-    var damageDateMonth = req.body['damageDate-month']
-    var damageDateYear = req.body['damageDate-year']
+    var problemDateDay = req.body['problemDate-day']
+    var problemDateMonth = req.body['problemDate-month']
+    var problemDateYear = req.body['problemDate-year']
     var errorFlag = false
-    var damageDateDayErr = {}
-    var damageDateMonthErr = {}
-    var damageDateYearErr = {}
+    var problemDateDayErr = {}
+    var problemDateMonthErr = {}
+    var problemDateYearErr = {}
     var errorList = []
-    var damageDate = {}
+    var problemDate = {}
     var inputClasses = {}
 
-    if (req.body.editId !== '') {
+    if (editId !== '') {
       reasonObject = req.session.appealReasons[editId]
     } else {
       reasonObject = req.session.appealReasons.pop()
@@ -49,101 +123,96 @@ module.exports = function (router) {
     inputClasses.month = 'govuk-input--width-2'
     inputClasses.year = 'govuk-input--width-4'
 
-    if (damageDateDay === '') {
-      damageDateDayErr.type = 'blank'
-      damageDateDayErr.text = 'You must enter a day'
-      damageDateDayErr.href = '#damageDateDay'
-      damageDateDayErr.flag = true
+    if (problemDateDay === '') {
+      problemDateDayErr.type = 'blank'
+      problemDateDayErr.text = 'You must enter a day'
+      problemDateDayErr.href = '#problemDate-day'
+      problemDateDayErr.flag = true
     }
-    if (damageDateDayErr.flag) {
+    if (problemDateDayErr.flag) {
       inputClasses.day = 'govuk-input--width-2 govuk-input--error'
-      errorList.push(damageDateDayErr)
+      errorList.push(problemDateDayErr)
       errorFlag = true
     }
-    if (damageDateMonth === '') {
-      damageDateMonthErr.type = 'blank'
-      damageDateMonthErr.text = 'You must enter a month'
-      damageDateMonthErr.href = '#damageDateMonth'
-      damageDateMonthErr.flag = true
+    if (problemDateMonth === '') {
+      problemDateMonthErr.type = 'blank'
+      problemDateMonthErr.text = 'You must enter a month'
+      problemDateMonthErr.href = '#problemDate-month'
+      problemDateMonthErr.flag = true
     }
-    if (damageDateMonthErr.flag) {
+    if (problemDateMonthErr.flag) {
       inputClasses.month = 'govuk-input--width-2 govuk-input--error'
-      errorList.push(damageDateMonthErr)
+      errorList.push(problemDateMonthErr)
       errorFlag = true
     }
-    if (damageDateYear === '') {
-      damageDateYearErr.type = 'blank'
-      damageDateYearErr.text = 'You must enter a year'
-      damageDateYearErr.href = '#damageDateYear'
-      damageDateYearErr.flag = true
+    if (problemDateYear === '') {
+      problemDateYearErr.type = 'blank'
+      problemDateYearErr.text = 'You must enter a year'
+      problemDateYearErr.href = '#problemDate-year'
+      problemDateYearErr.flag = true
     }
-    if (damageDateYearErr.flag) {
+    if (problemDateYearErr.flag) {
       inputClasses.year = 'govuk-input--width-4 govuk-input--error'
-      errorList.push(damageDateYearErr)
+      errorList.push(problemDateYearErr)
       errorFlag = true
     }
     if (errorFlag === true) {
       req.session.appealReasons.push(reasonObject)
-      res.render('theft-criminal-damage/damage-date', {
+      res.render('computer-problem/problem-date', {
         errorList: errorList,
-        damageDateDayErr: damageDateDayErr,
-        damageDateDay: damageDateDay,
-        damageDateMonth: damageDateMonth,
-        damageDateYear: damageDateYear,
+        problemDateDayErr: problemDateDayErr,
+        problemDateDay: problemDateDay,
+        problemDateMonth: problemDateMonth,
+        problemDateYear: problemDateYear,
         inputClasses: inputClasses,
         reason: reasonObject,
         editId: editId
       })
     } else {
       if (req.body.editId !== '') {
-        damageDate.day = damageDateDay
-        damageDate.month = damageDateMonth
-        damageDate.year = damageDateYear
-        req.session.appealReasons[editId].damageDate = damageDate
+        problemDate.day = problemDateDay
+        problemDate.month = problemDateMonth
+        problemDate.year = problemDateYear
+        req.session.appealReasons[editId].problemDate = problemDate
         res.redirect('/check-your-answers')
       } else {
-        damageDate.day = req.body['damageDate-day']
-        damageDate.month = req.body['damageDate-month']
-        damageDate.year = req.body['damageDate-year']
-        reasonObject.damageDate = damageDate
-        reasonObject.nextStep = 'theft-criminal-damage/reason-damage'
+        problemDate.day = req.body['problemDate-day']
+        problemDate.month = req.body['problemDate-month']
+        problemDate.year = req.body['problemDate-year']
+        reasonObject.problemDate = problemDate
+        reasonObject.nextStep = 'computer-problem/reason-computer-problem'
         req.session.appealReasons.push(reasonObject)
-        res.redirect('/theft-criminal-damage/reason-damage')
+        console.log(req.session.appealReasons)
+        res.redirect('/computer-problem/reason-computer-problem')
+        console.log(reasonObject)
       }
     }
   })
-  router.get('/theft-criminal-damage/reason-damage', function (req, res) {
+  router.get('/computer-problem/reason-computer-problem', function (req, res) {
     var id = 0
     var info = ''
     if (req.query.id) {
       id = req.query.id
-      info = req.session.appealReasons[id].damage
-      res.render('theft-criminal-damage/reason-damage', {
+      info = req.session.appealReasons[id].computerProblem
+      res.render('computer-problem/reason-computer-problem', {
         id: id,
         info: info
       })
     } else {
-      res.render('theft-criminal-damage/reason-damage')
+      res.render('computer-problem/reason-computer-problem')
     }
   })
-  router.post('/theft-criminal-damage/reason-damage', function (req, res) {
-    var reasonObject = {}
-    var damage = req.body.damage
+  router.post('/computer-problem/reason-computer-problem', function (req, res) {
+    var computerProblem = req.body.computerProblem
     var editId = req.body.editId
     var errorFlag = false
     var Err = {}
     var errorList = []
 
-    if (req.body.editId !== '') {
-      reasonObject = req.session.appealReasons[editId]
-    } else {
-      reasonObject = req.session.appealReasons.pop()
-    }
-
-    if (damage === '') {
+    if (computerProblem === '') {
       Err.type = 'blank'
       Err.text = 'You must give us more information'
-      Err.href = '#damage'
+      Err.href = '#computerProblem'
       Err.flag = true
     }
     if (Err.flag) {
@@ -151,18 +220,20 @@ module.exports = function (router) {
       errorFlag = true
     }
     if (errorFlag === true) {
-      res.render('theft-criminal-damage/reason-damage', {
+      res.render('computer-problem/reason-computer-problem', {
         errorList: errorList,
         Err: Err
       })
     } else {
       if (req.body.editId !== '') {
-        req.session.appealReasons[editId].damage = damage
+        req.session.appealReasons[editId].computerProblem = computerProblem
         res.redirect('/check-your-answers')
       } else {
-        reasonObject.damage = req.body.damage
+        var reasonObject = req.session.appealReasons.pop()
+        reasonObject.computerProblem = req.body.computerProblem
         reasonObject.nextStep = 'evidence'
         req.session.appealReasons.push(reasonObject)
+        console.log(reasonObject)
         res.redirect('/evidence')
       }
     }
