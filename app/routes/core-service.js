@@ -39,7 +39,7 @@ module.exports = function (router) {
     }
     if (req.session.companyNumber === '') {
       companyNumberErr.type = 'blank'
-      companyNumberErr.text = 'You must enter an company number'
+      companyNumberErr.text = 'You must enter a company number'
       companyNumberErr.href = '#company-number'
       companyNumberErr.flag = true
     }
@@ -53,7 +53,7 @@ module.exports = function (router) {
       req.session.penaltyReference !== 'B00000001'
     ) {
       penaltyReferenceErr.type = 'invalid'
-      penaltyReferenceErr.text = 'Enter your reference number exactly as shown on your penalty notice'
+      penaltyReferenceErr.text = 'You must enter your reference number exactly as shown on your penalty notice'
       penaltyReferenceErr.href = '#penalty-reference'
       penaltyReferenceErr.flag = true
     }

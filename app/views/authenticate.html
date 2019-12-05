@@ -30,16 +30,15 @@
           errorList: errorList
         }) }}
       {% endif %}
-      <h1 class="govuk-heading-xl">Company authentication</h1>
-      <p class="govuk-body">To submit company information you will need an authentication code.</p>
-      <p class="govuk-body govuk-!-font-size-24">Authenticating for
-        <span class="govuk-!-font-weight-bold">{{ scenario.company.name }}</span>
-      </p>
+      <h1 class="govuk-heading-xl">Enter the company authentication code</h1>
+      <p class="govuk-body">To submit information for
+        {{ scenario.company.name }}
+        you will need the company authentication code.</p>
       <form action="" method="post">
         {% if authCodeErr.flag %}
           {{ govukInput({
             label: {
-              text: "Authentication code"
+              text: "Company authentication code"
             },
             errorMessage: {
               text: authCodeErr.text,
@@ -54,7 +53,7 @@
         {% else %}
           {{ govukInput({
             label: {
-              text: "Authentication code"
+              text: "Company authentication code"
             },
             id: "auth-code",
             name: "authCode",
@@ -65,7 +64,7 @@
         {% endif %}
 
         {{ govukButton({
-          text: "Authenticate"
+          text: "Continue"
         }) }}
         <p class="govuk-body">
           <a href="https://ewf.companieshouse.gov.uk/?_ga=2.259791299.813501771.1566987875-1638653194.1563432911" class="govuk-link" target="_blank">Request an authentication code</a>

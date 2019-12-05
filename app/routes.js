@@ -31,4 +31,7 @@ require('./routes/natural-disaster.js')(router)
 // Other Reason
 require('./routes/other-reason.js')(router)
 
+// Personal Circumstances
+require('./routes/personal-circumstances.js')(router)
+
 module.exports = router
