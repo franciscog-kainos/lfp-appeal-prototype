@@ -31,6 +31,9 @@ require('./routes/natural-disaster.js')(router)
 // Other Reason
 require('./routes/other-reason.js')(router)
 
+// Rejected Accounts
+require('./routes/rejected-accounts.js')(router)
+
 // Personal Circumstances
 require('./routes/personal-circumstances.js')(router)
 
