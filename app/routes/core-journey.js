@@ -111,10 +111,10 @@ module.exports = function (router) {
           if (editId !== '') {
             req.session.appealReasons[editId].reason = reasonObject.reason
           } else {
-            reasonObject.nextStep = '/accounts/accounts-date'
+            reasonObject.nextStep = '/rejected-accounts/rejected-accounts-information'
             req.session.appealReasons.push(reasonObject)
           }
-          res.redirect('/accounts/accounts-date')
+          res.redirect('/rejected-accounts/rejected-accounts-information')
           break
         case 'disaster':
           if (editId !== '') {

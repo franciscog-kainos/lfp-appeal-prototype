@@ -5,19 +5,16 @@ module.exports = function (router) {
     })
   })
   router.post('/rejected-accounts/rejected-accounts-information', function (req, res) {
-    var authCodeRequested = req.body.authCodeRequested
-    var authCodeRequestedFlag = true
-    var authCodeFlag = true
+    var rejectedAccounts = req.body.rejectedAccounts
+    var editId = req.body.editId
     var errorFlag = false
     var Err = {}
     var errorList = []
-    var reasonObject = {}
-    var id = req.body.id
 
-    if (typeof authCodeRequested === 'undefined') {
+    if (rejectedAccounts === '') {
       Err.type = 'blank'
-      Err.text = 'You must tell us if you\'ve requested a new code'
-      Err.href = '#auth-code-1'
+      Err.text = 'You must tell us more information'
+      Err.href = '#rejected-accounts'
       Err.flag = true
     }
     if (Err.flag) {
@@ -31,10 +28,16 @@ module.exports = function (router) {
         Err: Err
       })
     } else {
-      res.render('auth-code/change-address')
-      reasonObject = req.session.appealReasons.pop()
-      req.session.appealReasons.push(reasonObject)
-      reasonObject.nextStep = '/auth-code/address'
+      if (req.body.editId !== '') {
+        req.session.appealReasons[editId].rejectedAccounts = rejectedAccounts
+        res.redirect('/check-your-answers')
+      } else {
+        var reasonObject = req.session.appealReasons.pop()
+        reasonObject.rejectedAccounts = req.body.rejectedAccounts
+        reasonObject.nextStep = 'evidence'
+        req.session.appealReasons.push(reasonObject)
+        res.redirect('/evidence')
+      }
     }
   })
 }

@@ -294,6 +294,46 @@
                 </dd>
               </div>
             </dl>
+          {% elif reason.reason === 'rejectedAccounts' %}
+            <h3 class="govuk-heading-m">{{appealListIndex}}Rejected accounts</h3>
+            <dl class="app-check-your-answers app-check-your-answers--long">
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.rejectedAccounts | safe | nl2br }}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  <a href="/rejected-accounts/rejected-accounts-information?id={{loop.index0}}">Change</a>
+                </dd>
+              </div>
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Supporting documents
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {% if reason.documents.length > 0 %}
+                    <ul class="govuk-list govuk-list--bullet">
+                      {% for document in reason.documents | reverse %}
+                        <li>
+                          <a href='' class='govuk-link' download="download">{{ document }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% else %}
+                    None
+                  {% endif %}
+                </dd>
+                <dd class="app-check-your-answers__change">
+                  {% if reason.documents.length > 0 %}
+                    <a href="evidence-upload?id={{loop.index0}}">Change</a>
+                  {% else %}
+                    <a href="evidence?id={{loop.index0}}">Change</a>
+                  {% endif %}
+                </dd>
+              </div>
+            </dl>
           {% elif reason.reason === 'disaster' %}
             <h3 class="govuk-heading-m">{{appealListIndex}}Natural disaster</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
@@ -348,7 +388,7 @@
               </div>
             </dl>
           {% elif reason.reason === 'accounts' %}
-            <h3 class="govuk-heading-m">{{appealListIndex}}Rejected accounts</h3>
+            <h3 class="govuk-heading-m">{{appealListIndex}}Accounting issues</h3>
             <dl class="app-check-your-answers app-check-your-answers--long">
               <div class="app-check-your-answers__contents">
                 <dt class="app-check-your-answers__question">
