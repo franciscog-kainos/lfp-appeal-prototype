@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Appealing for other reasons
+{% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "/choose-reason"
+}) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="" method="post">
+        {% if errorList.length > 0 %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem with the information you entered",
+            errorList: errorList
+          }) }}
+        {% endif %}
+        <h1 class="govuk-heading-xl">Tell us why you're appealing this penalty</h1>
+        <p class="govuk-body-l">Anything you tell us to support your appeal will be kept confidential.</p>
+        {% if errTitle.flag %}
+          {% set titleError = {
+            text: errTitle.text
+          }  %}
+        {% else %}
+          {% set titleError = false %}
+        {% endif %}
+
+        {{ govukInput({
+          id: "other-reason",
+          name: "otherReason",
+          errorMessage: titleError,
+          label: {
+            text: "Short title for the reason"
+          },
+          value: otherReason
+        }) }}
+
+        {% if errDescription.flag %}
+          {% set descriptionError = {
+            text: errDescription.text
+          }  %}
+        {% else %}
+          {% set descriptionError = false %}
+        {% endif %}
+
+        {{ govukTextarea({
+          name: "otherInformation",
+          id: "other-information",
+          errorMessage: descriptionError,
+          rows: '8',
+          label: {
+            text: "Detailed description of the reason",
+            isPageHeading: false,
+            classes: 'govuk-heading-large'
+          },
+          value: otherInformation
+        }) }}
+        {{ govukInput({
+          id: "edit-id",
+          name: "editId",
+          type: "hidden",
+          value: id
+        }) }}
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Check your answers before sending your application
+{% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: backLinkHref
+}) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        You've already started an application for
+        {{ scenario.company.name }}
+      </h1>
+      <p class="govuk-body-l">You started this application on
+        {{ scenario.company.startDate }}</p>
+
+      <form action="" method="post">
+        {{ govukButton({
+        text: "Continue application"
+      }) }}
+        <p>
+          <a href="choose-reason?restart=yes" class="govuk-link">Start a new application</a>
+        </p>
+        <p>
+          <a href="sign-out" class="govuk-link">Sign out</a>
+        </p>
+      </form>
+    </div>
+  </div>
+{% endblock %}

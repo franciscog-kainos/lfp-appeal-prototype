@@ -6,54 +6,43 @@
   {% endif %}
   Add another reason for your appeal
 {% endblock %}
-
-{% block main %}
-
-  <div class="govuk-width-container">
-    {{ govukPhaseBanner({
-      tag: {
-        text: "alpha"
-      },
-      html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-    }) }}
-
-    {% set backLinkHref %}
-    {{ backLink }}
-    {% endset -%}
-
-    {{ govukBackLink({
-      text: "Back",
-      href: backLinkHref
-    }) }}
-    <main role="main" class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-
-          {% if errorList.length > 0 %}
-            {{ govukErrorSummary({
-              titleText: "There was a problem with your appeal information",
-              errorList: errorList
-            }) }}
-          {% endif %}
-
-          <form action="" method="post">
-
-            {% if errorList.length > 0 %}
-              {% set addAppealReasonError = {
-                text: addAppealReasonErr.text
-              } %}
-            {% else %}
-              {% set addAppealReasonError = false %}
-            {% endif %}
-
-            {{ govukRadios({
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+  tag: {
+    text: "alpha"
+  },
+  html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+}) }}
+  {{ govukBackLink({
+  text: "Back",
+  href: "evidence"
+}) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem with your answer",
+          errorList: errorList
+        }) }}
+      {% endif %}
+      <form action="" method="post">
+        {% if errorList.length > 0 %}
+          {% set addAppealReasonError = {
+            text: addAppealReasonErr.text
+          } %}
+        {% else %}
+          {% set addAppealReasonError = false %}
+        {% endif %}
+        {{ govukRadios({
               classes: "govuk-radios--inline",
               idPrefix: "add-appeal-reason",
               name: "addAppealReason",
               errorMessage: addAppealReasonError,
               fieldset: {
                 legend: {
-                  text: 'Do you want to add another appeal reason?',
+                  text: 'Do you want to add another reason to this appeal?',
                   isPageHeading: true,
                   classes: 'govuk-fieldset__legend--xl'
                 }
@@ -70,13 +59,11 @@
               ]
             }) }}
 
-            {{ govukButton({
+        {{ govukButton({
               text: "Continue"
             }) }}
-          </form>
-        </div>
-      </div>
-    </main>
+      </form>
+    </div>
   </div>
 
 {% endblock %}

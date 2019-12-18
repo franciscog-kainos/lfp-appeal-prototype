@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  You must tell us the reason for the appeal
+{% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/confirm-company"
+  }) }}
+{% endblock %}
+{% block content %}
+
+  {% set otherHTML %}
+  <div class="govuk-inset-text">
+    <a href="https://www.gov.uk/government/publications/late-filing-penalties/late-filing-penalties#appealing">Read the guidance</a>
+    to find out what reasons are unlikely to be successful.
+  </div>
+  {% endset %}
+  <div class="govuk-grid-row" ="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="" method="post">
+
+        {% if errorList.length > 0 %}
+          {{ govukErrorSummary({
+              titleText: "There is an error on the page",
+              errorList: errorList
+            }) }}
+        {% endif %}
+
+        {% if errorList.length > 0 %}
+          {% set appealReasonError = {
+            text: appealReasonErr.text
+          } %}
+        {% else %}
+          {% set appealReasonError = false %}
+        {% endif %}
+
+        {% if errorList.length > 0 %}
+          {% if appealReasonErr.type === 'invalid' %}
+            {% set otherReasonError = true %}
+          {% else %}
+            {% set otherReasonError = false %}
+          {% endif %}
+        {% endif %}
+
+        {{ govukRadios({
+          idPrefix: "choose-reason",
+          name: "appealReason",
+          errorMessage: appealReasonError,
+          hint: {
+            text: "You can add more reasons later"
+          },
+          fieldset: {
+            legend: {
+              text: 'Why are you appealing this penalty?',
+              isPageHeading: true,
+              classes: 'govuk-fieldset__legend--xl'
+            }
+          },
+          items: [
+            {
+              value: "illness",
+              text: "Illness and health issues",
+              checked: checkedIllness
+            },
+            {
+              value: "personal",
+              text: "Personal circumstances",
+              checked: checkedPersonal
+            },
+            {
+              value: "rejectedAccounts",
+              text: "Rejected accounts",
+              checked: checkedRejected
+            },
+            {
+              value: "filingService",
+              text: "Problem with Companies House services",
+              checked: checkedService
+            },
+            {
+              value: "disaster",
+              text: "Fire, flood or other disaster",
+              checked: checkedDisaster
+            },
+            {
+              value: "accounts",
+              text: "Accounting issues",
+              checked: checkedAccounts
+            },
+            {
+              value: "other",
+              text: "I'm appealing for another reason",
+              checked: otherReasonError
+            }
+          ]
+        }) }}
+
+        {{ govukInput({
+          id: "editId",
+          name: "editId",
+          type: "hidden",
+          value: id
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
